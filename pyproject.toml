@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "project_name"
+name = "charting"
 authors = [
     {name = "Donner & Reuschel Luxemburg S.A.", email = "info@donner-reuschel.lu"}
 ]
@@ -15,9 +15,9 @@ classifiers = [
 dynamic = ["version", "readme", "dependencies"]
 
 [tool.setuptools]
-packages = ["project_name"]
+packages = ["charting"]
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.md"], content-type = "text/markdown"}
-version = {attr = "project_name.__version__"}
+version = {attr = "charting.__version__"}
 dependencies = {file = ["requirements.txt"]}

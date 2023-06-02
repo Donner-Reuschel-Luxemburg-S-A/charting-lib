@@ -4,7 +4,7 @@
 # docs
 docs/*.html
 docs/*.js
-docs/project_name
+docs/charting
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

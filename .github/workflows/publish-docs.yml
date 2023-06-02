@@ -20,7 +20,7 @@ jobs:
           python-version: '3.x'
 
       - run: pip install -r requirements.txt
-      - run: pdoc --html project_name/ --output-dir docs/ --template-dir docs/templates --force
+      - run: pdoc --html charting/ --output-dir docs/ --template-dir docs/templates --force
 
       - uses: actions/upload-pages-artifact@v1
         with:
@@ -34,7 +34,7 @@ jobs:
       id-token: write
     environment:
       name: documentation
-      url: "${{ steps.deployment.outputs.page_url }}/project_name"
+      url: "${{ steps.deployment.outputs.page_url }}/charting"
     steps:
       - id: deployment
         uses: actions/deploy-pages@v1
