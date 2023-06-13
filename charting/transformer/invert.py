@@ -1,6 +1,6 @@
 from pandas import Series
 
-from charting.transformer.transformer import Transformer
+from charting.model.transformer import Transformer
 
 
 class Invert(Transformer):
