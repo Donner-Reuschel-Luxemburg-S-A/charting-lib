@@ -26,7 +26,7 @@ class Chart(ABC):
         self.num_y_axes = num_y_axes
         self.figsize = figsize
         self.fig, self.ax = plt.subplots(figsize=figsize)
-        plt.rcParams['axes.spines.top'] = False
+        self.ax.spines['top'].set_visible(False)
         self.handles = []
         self.y_labels = [None] * num_y_axes
         self.y_colors = [None] * num_y_axes
@@ -40,11 +40,13 @@ class Chart(ABC):
         Returns:
             List (Axes): The list of y-axes for the chart.
         """
+
         y_axes = [self.ax]
 
         for i in range(1, self.num_y_axes):
             twin_ax = self.ax.twinx()
-            twin_ax.spines.right.set_position(("axes", 1 + (i - 1) * 0.05))
+            twin_ax.spines.right.set_position(("axes", 1 + (i - 1) * 0.1))
+            twin_ax.spines['top'].set_visible(False)
             y_axes.append(twin_ax)
 
         return y_axes
@@ -222,7 +224,7 @@ class Chart(ABC):
 
     def plot(self, path: str) -> None:
         """
-        Plots the chart and saves it as png.
+        Plots the chart and saves it as png.3
 
         Args:
             path (str): the path to save the file to.

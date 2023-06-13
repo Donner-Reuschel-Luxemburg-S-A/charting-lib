@@ -29,13 +29,14 @@ if __name__ == '__main__':
     chart.configure_x_ticks(which='major', length=20, width=1, pad=10)
 
     # Add data to the chart
-    chart.add_data(df.index, df['SBOIPRIC Index'], label="S&P BRIC 40 EURO Index", y_axis=0, color="black", fill=True,
+    chart.add_data(df.index, df['SBOIPRIC Index'], label="NFIB Small Business Higher Prices", y_axis=0, color="black", fill=True,
                    fill_color='skyblue', fill_threshold=-35, transformer=[Resample('M'), Lead(window=timedelta(weeks=40))])
-    chart.add_data(df.index, df['CLEVCPIA Index'], label="CLEVCPIA Index", y_axis=1, color="skyblue",
-                   transformer=Resample('M'))
+    chart.add_data(df.index, df['CLEVCPIA Index'], label="Federal Reserve Bank of Cleveland Median CPI YoY NSA",
+                   y_axis=1, color="skyblue", transformer=Resample('M'))
 
     # Set legend
     chart.legend(frameon=False, ncol=2)
 
     # Save the plot
     chart.plot(path="output/example.png")
+

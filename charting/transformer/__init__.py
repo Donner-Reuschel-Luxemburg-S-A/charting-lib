@@ -29,19 +29,19 @@ def _generate_label(window: datetime.timedelta, action: str) -> str:
 
     parts = []
     if years > 0:
-        parts.append(f"{years} {'year' if years == 1 else 'years'}")
+        parts.append(f"{years} {'y' if years == 1 else 'y'}")
     if months > 0:
-        parts.append(f"{months} {'month' if months == 1 else 'months'}")
+        parts.append(f"{months} {'m' if months == 1 else 'm'}")
     if remaining_weeks > 0:
-        parts.append(f"{remaining_weeks} {'week' if remaining_weeks == 1 else 'weeks'}")
+        parts.append(f"{remaining_weeks} {'w' if remaining_weeks == 1 else 'w'}")
     if days > 0:
-        parts.append(f"{days} {'day' if days == 1 else 'days'}")
+        parts.append(f"{days} {'d' if days == 1 else 'd'}")
     if hours > 0:
-        parts.append(f"{hours} {'hour' if hours == 1 else 'hours'}")
+        parts.append(f"{hours} {'hrs' if hours == 1 else 'hrs'}")
     if minutes > 0:
-        parts.append(f"{minutes} {'minute' if minutes == 1 else 'minutes'}")
+        parts.append(f"{minutes} {'min' if minutes == 1 else 'min'}")
     if seconds > 0:
-        parts.append(f"{seconds} {'second' if seconds == 1 else 'seconds'}")
+        parts.append(f"{seconds} {'sec' if seconds == 1 else 'sec'}")
 
     label = ' '.join(parts)
 
