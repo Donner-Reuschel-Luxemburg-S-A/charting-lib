@@ -18,6 +18,7 @@ class Avg(Transformer):
         Args:
             window (datetime.timedelta): The window size for calculating the rolling mean.
         """
+        super().__init__()
         self.window = window
 
     def transform(self, x: Series, y: Series) -> (Series, Series):

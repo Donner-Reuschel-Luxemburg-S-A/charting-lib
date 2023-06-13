@@ -20,7 +20,8 @@ class TimeSeriesChart(Chart):
         """
         super().__init__(title=title, num_y_axes=num_y_axes, figsize=figsize)
 
-    def add_data(self, x, y, label: str, y_axis: int, color: str = 'black', linestyle: str = '-',
+    def add_data(self, x, y, label: str, y_axis: int, color: str = 'black', linestyle: str = '-', linewidth: float = 1,
+                 fill: bool = False, fill_color: str = 'black', fill_threshold: float = None,
                  transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
         """
         Adds a line series to the chart.
@@ -32,22 +33,39 @@ class TimeSeriesChart(Chart):
             y_axis (int): The index of the y-axis to plot the series on.
             color (str): The color of the line series (default: 'black').
             linestyle (str): The line style of the series (default: '-').
+            linewidth (float): The width of the line (default: 1)
+            fill (bool): True if area between x and y should be filled (default: False).
+            fill_color (str): The color to fill the area if fill is True( default: black).
+            fill_threshold (float): The threshold value to fill the area below (default: None).
+                               If not specified, the area will be filled from the line to the bottom axis.
             transformer (Union[Transformer, List[Transformer]]): Optional transformer(s) to apply to the series
                 (default: None). If a single transformer is provided, it will be applied to the series.
                 If a list of transformers is provided, they will be applied sequentially to the series.
                 Each transformer should implement the `transform` method to modify the series.
                 The label of the series will be updated to reflect the applied transformers.
+
         """
         if y_axis >= self.num_y_axes:
             raise IndexError("Axis index out of range")
 
+        if y_axis == 0:
+            axis_label = 'L1'
+        else:
+            axis_label = f'R{y_axis}'
+
         if transformer is not None:
             if isinstance(transformer, list):
                 x, y = reduce(lambda xy, trans: trans.transform(*xy), transformer, (x, y))
-                label = f"{label} ({', '.join(trans.label() for trans in transformer)})"
+                label = f"{label}, {axis_label} ({', '.join(trans.label() for trans in transformer)})"
             elif isinstance(transformer, Transformer):
                 x, y = transformer.transform(x, y)
-                label = f"{label} ({transformer.label()})"
+                label = f"{label}, {axis_label} ({transformer.label()})"
 
-        line, = self.y_axes[y_axis].plot(x, y, color=color, linestyle=linestyle, label=label)
+        line, = self.y_axes[y_axis].plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label)
+
+        if fill:
+            if fill_threshold is None:
+                fill_threshold = self.ax.get_ylim()[0]
+            self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=fill_color, alpha=0.2)
+
         self.handles.append(line)

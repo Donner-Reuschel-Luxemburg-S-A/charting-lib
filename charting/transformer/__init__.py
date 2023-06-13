@@ -1,9 +1,5 @@
 import datetime
 
-
-import datetime
-
-
 def _generate_label(window: datetime.timedelta, action: str) -> str:
     """
     Generates a label for the specified window and action.
@@ -27,9 +23,17 @@ def _generate_label(window: datetime.timedelta, action: str) -> str:
     hours, remainder = divmod(remainder, 60 * 60)
     minutes, seconds = divmod(remainder, 60)
 
+    years = window.days // 365
+    months = (window.days % 365) // 30
+    remaining_weeks = weeks - (months * 4)
+
     parts = []
-    if weeks > 0:
-        parts.append(f"{weeks} {'week' if weeks == 1 else 'weeks'}")
+    if years > 0:
+        parts.append(f"{years} {'year' if years == 1 else 'years'}")
+    if months > 0:
+        parts.append(f"{months} {'month' if months == 1 else 'months'}")
+    if remaining_weeks > 0:
+        parts.append(f"{remaining_weeks} {'week' if remaining_weeks == 1 else 'weeks'}")
     if days > 0:
         parts.append(f"{days} {'day' if days == 1 else 'days'}")
     if hours > 0:
@@ -42,4 +46,3 @@ def _generate_label(window: datetime.timedelta, action: str) -> str:
     label = ' '.join(parts)
 
     return f"{label} {action}"
-
