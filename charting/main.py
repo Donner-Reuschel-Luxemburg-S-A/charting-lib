@@ -22,19 +22,20 @@ if __name__ == '__main__':
 
     chart = TimeSeriesChart(title="Awesome Chart", num_y_axes=3)
 
-    chart.configure_y_axis(0, label="%", color='b', y_lim=(-35, 35))
-    chart.configure_y_axis(1, label="Billion Dollar $", color='r', y_lim=(75, 325))
-    chart.configure_y_axis(2, label="Mio €", color='y')
+    chart.configure_y_axis(axis_index=0, label="%", color='blue', y_lim=(-35, 35))
+    chart.configure_y_axis(axis_index=1, label="Billion Dollar $", color='red', y_lim=(75, 325))
+    chart.configure_y_axis(axis_index=2, label="Mio €", color='green')
 
     chart.configure_x_axis(formatter=DateFormatter("%d.%m.%Y"))
 
-    chart.add_line_series(df['Date'], df['Series1'], label="Series 1", y_axis=0, color="b",
+    chart.add_line_series(df['Date'], df['Series1'], label="Series 1", y_axis=0, color="blue",
                           transformer=Invert())
-    chart.add_line_series(df['Date'], df['Series2'], label="Series 2", y_axis=1, color="r",
+    chart.add_line_series(df['Date'], df['Series2'], label="Series 2", y_axis=1, color="red",
                           transformer=Avg(window=timedelta(days=2)))
-    chart.add_line_series(df['Date'], df['Series3'], label="Series 3", y_axis=2, color="y",
+    chart.add_line_series(df['Date'], df['Series3'], label="Series 3", y_axis=2, color="green",
                           transformer=Lead(window=timedelta(days=2)))
-    chart.add_line_series(df['Date'], df['Series4'], label="Series 4", y_axis=2, color="y",
+    chart.add_line_series(df['Date'], df['Series4'], label="Series 4", y_axis=2, color="green", linestyle='dashdot',
                           transformer=Lag(window=timedelta(days=4)))
 
-    chart.plot(directory="output")
+    chart.legend(frameon=False)
+    chart.plot(path="output/awesome-chart.png")

@@ -1,37 +1,47 @@
 import datetime
 from pandas import Series
 
+from charting.transformer import _generate_label
 from charting.transformer.transformer import Transformer
 
 
 class Lag(Transformer):
+    """
+    Transformer that performs a backward shift of a time series by a specified timedelta.
+
+    Attributes:
+        window (datetime.timedelta): The timedelta to shift the time series backward.
+    """
+
     def __init__(self, window: datetime.timedelta):
+        """
+        Initializes a Lag transformer.
+
+        Args:
+            window (datetime.timedelta): The timedelta to shift the time series backward.
+        """
         super().__init__()
         self.window = window
 
     def transform(self, x: Series, y: Series) -> (Series, Series):
+        """
+        Performs a backward shift of the time series by the specified timedelta.
+
+        Args:
+            x (Series): The x-values of the time series.
+            y (Series): The y-values of the time series.
+
+        Returns:
+            (Series, Series): The shifted x-values and the original y-values of the time series.
+        """
         shifted_x = x - self.window
         return shifted_x, y
 
     def label(self) -> str:
-        total_seconds = int(self.window.total_seconds())
-        weeks, remainder = divmod(total_seconds, 7 * 24 * 60 * 60)
-        days, remainder = divmod(remainder, 24 * 60 * 60)
-        hours, remainder = divmod(remainder, 60 * 60)
-        minutes, seconds = divmod(remainder, 60)
+        """
+        Generates a label describing the Lag transformer.
 
-        parts = []
-        if weeks > 0:
-            parts.append(f"{weeks} {'week' if weeks == 1 else 'weeks'}")
-        if days > 0:
-            parts.append(f"{days} {'day' if days == 1 else 'days'}")
-        if hours > 0:
-            parts.append(f"{hours} {'hour' if hours == 1 else 'hours'}")
-        if minutes > 0:
-            parts.append(f"{minutes} {'minute' if minutes == 1 else 'minutes'}")
-        if seconds > 0:
-            parts.append(f"{seconds} {'second' if seconds == 1 else 'seconds'}")
-
-        label = ' '.join(parts)
-
-        return f"{label} lag"
+        Returns:
+            str: The label describing the Lag transformer.
+        """
+        return _generate_label(window=self.window, action='lag')

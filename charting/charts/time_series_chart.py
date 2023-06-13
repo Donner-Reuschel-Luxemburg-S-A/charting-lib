@@ -1,22 +1,20 @@
 from typing import Tuple, Callable, List, Union
 
 import matplotlib.pyplot as plt
-from matplotlib.dates import MonthLocator
 from matplotlib.ticker import Formatter
 
-from charting.charts.chart import Chart
 from charting.transformer.transformer import Transformer
 from functools import reduce
 
 
-class TimeSeriesChart(Chart):
+class TimeSeriesChart:
 
-    def __init__(self, title="", num_y_axes=1, figsize=(12, 8)):
+    def __init__(self, title: str = "", num_y_axes: int = 1, figsize: Tuple[int, int] = (12, 8)):
         """
         Initializes a TimeSeriesChart object.
 
         Args:
-            title (str): The title of the chart.
+            title (str): The title of the chart (default: "").
             num_y_axes (int): The number of y-axes for the chart (default: 1).
             figsize (tuple): The figure size of the chart (default: (12, 8)).
         """
@@ -82,8 +80,24 @@ class TimeSeriesChart(Chart):
         if formatter is not None:
             self.ax.xaxis.set_major_formatter(formatter)
 
-    def add_line_series(self, x, y, label, y_axis: int, color='b',
+    def add_line_series(self, x, y, label: str, y_axis: int, color: str = 'black', linestyle: str = '-',
                         transformer: Union[Transformer, List[Transformer]] = None):
+        """
+        Adds a line series to the chart.
+
+        Args:
+            x: The x-values of the series.
+            y: The y-values of the series.
+            label (str): The label for the series.
+            y_axis (int): The index of the y-axis to plot the series on.
+            color (str): The color of the line series (default: 'black').
+            linestyle (str): The line style of the series (default: '-').
+            transformer (Union[Transformer, List[Transformer]]): Optional transformer(s) to apply to the series
+                (default: None). If a single transformer is provided, it will be applied to the series.
+                If a list of transformers is provided, they will be applied sequentially to the series.
+                Each transformer should implement the `transform` method to modify the series.
+                The label of the series will be updated to reflect the applied transformers.
+        """
         if y_axis >= self.num_y_axes:
             raise IndexError("Axis index out of range")
 
@@ -95,10 +109,25 @@ class TimeSeriesChart(Chart):
                 x, y = transformer.transform(x, y)
                 label = f"{label} ({transformer.label()})"
 
-        line, = self.y_axes[y_axis].plot(x, y, color + "-", label=label)
+        line, = self.y_axes[y_axis].plot(x, y, color=color, linestyle=linestyle, label=label)
         self.handles.append(line)
 
-    def apply_formatting(self):
+    def legend(self, loc: str = 'upper center', bbox_to_anchor: Tuple[int, int] = (0.5, -0.1), ncol: int = 4,
+                         frameon: bool = True, **kwargs):
+        """
+        Configures the legend for the chart.
+
+        Args:
+            loc (str): The location of the legend (default: 'upper center').
+            bbox_to_anchor (tuple): The anchor point of the legend box (default: (0.5, -0.1)).
+            ncol (int): The number of columns in the legend (default: 4).
+            frameon (bool): Whether to draw a frame around the legend (default: True).
+            **kwargs: Additional keyword arguments to pass to the legend function.
+        """
+        self.ax.legend(handles=self.handles, loc=loc, bbox_to_anchor=bbox_to_anchor, ncol=ncol,
+                       frameon=frameon, **kwargs)
+
+    def __apply_formatting(self):
         """
         Applies the y-axis configuration and styling to the chart.
         """
@@ -120,22 +149,17 @@ class TimeSeriesChart(Chart):
             twin_ax.yaxis.label.set_color(color)
             twin_ax.tick_params(axis='y', colors=color)
 
-    def apply_transformation(self):
-        pass
-
-    def plot(self, directory: str = ""):
+    def plot(self, path: str):
         """
         Plots the chart and saves it as png.
 
         Args:
-            directory (str): the directory to save the file to.
+            path (str): the path to save the file to.
         """
-        self.apply_formatting()
-        self.apply_transformation()
+        self.__apply_formatting()
         plt.title(self.title)
-        self.ax.legend(handles=self.handles, loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=4, frameon=False)
 
         plt.tight_layout()
 
-        plt.savefig(f'{directory}/{self.title}')
+        plt.savefig(path)
         plt.close()

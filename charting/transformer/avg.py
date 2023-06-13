@@ -1,39 +1,44 @@
 import datetime
-import arrow
-
 from pandas import Series
-
+from charting.transformer import _generate_label
 from charting.transformer.transformer import Transformer
 
 
 class Avg(Transformer):
+    """
+    Transformer to calculate the average of a time series within a given window.
+
+    This transformer applies a rolling mean calculation to the values of the input time series.
+    """
+
     def __init__(self, window: datetime.timedelta):
-        super().__init__()
+        """
+        Initializes an Avg transformer with the specified window.
+
+        Args:
+            window (datetime.timedelta): The window size for calculating the rolling mean.
+        """
         self.window = window
 
     def transform(self, x: Series, y: Series) -> (Series, Series):
+        """
+        Applies the rolling mean calculation to the time series.
+
+        Args:
+            x (Series): The x-values of the time series.
+            y (Series): The y-values of the time series.
+
+        Returns:
+            (Series, Series): The transformed x-values and y-values.
+        """
         window = int(self.window.total_seconds() / (60 * 60 * 24))
         return x, y.rolling(window=window).mean()
 
     def label(self) -> str:
-        total_seconds = int(self.window.total_seconds())
-        weeks, remainder = divmod(total_seconds, 7 * 24 * 60 * 60)
-        days, remainder = divmod(remainder, 24 * 60 * 60)
-        hours, remainder = divmod(remainder, 60 * 60)
-        minutes, seconds = divmod(remainder, 60)
+        """
+        Returns a label describing the transformation.
 
-        parts = []
-        if weeks > 0:
-            parts.append(f"{weeks} {'week' if weeks == 1 else 'weeks'}")
-        if days > 0:
-            parts.append(f"{days} {'day' if days == 1 else 'days'}")
-        if hours > 0:
-            parts.append(f"{hours} {'hour' if hours == 1 else 'hours'}")
-        if minutes > 0:
-            parts.append(f"{minutes} {'minute' if minutes == 1 else 'minutes'}")
-        if seconds > 0:
-            parts.append(f"{seconds} {'second' if seconds == 1 else 'seconds'}")
-
-        label = ' '.join(parts)
-
-        return f"{label} avg"
+        Returns:
+            str: The label for the transformation.
+        """
+        return _generate_label(window=self.window, action='avg')
