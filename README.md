@@ -6,7 +6,6 @@ The Charting Library is a Python library for generating customizable charts usin
 
 ## Features
 
-
 - Customizable axes, labels, and formatting options.
 - Multiple y-axes support for displaying multiple series with different scales.
 - Support for applying transformation functions to time series data.
@@ -23,6 +22,7 @@ The Charting Library is a Python library for generating customizable charts usin
 ## Available Charts
 
 - Time Series Chart
+- Bar Chart
 
 ## Example
 
@@ -69,16 +69,18 @@ Result:
 df = pd.read_csv('resources/DRTSCILM.csv', header=0, parse_dates=['DATE'], index_col='DATE')
 pmi = pd.read_excel('resources/us-pmi.xlsx', header=5, parse_dates=['Dates'], index_col='Dates')
 
-chart = TimeSeriesChart(title="As industrial loan standards tighten, manufacturing contracts", figsize=(14,6), num_y_axes=2)
+chart = TimeSeriesChart(title="As industrial loan standards tighten, manufacturing contracts",
+                        figsize=(14, 6), num_y_axes=2)
 
 chart.configure_y_axis(axis_index=0, label="PMI Index", y_lim=(20, 65))
-chart.configure_y_axis(axis_index=1, label="%", invert_axis=True)
+chart.configure_y_axis(axis_index=1, label="%", y_lim=(80, -40), invert_axis=True)
 
 major_locator = mdates.YearLocator(base=2)
 major_formatter = mdates.AutoDateFormatter(major_locator)
 chart.configure_x_axis(major_formatter=major_formatter, major_locator=major_locator)
 
-chart.add_data(pmi.index, pmi['PX_LAST'], label="US Manufacturing PMI", y_axis=0, fill=True, fill_threshold=50)
+chart.add_data(pmi.index, pmi['PX_LAST'], label="US Manufacturing PMI", chart_type='bar',
+               y_axis=0, bar_bottom=50, transformer=Threshold(threshold=50), alpha=0.7)
 chart.add_data(df.index, df['DRTSCILM'], label="Tightening standards for C&I loans", y_axis=1)
 chart.add_line(y=0, axis_index=1)
 

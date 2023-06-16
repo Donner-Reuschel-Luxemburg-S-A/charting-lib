@@ -21,8 +21,8 @@ class TimeSeriesChart(Chart):
         """
         super().__init__(title=title, num_y_axes=num_y_axes, figsize=figsize)
 
-    def add_data(self, x, y, label: str, y_axis: int, linestyle: str = '-', linewidth: float = 1,
-                 fill: bool = False, fill_threshold: float = None,
+    def add_data(self, x, y, label: str, y_axis: int, chart_type: str = 'line', linestyle: str = '-', linewidth: float = 1,
+                 fill: bool = False, fill_threshold: float = None, bar_bottom: float = 0, alpha: float = 1,
                  transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
         """
         Adds a line series to the chart.
@@ -32,11 +32,14 @@ class TimeSeriesChart(Chart):
             y: The y-values of the series.
             label (str): The label for the series.
             y_axis (int): The index of the y-axis to plot the series on.
+            chart_type (str): The type of chart to plot ('line' or 'bar', default: 'line').
             linestyle (str): The line style of the series (default: '-').
             linewidth (float): The width of the line (default: 1)
             fill (bool): True if area between x and y should be filled (default: False).
             fill_threshold (float): The threshold value to fill the area below (default: None).
                                If not specified, the area will be filled from the line to the bottom axis.
+            bar_bottom (float): The bottom for bar charts to plot (default: 0).
+            alpha (float): The alpha value for the data plot (default: 1).
             transformer (Union[Transformer, List[Transformer]]): Optional transformer(s) to apply to the series
                 (default: None). If a single transformer is provided, it will be applied to the series.
                 If a list of transformers is provided, they will be applied sequentially to the series.
@@ -46,6 +49,8 @@ class TimeSeriesChart(Chart):
         """
         if y_axis >= self.num_y_axes:
             raise IndexError("Axis index out of range")
+
+        color = get_color(y_axis=y_axis)
 
         if y_axis == 0:
             axis_label = 'L1'
@@ -62,14 +67,25 @@ class TimeSeriesChart(Chart):
         else:
             label = f"{label}, {axis_label}"
 
-        line, = self.y_axes[y_axis].plot(x, y, color=get_color(y_axis=y_axis),
-                                         linestyle=linestyle, linewidth=linewidth, label=label)
+        if chart_type == 'line':
+            handle, = self.y_axes[y_axis].plot(x, y, color=color,
+                                               linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
+
+            if fill:
+                if fill_threshold is None:
+                    fill_threshold = self.ax.get_ylim()[0]
+                self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=color, alpha=0.1)
+        elif chart_type == 'bar':
+            get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days if idx < len(x) - 1 else None
+
+            for i, (idx, diff) in enumerate(zip(x, y)):
+                bar_width = get_bar_width(i)
+                handle = self.y_axes[y_axis].bar(x[i], diff, width=bar_width, bottom=bar_bottom, label=label,
+                                                 color=color, alpha=alpha)
+        else:
+            raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
+
         self.x_min.append(min(x))
         self.x_max.append(max(x))
 
-        if fill:
-            if fill_threshold is None:
-                fill_threshold = self.ax.get_ylim()[0]
-            self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=get_color(y_axis=y_axis), alpha=0.1)
-
-        self.handles.append(line)
+        self.handles.append(handle)
