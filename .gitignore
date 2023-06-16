@@ -5,7 +5,6 @@
 docs/*.html
 docs/*.js
 docs/charting
-examples/output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
