@@ -106,7 +106,8 @@ class Chart(ABC):
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,
-                         major_locator: Locator = None
+                         major_locator: Locator = None,
+                         invert_axis: bool = False
                          ):
         """
         Configures a y-axis with a label and color.
@@ -119,6 +120,7 @@ class Chart(ABC):
             major_formatter (Formatter): The major formatter for the y-axis (default: None)
             minor_locator (Locator): The minor locator for the y-axis (default: AutoLocator)
             major_locator (Locator): The major locator for the y-axis (default: AutoLocator)
+            invert_axis (bool): Whether to invert the y-axis (default: False)
 
         Raises:
             IndexError: If the axis index is out of range.
@@ -133,6 +135,10 @@ class Chart(ABC):
             self.y_lims[axis_index] = y_lim
 
         ax = self.y_axes[axis_index]
+
+        if invert_axis:
+            ax.invert_yaxis()
+            self.y_labels[axis_index] = f'{label} (reversed axis)'
 
         if minor_formatter is not None:
             ax.yaxis.set_minor_formatter(minor_formatter)
@@ -158,14 +164,38 @@ class Chart(ABC):
             width (float): The width of the ticks in points (default: 0.5).
             rotation (float): The rotation angle of the tick labels in degrees (default: 0).
             pad (float): The padding between the ticks and the tick labels in points (default: 0).
+
+        Raises:
+            IndexError: If the axis index is out of range.
         """
         if axis_index == 0:
             self.ax.tick_params(axis='y', which=which, length=length,
                                 width=width, rotation=rotation, pad=pad)
         else:
+            if axis_index >= self.num_y_axes:
+                raise IndexError("Axis index out of range")
             ax = self.y_axes[axis_index]
             ax.tick_params(axis='y', which=which, length=length,
                                 width=width, rotation=rotation, pad=pad)
+
+    def add_line(self, axis_index: int = 0, y: float = 0):
+        """
+        Adds a dotted zero line to the chart.
+
+        Args:
+            axis_index (int): The index of the y-axis on which to add the zero line (default: 0).
+            y (float): The value for y-axis (default: 0).
+
+        Raises:
+            IndexError: If the axis index is out of range.
+        """
+        if axis_index == 0:
+            self.ax.axhline(y, linestyle='dotted', color='black', linewidth=1)
+        else:
+            if axis_index >= self.num_y_axes:
+                raise IndexError("Axis index out of range")
+            ax = self.y_axes[axis_index]
+            ax.axhline(y, linestyle='dotted', color='black', linewidth=1)
 
     def legend(self, loc: str = 'upper center', bbox_to_anchor: Tuple[int, int] = (0.5, -0.1), ncol: int = 1,
                          frameon: bool = True, **kwargs):

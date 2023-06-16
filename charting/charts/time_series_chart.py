@@ -59,6 +59,8 @@ class TimeSeriesChart(Chart):
             elif isinstance(transformer, Transformer):
                 x, y = transformer.transform(x, y)
                 label = f"{label}, {axis_label} ({transformer.label()})"
+        else:
+            label = f"{label}, {axis_label}"
 
         line, = self.y_axes[y_axis].plot(x, y, color=get_color(y_axis=y_axis),
                                          linestyle=linestyle, linewidth=linewidth, label=label)
