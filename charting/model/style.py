@@ -1,0 +1,24 @@
+"""
+Style Guide for D&R Charting Lib.
+"""
+colors = ["#0B3F6A", "#66AAAE", "#CE104C", "#017B6E", "#613628", "#E06300", "#A3D1D4"]
+source_text_style = {'color': '#D3D3D3', 'fontsize': 8}
+title_style = {'fontsize': 18, 'fontweight': 'bold'}
+
+
+def get_color(y_axis: int):
+    """
+    Returns the color for a specific y-axis index.
+
+    If the index is greater than or equal to the number of colors in the list,
+    the index wraps around to the beginning of the list.
+
+    Args:
+        y_axis (int): The index of the y-axis.
+
+    Returns:
+        str: The color corresponding to the index.
+    """
+    if y_axis >= len(colors):
+        y_axis = y_axis % len(colors)
+    return colors[y_axis]

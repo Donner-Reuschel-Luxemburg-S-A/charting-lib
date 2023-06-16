@@ -7,6 +7,8 @@ from matplotlib.axes import Axes
 from matplotlib.pyplot import xlim
 from matplotlib.ticker import Formatter, Locator, AutoLocator
 
+from charting.model.style import title_style, source_text_style
+
 
 class Chart(ABC):
     """
@@ -29,9 +31,11 @@ class Chart(ABC):
         self.ax.spines['top'].set_visible(False)
         self.handles = []
         self.y_labels = [None] * num_y_axes
-        self.y_colors = [None] * num_y_axes
         self.y_lims = [None] * num_y_axes
         self.y_axes = self.__init_y_axes()
+        self.x_min = []
+        self.x_max = []
+        self.legend_y = 0
 
     def __init_y_axes(self) -> List[Axes]:
         """
@@ -51,7 +55,7 @@ class Chart(ABC):
 
         return y_axes
 
-    def configure_x_axis(self, x_lim: Tuple[int, int] = None, label: str = None, color: str = "black",
+    def configure_x_axis(self, x_lim: Tuple[int, int] = None, label: str = None,
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,
@@ -62,7 +66,6 @@ class Chart(ABC):
         Args:
             x_lim (tuple): The limits for the x-axis (default: None).
             label (str): The label for the x-axis (default: None).
-            color (str): The color for the x-axis (default: None).
             minor_formatter (Formatter): The minor formatter for the x-axis (default: None)
             major_formatter (Formatter): The major formatter for the x-axis (default: None)
             minor_locator (Locator): The minor locator for the x-axis (default: None)
@@ -72,7 +75,6 @@ class Chart(ABC):
             self.ax.set_xlim(*x_lim)
 
         self.ax.set_xlabel(label)
-        self.ax.xaxis.label.set_color(color)
 
         if minor_formatter is not None:
             self.ax.xaxis.set_minor_formatter(minor_formatter)
@@ -86,22 +88,21 @@ class Chart(ABC):
         if major_locator is not None:
             self.ax.xaxis.set_major_locator(major_locator)
 
-    def configure_x_ticks(self, which: str = 'both', color: str = 'black', length: float = 1, width: float = 0.5,
+    def configure_x_ticks(self, which: str = 'both', length: float = 1, width: float = 0.5,
                           rotation: float = 0, pad: float = 0):
         """
         Configures the x-axis ticks.
 
         Args:
             which (str): The ticks to configure. Possible values: 'major', 'minor', or 'both' (default: 'both').
-            color (str): The color of the ticks (default: 'black').
             length (float): The length of the ticks in points (default: 1).
             width (float): The width of the ticks in points (default: 0.5).
             rotation (float): The rotation angle of the tick labels in degrees (default: 0).
             pad (float): The padding between the ticks and the tick labels in points (default: 0).
         """
-        self.ax.tick_params(axis='x', which=which, color=color, length=length, width=width, rotation=rotation, pad=pad)
+        self.ax.tick_params(axis='x', which=which, length=length, width=width, rotation=rotation, pad=pad)
 
-    def configure_y_axis(self, axis_index: int, label: str = None, color: str = "black", y_lim: Tuple[int, int] = None,
+    def configure_y_axis(self, axis_index: int, label: str = None, y_lim: Tuple[int, int] = None,
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,
@@ -113,7 +114,6 @@ class Chart(ABC):
         Args:
             axis_index (int): The index of the y-axis to configure.
             label (str): The label for the y-axis.
-            color (str): The color for the y-axis.
             y_lim (tuple): The limits for the axis.
             minor_formatter (Formatter): The minor formatter for the y-axis (default: None)
             major_formatter (Formatter): The major formatter for the y-axis (default: None)
@@ -128,8 +128,6 @@ class Chart(ABC):
 
         if label is not None:
             self.y_labels[axis_index] = label
-
-        self.y_colors[axis_index] = color
 
         if y_lim is not None:
             self.y_lims[axis_index] = y_lim
@@ -148,7 +146,7 @@ class Chart(ABC):
         if major_locator is not None:
             ax.yaxis.set_major_locator(major_locator)
 
-    def configure_y_ticks(self, axis_index: int, which: str = 'both', color: str = 'black', length: float = 1,
+    def configure_y_ticks(self, axis_index: int, which: str = 'both', length: float = 1,
                           width: float = 0.5, rotation: float = 0, pad: float = 0):
         """
         Configures the y-axis ticks.
@@ -156,18 +154,17 @@ class Chart(ABC):
         Args:
             axis_index (int): The index of the y-axis to configure.
             which (str): The ticks to configure. Possible values: 'major', 'minor', or 'both' (default: 'both').
-            color (str): The color of the ticks (default: 'black').
             length (float): The length of the ticks in points (default: 1).
             width (float): The width of the ticks in points (default: 0.5).
             rotation (float): The rotation angle of the tick labels in degrees (default: 0).
             pad (float): The padding between the ticks and the tick labels in points (default: 0).
         """
         if axis_index == 0:
-            self.ax.tick_params(axis='y', which=which, color=color, length=length,
+            self.ax.tick_params(axis='y', which=which, length=length,
                                 width=width, rotation=rotation, pad=pad)
         else:
             ax = self.y_axes[axis_index]
-            ax.tick_params(axis='y', which=which, color=color, length=length,
+            ax.tick_params(axis='y', which=which, length=length,
                                 width=width, rotation=rotation, pad=pad)
 
     def legend(self, loc: str = 'upper center', bbox_to_anchor: Tuple[int, int] = (0.5, -0.1), ncol: int = 1,
@@ -182,16 +179,15 @@ class Chart(ABC):
             frameon (bool): Whether to draw a frame around the legend (default: True).
             **kwargs: Additional keyword arguments to pass to the legend function.
         """
-        self.ax.legend(handles=self.handles, loc=loc, bbox_to_anchor=bbox_to_anchor, ncol=ncol,
+        legend = self.ax.legend(handles=self.handles, loc=loc, bbox_to_anchor=bbox_to_anchor, ncol=ncol,
                        frameon=frameon, **kwargs)
+        self.legend_y = self.ax.transAxes.inverted().transform([(0, legend.get_window_extent().y0)])[0][1]
 
     def __apply_configuration(self):
         """
         Applies the y-axis configuration and styling to the chart.
         """
         self.ax.set_ylabel(self.y_labels[0])
-        self.ax.yaxis.label.set_color(self.y_colors[0])
-        self.ax.tick_params(axis='y', colors=self.y_colors[0])
 
         if self.y_lims[0] is not None:
             self.ax.set_ylim(self.y_lims[0])
@@ -203,9 +199,11 @@ class Chart(ABC):
                 twin_ax.set_ylim(self.y_lims[i])
 
             twin_ax.set_ylabel(self.y_labels[i])
-            color = self.y_colors[i] if self.y_colors[i] is not None else 'b'
-            twin_ax.yaxis.label.set_color(color)
-            twin_ax.tick_params(axis='y', colors=color)
+
+        x_min = min(self.x_min)
+        x_max = max(self.x_max)
+
+        self.ax.set_xlim(x_min, x_max)
 
     @abstractmethod
     def add_data(self, *args, **kwargs):
@@ -219,8 +217,9 @@ class Chart(ABC):
         """
         Adds a centered label at the bottom of the chart.
         """
-        self.ax.text(0.5, -0.2, f'Source: Bloomberg ({datetime.datetime.today().strftime("%d.%m.%Y")})',
-                     transform=self.ax.transAxes, ha='center', va='bottom', color='grey', fontsize=8)
+
+        self.ax.text(0.5, self.legend_y - 0.05, f'Source: Bloomberg ({datetime.datetime.today().strftime("%d.%m.%Y")})',
+                     transform=self.ax.transAxes, ha='center', va='bottom', **source_text_style)
 
     def plot(self, path: str) -> None:
         """
@@ -230,7 +229,7 @@ class Chart(ABC):
             path (str): the path to save the file to.
         """
         self.__apply_configuration()
-        plt.title(self.title)
+        plt.title(self.title, fontdict=title_style)
         self.__add_bottom_label()
         plt.tight_layout()
         plt.savefig(path)

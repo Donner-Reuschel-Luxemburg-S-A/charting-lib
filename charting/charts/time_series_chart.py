@@ -1,5 +1,6 @@
 from typing import Tuple, List, Union
 from charting.model.chart import Chart
+from charting.model.style import get_color
 from charting.model.transformer import Transformer
 from functools import reduce
 
@@ -20,8 +21,8 @@ class TimeSeriesChart(Chart):
         """
         super().__init__(title=title, num_y_axes=num_y_axes, figsize=figsize)
 
-    def add_data(self, x, y, label: str, y_axis: int, color: str = 'black', linestyle: str = '-', linewidth: float = 1,
-                 fill: bool = False, fill_color: str = 'black', fill_threshold: float = None,
+    def add_data(self, x, y, label: str, y_axis: int, linestyle: str = '-', linewidth: float = 1,
+                 fill: bool = False, fill_threshold: float = None,
                  transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
         """
         Adds a line series to the chart.
@@ -31,11 +32,9 @@ class TimeSeriesChart(Chart):
             y: The y-values of the series.
             label (str): The label for the series.
             y_axis (int): The index of the y-axis to plot the series on.
-            color (str): The color of the line series (default: 'black').
             linestyle (str): The line style of the series (default: '-').
             linewidth (float): The width of the line (default: 1)
             fill (bool): True if area between x and y should be filled (default: False).
-            fill_color (str): The color to fill the area if fill is True( default: black).
             fill_threshold (float): The threshold value to fill the area below (default: None).
                                If not specified, the area will be filled from the line to the bottom axis.
             transformer (Union[Transformer, List[Transformer]]): Optional transformer(s) to apply to the series
@@ -61,11 +60,14 @@ class TimeSeriesChart(Chart):
                 x, y = transformer.transform(x, y)
                 label = f"{label}, {axis_label} ({transformer.label()})"
 
-        line, = self.y_axes[y_axis].plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label)
+        line, = self.y_axes[y_axis].plot(x, y, color=get_color(y_axis=y_axis),
+                                         linestyle=linestyle, linewidth=linewidth, label=label)
+        self.x_min.append(min(x))
+        self.x_max.append(max(x))
 
         if fill:
             if fill_threshold is None:
                 fill_threshold = self.ax.get_ylim()[0]
-            self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=fill_color, alpha=0.2)
+            self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=get_color(y_axis=y_axis), alpha=0.1)
 
         self.handles.append(line)
