@@ -51,11 +51,7 @@ class TimeSeriesChart(Chart):
             raise IndexError("Axis index out of range")
 
         color = get_color(y_axis=y_axis)
-
-        if y_axis == 0:
-            axis_label = 'L1'
-        else:
-            axis_label = f'R{y_axis}'
+        axis_label = 'L1' if y_axis == 0 else f'R{y_axis}'
 
         if transformer is not None:
             if isinstance(transformer, list):
