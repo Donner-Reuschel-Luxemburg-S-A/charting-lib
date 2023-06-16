@@ -21,6 +21,10 @@ The Charting Library is a Python library for generating customizable charts usin
 - Lag
 - Resample
 
+## Available Charts
+
+- Time Series Chart
+
 ## Example
 
 ```python
@@ -58,11 +62,6 @@ chart.plot(path="output/example.png")
 
 Ergebnis:
 
-![alt text](charting/output/example.png)
+![alt text](examples/output/example.png)
 
-
-## 
-
-Farben definieren (D&R Look)
-Monate in timedelta
 
