@@ -10,7 +10,7 @@ import matplotlib.dates as mdates
 
 if __name__ == '__main__':
     # Data
-    df = pd.read_excel('nfib.xlsx', header=0, parse_dates=['Dates'], index_col='Dates')
+    df = pd.read_excel('resources/nfib.xlsx', header=0, parse_dates=['Dates'], index_col='Dates')
 
     # Create Chart
     chart = TimeSeriesChart(title="NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business", num_y_axes=2)

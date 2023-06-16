@@ -9,8 +9,8 @@ from charting.transformer.resample import Resample
 import matplotlib.dates as mdates
 
 if __name__ == '__main__':
-    df = pd.read_csv('DRTSCILM.csv', header=0, parse_dates=['DATE'], index_col='DATE')
-    pmi = pd.read_excel('us-pmi.xlsx', header=5, parse_dates=['Dates'], index_col='Dates')
+    df = pd.read_csv('resources/DRTSCILM.csv', header=0, parse_dates=['DATE'], index_col='DATE')
+    pmi = pd.read_excel('resources/us-pmi.xlsx', header=5, parse_dates=['Dates'], index_col='Dates')
 
     chart = TimeSeriesChart(title="As industrial loan standards tighten, manufacturing contracts", figsize=(14,6), num_y_axes=2)
 
