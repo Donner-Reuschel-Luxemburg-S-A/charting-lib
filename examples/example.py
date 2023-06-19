@@ -3,6 +3,8 @@ from datetime import timedelta, datetime
 import pandas as pd
 from matplotlib.ticker import AutoLocator, MultipleLocator
 from dateutil.relativedelta import relativedelta
+from pandas import DateOffset
+
 from charting.charts.time_series_chart import TimeSeriesChart
 from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
@@ -30,7 +32,7 @@ if __name__ == '__main__':
 
     # Add data to the chart
     chart.add_data(df.index, df['SBOIPRIC Index'], label="NFIB Small Business Higher Prices", y_axis=0, fill=True,
-                   fill_threshold=-35, transformer=[Resample('M'), Lead(window=timedelta(weeks=40))])
+                   fill_threshold=-35, transformer=[Resample('M'), Lead(offset=DateOffset(months=10))])
     chart.add_data(df.index, df['CLEVCPIA Index'], label="Federal Reserve Bank of Cleveland Median CPI YoY NSA",
                    y_axis=1,  transformer=Resample('M'))
 
