@@ -1,25 +1,25 @@
 import datetime
-from pandas import Series
+from pandas import Series, DateOffset
 from charting.transformer import _generate_label
 from charting.model.transformer import Transformer
 
 
 class Avg(Transformer):
     """
-    Transformer to calculate the average of a time series within a given window.
+    Transformer to calculate the average of a time series within a given offset.
 
     This transformer applies a rolling mean calculation to the values of the input time series.
     """
 
-    def __init__(self, window: datetime.timedelta):
+    def __init__(self, offset: DateOffset):
         """
-        Initializes an Avg transformer with the specified window.
+        Initializes an Avg transformer with the specified offset.
 
         Args:
-            window (datetime.timedelta): The window size for calculating the rolling mean.
+            offset (DateOffset): The offset for calculating the rolling mean.
         """
         super().__init__()
-        self.window = window
+        self.offset = offset
 
     def transform(self, x: Series, y: Series) -> (Series, Series):
         """
@@ -32,7 +32,8 @@ class Avg(Transformer):
         Returns:
             (Series, Series): The transformed x-values and y-values.
         """
-        window = int(self.window.total_seconds() / (60 * 60 * 24))
+        offset_days = self.offset.n
+        window = f"{offset_days}D"
         return x, y.rolling(window=window).mean()
 
     def label(self) -> str:
@@ -42,4 +43,4 @@ class Avg(Transformer):
         Returns:
             str: The label for the transformation.
         """
-        return _generate_label(window=self.window, action='avg')
+        return _generate_label(offset=self.offset, action='avg')
