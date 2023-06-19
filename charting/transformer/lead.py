@@ -1,5 +1,5 @@
 import datetime
-from pandas import Series
+from pandas import Series, DateOffset
 
 from charting.transformer import _generate_label
 from charting.model.transformer import Transformer
@@ -10,22 +10,22 @@ class Lead(Transformer):
     Transformer that performs a forward shift of a time series by a specified timedelta.
 
     Attributes:
-        window (datetime.timedelta): The timedelta to shift the time series forward.
+        offset (DateOffset): The offset to shift the time series backward.
     """
 
-    def __init__(self, window: datetime.timedelta):
+    def __init__(self, offset: DateOffset):
         """
-        Initializes a Lead transformer.
+        Initializes a Lag transformer.
 
         Args:
-            window (datetime.timedelta): The timedelta to shift the time series forward.
+            offset (DateOffset): The offset to shift the time series backward.
         """
         super().__init__()
-        self.window = window
+        self.offset = offset
 
     def transform(self, x: Series, y: Series) -> (Series, Series):
         """
-        Performs a forward shift of the time series by the specified timedelta.
+        Performs a forward shift of the time series by the specified offset.
 
         Args:
             x (Series): The x-values of the time series.
@@ -34,7 +34,7 @@ class Lead(Transformer):
         Returns:
             (Series, Series): The shifted x-values and the original y-values of the time series.
         """
-        shifted_x = x + self.window
+        shifted_x = x + self.offset
         return shifted_x, y
 
     def label(self) -> str:
@@ -44,4 +44,4 @@ class Lead(Transformer):
         Returns:
             str: The label describing the Lead transformer.
         """
-        return _generate_label(window=self.window, action='lead')
+        return _generate_label(offset=self.offset, action='lead')
