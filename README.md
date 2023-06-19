@@ -24,7 +24,7 @@ The Charting Library is a Python library for generating customizable charts usin
 - Time Series Chart
 - Bar Chart
 
-## Example
+## Example 1
 
 ```python
 # Data
@@ -32,7 +32,7 @@ df = pd.read_excel('nfib.xlsx', header=0, parse_dates=['Dates'], index_col='Date
 
 # Create Chart
 chart = TimeSeriesChart(title="NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business", num_y_axes=2)
-
+a
 # Configure y-axes
 chart.configure_y_axis(axis_index=0, label="Last Price [€]", y_lim=(-35, 70), minor_locator=MultipleLocator(10))
 chart.configure_y_axis(axis_index=1, label="Last Price [€]", minor_locator=MultipleLocator(0.5))
@@ -63,7 +63,7 @@ Result:
 
 ![alt text](examples/output/example.png)
 
-## Second example
+## Example 2
 
 ```python
 df = pd.read_csv('resources/DRTSCILM.csv', header=0, parse_dates=['DATE'], index_col='DATE')
@@ -93,4 +93,30 @@ chart.plot(path="output/loan.png")
 Result:
 
 ![alt text](examples/output/loan.png)
+
+## Example 3:
+
+```python
+d1, t1, a1 = get_data(series_id='RSXFS', observation_start="2020-01-01")  # RSXFS
+
+chart = TimeSeriesChart(title="US retail sales: YoY change",
+                        figsize=(10, 6), num_y_axes=1)
+
+major_locator = mdates.MonthLocator(interval=2)
+major_formatter = mdates.DateFormatter(fmt="%b %Y")
+chart.configure_x_axis(major_formatter=major_formatter, major_locator=major_locator)
+chart.configure_x_ticks(length=5, pad=5, rotation=90)
+
+chart.configure_y_axis(axis_index=0, label="Percent [%]", y_lim=(0, 35))
+
+chart.add_data(d1.index, d1['y'], label=t1, chart_type='bar',
+               y_axis=0, bar_bottom=0, transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
+
+chart.legend(frameon=False, ncol=1, bbox_to_anchor=(0.5, -0.3))
+chart.plot(path="output/retail.png")
+```
+
+Result:
+
+![alt text](examples/output/retail.png)
 
