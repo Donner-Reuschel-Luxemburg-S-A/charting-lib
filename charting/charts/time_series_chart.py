@@ -21,9 +21,9 @@ class TimeSeriesChart(Chart):
         """
         super().__init__(title=title, num_y_axes=num_y_axes, figsize=figsize)
 
-    def add_data(self, x, y, label: str, y_axis: int, chart_type: str = 'line', linestyle: str = '-', linewidth: float = 1,
-                 fill: bool = False, fill_threshold: float = None, bar_bottom: float = 0, alpha: float = 1,
-                 transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
+    def add_data(self, x, y, label: str, y_axis: int, chart_type: str = 'line', linestyle: str = '-',
+                 linewidth: float = 1, fill: bool = False, fill_threshold: float = None, bar_bottom: float = 0,
+                 alpha: float = 1, transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
         """
         Adds a line series to the chart.
 
