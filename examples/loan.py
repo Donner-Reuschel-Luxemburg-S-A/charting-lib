@@ -22,7 +22,8 @@ if __name__ == '__main__':
     chart.add_data(pmi.index, pmi['PX_LAST'], label="US Manufacturing PMI", chart_type='bar',
                    y_axis=0, bar_bottom=50, transformer=Center(val=50), alpha=0.7)
     chart.add_data(df.index, df['DRTSCILM'], label="Tightening standards for C&I loans", y_axis=1)
-    chart.add_line(y=0, axis_index=1)
+    chart.add_horizontal_line(y=0, axis_index=1)
+    chart.add_vertical_line(x=rec.index, y=rec["PX_LAST"], label="US Recession")
 
-    chart.legend(frameon=False, ncol=2)
+    chart.legend(frameon=False, ncol=3)
     chart.plot(path="output/loan.png")

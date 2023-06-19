@@ -178,7 +178,7 @@ class Chart(ABC):
             ax.tick_params(axis='y', which=which, length=length,
                                 width=width, rotation=rotation, pad=pad)
 
-    def add_line(self, axis_index: int = 0, y: float = 0):
+    def add_horizontal_line(self, axis_index: int = 0, y: float = 0):
         """
         Adds a dotted zero line to the chart.
 
@@ -196,6 +196,23 @@ class Chart(ABC):
                 raise IndexError("Axis index out of range")
             ax = self.y_axes[axis_index]
             ax.axhline(y, linestyle='dotted', color='black', linewidth=1)
+
+    def add_vertical_line(self, x, y, beat: float = 1, label: str = None):
+        """
+        Adds a vertical line to the chart for specific values in the y-axis.
+
+        Args:
+            x: The x-values of the data.
+            y: The y-values of the data.
+            beat (float): The specific value in the y-axis to mark with a vertical line (default: 1).
+            label (str): The title for the vertical line in the legend (default: None).
+        """
+        if label is not None:
+            self.handles.append(plt.Rectangle((0, 0), 1, 1, fc='grey', alpha=0.3, label=label))
+
+        for i, value in enumerate(y):
+            if value == beat:
+                self.ax.axvspan(x[i], x[i + 1], facecolor='grey', alpha=0.3)
 
     def legend(self, loc: str = 'upper center', bbox_to_anchor: Tuple[int, int] = (0.5, -0.1), ncol: int = 1,
                          frameon: bool = True, **kwargs):
@@ -262,5 +279,5 @@ class Chart(ABC):
         plt.title(self.title, fontdict=title_style)
         self.__add_bottom_label()
         plt.tight_layout()
-        plt.savefig(path)
+        plt.savefig(path, dpi=600)
         plt.close()
