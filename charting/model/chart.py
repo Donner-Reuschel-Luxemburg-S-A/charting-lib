@@ -214,7 +214,7 @@ class Chart(ABC):
             if value == beat:
                 self.ax.axvspan(x[i], x[i + 1], facecolor='grey', alpha=0.3)
 
-    def legend(self, loc: str = 'upper center', bbox_to_anchor: Tuple[int, int] = (0.5, -0.1), ncol: int = 1,
+    def legend(self, loc: str = 'upper center', bbox_to_anchor: Tuple[float, float] = (0.5, -0.1), ncol: int = 1,
                          frameon: bool = True, **kwargs):
         """
         Configures the legend for the chart.
@@ -227,7 +227,7 @@ class Chart(ABC):
             **kwargs: Additional keyword arguments to pass to the legend function.
         """
         legend = self.ax.legend(handles=self.handles, loc=loc, bbox_to_anchor=bbox_to_anchor, ncol=ncol,
-                       frameon=frameon, **kwargs)
+                                frameon=frameon, **kwargs)
         self.legend_y = self.ax.transAxes.inverted().transform([(0, legend.get_window_extent().y0)])[0][1]
 
     def __apply_configuration(self):
@@ -265,7 +265,7 @@ class Chart(ABC):
         Adds a centered label at the bottom of the chart.
         """
 
-        self.ax.text(0.5, self.legend_y - 0.05, f'Source: Bloomberg ({datetime.datetime.today().strftime("%d.%m.%Y")})',
+        self.ax.text(0.5, self.legend_y - 0.08, f'Source: Bloomberg ({datetime.datetime.today().strftime("%d.%m.%Y")})',
                      transform=self.ax.transAxes, ha='center', va='bottom', **source_text_style)
 
     def plot(self, path: str) -> None:

@@ -72,7 +72,7 @@ class TimeSeriesChart(Chart):
                     fill_threshold = self.ax.get_ylim()[0]
                 self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=color, alpha=0.1)
         elif chart_type == 'bar':
-            get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days if idx < len(x) - 1 else None
+            get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
 
             for i, (idx, diff) in enumerate(zip(x, y)):
                 bar_width = get_bar_width(i)
