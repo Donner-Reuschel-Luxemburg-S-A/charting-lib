@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     chart.configure_y_axis(axis_index=0, label="Percent [%]", y_lim=(0, 35))
 
-    chart.add_data(d1.index, d1['y'], label=t1, chart_type='bar',
+    chart.add_data(x=d1.index, y=d1['y'], label=t1, chart_type='bar',
                    y_axis=0, bar_bottom=0, transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
 
     chart.legend(frameon=False, ncol=1, bbox_to_anchor=(0.5, -0.3))

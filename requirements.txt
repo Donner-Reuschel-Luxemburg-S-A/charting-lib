@@ -5,4 +5,4 @@ matplotlib~=3.7.1
 pandas~=2.0.2
 python-dateutil~=2.8.2
 fredapi~=0.5.0
-origins@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.2.0
+origins@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@bloomberg-api
