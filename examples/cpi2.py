@@ -1,11 +1,7 @@
-from matplotlib import pyplot as plt
 from matplotlib.ticker import AutoLocator, MultipleLocator
-from pandas import DateOffset
 
 from charting.charts.time_series_chart import TimeSeriesChart
-from charting.transformer.lead import Lead
 from charting.transformer.pct import Pct
-from charting.transformer.resample import Resample
 import matplotlib.dates as mdates
 
 from examples import blp, fred

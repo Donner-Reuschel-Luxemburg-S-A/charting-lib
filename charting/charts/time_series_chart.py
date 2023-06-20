@@ -1,12 +1,11 @@
+from functools import reduce
 from typing import Tuple, List, Union
 
 import numpy as np
-from matplotlib import pyplot as plt
 
 from charting.model.chart import Chart
 from charting.model.style import get_color
 from charting.model.transformer import Transformer
-from functools import reduce
 
 
 class TimeSeriesChart(Chart):

@@ -4,8 +4,7 @@ from typing import Tuple, List
 
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
-from matplotlib.pyplot import xlim
-from matplotlib.ticker import Formatter, Locator, AutoLocator
+from matplotlib.ticker import Formatter, Locator
 
 from charting.model.style import title_style, source_text_style
 
