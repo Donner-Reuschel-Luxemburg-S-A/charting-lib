@@ -4,15 +4,15 @@ from charting.transformer.center import Center
 from examples import fred, blp
 
 if __name__ == '__main__':
-    d1, t1, a1 = fred.get_series(series_id='DRTSCILM')  # DRTSCILM
-    d2, t2, a2 = fred.get_series(series_id='JHDUSRGDPBR')  # USRINDEX Index
+    d1, t1 = fred.get_series(series_id='DRTSCILM')  # DRTSCILM
+    d2, t2 = fred.get_series(series_id='JHDUSRGDPBR')  # USRINDEX Index
     d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=19900131)
 
     chart = TimeSeriesChart(title="As industrial loan standards tighten, manufacturing contracts",
                             figsize=(14, 6), num_y_axes=2)
 
     chart.configure_y_axis(axis_index=0, label="PMI Index", y_lim=(20, 65))
-    chart.configure_y_axis(axis_index=1, label=a1, y_lim=(80, -40), invert_axis=True)
+    chart.configure_y_axis(axis_index=1, label="%", y_lim=(80, -40), invert_axis=True)
 
     major_locator = mdates.YearLocator(base=2)
     major_formatter = mdates.AutoDateFormatter(major_locator)
