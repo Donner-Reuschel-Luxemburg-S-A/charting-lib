@@ -4,11 +4,12 @@ from charting.charts.time_series_chart import TimeSeriesChart
 
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
-from examples.fred import get_data
 import matplotlib.dates as mdates
 
+from examples import fred
+
 if __name__ == '__main__':
-    d1, t1, a1 = get_data(series_id='RSAFS', observation_start="2020-01-01")  # RSAFS
+    d1, t1, a1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
     chart = TimeSeriesChart(title="US retail sales: YoY change",
                             figsize=(10, 6), num_y_axes=1)

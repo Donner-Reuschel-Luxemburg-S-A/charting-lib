@@ -1,14 +1,13 @@
 import pandas as pd
 from charting.charts.time_series_chart import TimeSeriesChart
 import matplotlib.dates as mdates
-
 from charting.transformer.center import Center
-from examples.fred import get_data
+from examples import fred
 
 if __name__ == '__main__':
-    d1, t1, a1 = get_data(series_id='DRTSCILM')  # DRTSCILM
+    d1, t1, a1 = fred.get_series(series_id='DRTSCILM')  # DRTSCILM
     pmi = pd.read_excel('resources/us-pmi.xlsx', header=5, parse_dates=['Dates'], index_col='Dates')
-    d2, t2, a2 = get_data(series_id='JHDUSRGDPBR')  # USRINDEX Index
+    d2, t2, a2 = fred.get_series(series_id='JHDUSRGDPBR')  # USRINDEX Index
 
     chart = TimeSeriesChart(title="As industrial loan standards tighten, manufacturing contracts",
                             figsize=(14, 6), num_y_axes=2)
