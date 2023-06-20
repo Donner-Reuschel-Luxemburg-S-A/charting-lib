@@ -56,12 +56,12 @@ chart.add_data(df.index, df['CLEVCPIA Index'], label="Federal Reserve Bank of Cl
 chart.legend(frameon=False, ncol=2)
 
 # Save the plot
-chart.plot(path="output/example.png")
+chart.plot(path="output/cpi.png")
 ```
 
 Result:
 
-![alt text](examples/output/example.png)
+![alt text](examples/output/cpi.png)
 
 ## Example 2
 

@@ -40,5 +40,5 @@ if __name__ == '__main__':
     chart.legend(frameon=False, ncol=2)
 
     # Save the plot
-    chart.plot(path="output/example.png")
+    chart.plot(path="output/cpi.png")
 

@@ -76,7 +76,7 @@ class TimeSeriesChart(Chart):
 
             for i, (idx, diff) in enumerate(zip(x, y)):
                 bar_width = get_bar_width(i)
-                handle = self.y_axes[y_axis].bar(x[i], diff, width=bar_width, bottom=bar_bottom, label=label,
+                handle = self.y_axes[y_axis].bar(x[i], diff, align='edge', width=bar_width, bottom=bar_bottom, label=label,
                                                  color=color, alpha=alpha)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")

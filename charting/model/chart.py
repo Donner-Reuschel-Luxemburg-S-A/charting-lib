@@ -99,6 +99,7 @@ class Chart(ABC):
             width (float): The width of the ticks in points (default: 0.5).
             rotation (float): The rotation angle of the tick labels in degrees (default: 0).
             pad (float): The padding between the ticks and the tick labels in points (default: 0).
+            pad (float): The padding between the ticks and the tick labels in points (default: 0).
         """
         self.ax.tick_params(axis='x', which=which, length=length, width=width, rotation=rotation, pad=pad)
 

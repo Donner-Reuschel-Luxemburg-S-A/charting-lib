@@ -8,7 +8,7 @@ from examples.fred import get_data
 import matplotlib.dates as mdates
 
 if __name__ == '__main__':
-    d1, t1, a1 = get_data(series_id='RSXFS', observation_start="2020-01-01")  # RSXFS
+    d1, t1, a1 = get_data(series_id='RSAFS', observation_start="2020-01-01")  # RSAFS
 
     chart = TimeSeriesChart(title="US retail sales: YoY change",
                             figsize=(10, 6), num_y_axes=1)
