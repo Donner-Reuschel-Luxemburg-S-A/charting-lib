@@ -1,8 +1,4 @@
-from datetime import timedelta, datetime
-
-import pandas as pd
 from matplotlib.ticker import AutoLocator, MultipleLocator
-from dateutil.relativedelta import relativedelta
 from pandas import DateOffset
 
 from charting.charts.time_series_chart import TimeSeriesChart
@@ -10,8 +6,11 @@ from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
 import matplotlib.dates as mdates
 
+from examples import blp
+
 if __name__ == '__main__':
-    df = pd.read_excel('resources/nfib.xlsx', header=0, parse_dates=['Dates'], index_col='Dates')
+    df1, t1 = blp.get_series(series_id='SBOIPRIC Index', observation_start='19950131')
+    df2, t2 = blp.get_series(series_id='CLEVCPIA Index', observation_start='19950131')
 
     chart = TimeSeriesChart(title="NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business", num_y_axes=2)
 
@@ -26,12 +25,10 @@ if __name__ == '__main__':
     chart.configure_x_ticks(which='minor', length=3, width=1)
     chart.configure_x_ticks(which='major', length=20, width=1, pad=10)
 
-    chart.add_data(df.index, df['SBOIPRIC Index'], label="NFIB Small Business Higher Prices", y_axis=0, fill=True,
+    chart.add_data(x=df1.index, y=df1['y'], label=t1, y_axis=0, fill=True,
                    fill_threshold=-35, transformer=[Resample('M'), Lead(offset=DateOffset(months=10))])
-    chart.add_data(df.index, df['CLEVCPIA Index'], label="Federal Reserve Bank of Cleveland Median CPI YoY NSA",
-                   y_axis=1,  transformer=Resample('M'))
+    chart.add_data(x=df2.index, y=df2['y'], label=t2, y_axis=1,  transformer=Resample('M'))
 
     chart.legend(frameon=False, ncol=2)
-
     chart.plot(path="output/cpi.png")
 
