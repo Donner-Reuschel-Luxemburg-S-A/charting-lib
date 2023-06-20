@@ -21,9 +21,9 @@ class TimeSeriesChart(Chart):
         """
         super().__init__(title=title, num_y_axes=num_y_axes, figsize=figsize)
 
-    def add_data(self, x, y, label: str, y_axis: int, chart_type: str = 'line', linestyle: str = '-', linewidth: float = 1,
-                 fill: bool = False, fill_threshold: float = None, bar_bottom: float = 0, alpha: float = 1,
-                 transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
+    def add_data(self, x, y, label: str, y_axis: int, chart_type: str = 'line', linestyle: str = '-',
+                 linewidth: float = 1, fill: bool = False, fill_threshold: float = None, bar_bottom: float = 0,
+                 alpha: float = 1, transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
         """
         Adds a line series to the chart.
 
@@ -72,11 +72,11 @@ class TimeSeriesChart(Chart):
                     fill_threshold = self.ax.get_ylim()[0]
                 self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=color, alpha=0.1)
         elif chart_type == 'bar':
-            get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days if idx < len(x) - 1 else None
+            get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
 
             for i, (idx, diff) in enumerate(zip(x, y)):
                 bar_width = get_bar_width(i)
-                handle = self.y_axes[y_axis].bar(x[i], diff, width=bar_width, bottom=bar_bottom, label=label,
+                handle = self.y_axes[y_axis].bar(x[i], diff, align='edge', width=bar_width, bottom=bar_bottom, label=label,
                                                  color=color, alpha=alpha)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
