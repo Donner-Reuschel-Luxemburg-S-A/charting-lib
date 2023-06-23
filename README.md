@@ -53,7 +53,7 @@ chart.plot(path="output/cpi.png")
 
 Result:
 
-![alt text](examples/output/cpi.png)
+![alt text](examples/charting/output/cpi.png)
 
 ## Example 2
 
@@ -84,7 +84,7 @@ chart.plot(path="output/loan.png")
 
 Result:
 
-![alt text](examples/output/loan.png)
+![alt text](examples/charting/output/loan.png)
 
 ## Example 3:
 
@@ -110,5 +110,5 @@ chart.plot(path="output/retail.png")
 
 Result:
 
-![alt text](examples/output/retail.png)
+![alt text](examples/charting/output/retail.png)
 
