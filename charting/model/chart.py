@@ -266,8 +266,9 @@ class Chart(ABC):
         Adds a centered label at the bottom of the chart.
         """
 
-        self.ax.text(0.5, self.legend_y - 0.08, f'Source: Bloomberg ({datetime.datetime.today().strftime("%d.%m.%Y")})',
-                     transform=self.ax.transAxes, ha='center', va='bottom', **source_text_style)
+        self.ax.text(0, self.legend_y - 0.08, f'Source: Bloomberg & Federal Reserve Economic Data (FRED) '
+                                              f'as of {datetime.datetime.today().strftime("%d.%m.%Y")}',
+                     transform=self.ax.transAxes, ha='left', va='bottom', **source_text_style)
 
     def plot(self, path: str) -> None:
         """
