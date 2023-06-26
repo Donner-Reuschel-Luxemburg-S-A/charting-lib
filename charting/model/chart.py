@@ -103,7 +103,7 @@ class Chart(ABC):
         """
         self.ax.tick_params(axis='x', which=which, length=length, width=width, rotation=rotation, pad=pad)
 
-    def configure_y_axis(self, axis_index: int, label: str = None, y_lim: Tuple[int, int] = None,
+    def configure_y_axis(self, axis_index: int, label: str = None, y_lim: Tuple[float, float] = None,
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,

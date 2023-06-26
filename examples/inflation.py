@@ -11,24 +11,24 @@ if __name__ == '__main__':
     core_df, core_title = fred.get_series(series_id='CPILFESL', observation_start='2016-01-01')
 
     food_df, _ = blp.get_series(series_id='CPSFFOOD Index', observation_start='20160101')
-    food_weights_df, _ = blp.get_series(series_id='CPSFFOOD Index', observation_start='20160101')
+    food_weights_df, _ = blp.get_series(series_id='CPIVFOOD Index', observation_start='20160101')
     food_df['weighted'] = food_df['y'] * food_weights_df['y'] / 100
 
     energy_df, _ = blp.get_series(series_id='CPUPENER Index', observation_start='20160101')
-    energy_weights_df, _ = blp.get_series(series_id='CPUPENER Index', observation_start='20160101')
+    energy_weights_df, _ = blp.get_series(series_id='CPIVENER Index', observation_start='20160101')
     energy_df['weighted'] = energy_df['y'] * energy_weights_df['y'] / 100
 
     goods_df, _ = blp.get_series(series_id='CPUPCXFE Index', observation_start='20160101')
-    goods_weights_df, _ = blp.get_series(series_id='CPUPCXFE Index', observation_start='20160101')
+    goods_weights_df, _ = blp.get_series(series_id='CPIVCLFE Index', observation_start='20160101')
     goods_df['weighted'] = goods_df['y'] * goods_weights_df['y'] / 100
 
     services_df, _ = blp.get_series(series_id='CPUPSXEN Index', observation_start='20160101')
-    services_weights_df, _ = blp.get_series(series_id='CPUPSXEN Index', observation_start='20160101')
+    services_weights_df, _ = blp.get_series(series_id='CPIVSLES Index', observation_start='20160101')
     services_df['weighted'] = services_df['y'] * services_weights_df['y'] / 100
 
     chart = TimeSeriesChart(title="U.S. CPI by Component", num_y_axes=1)
 
-    chart.configure_y_axis(axis_index=0, label="%", y_lim=(-2.5, 10), minor_locator=MultipleLocator(1))
+    chart.configure_y_axis(axis_index=0, label="%", minor_locator=MultipleLocator(1))
 
     major_locator = mdates.YearLocator(base=1)
     minor_locator = mdates.MonthLocator(interval=2)
@@ -39,17 +39,19 @@ if __name__ == '__main__':
     chart.configure_x_ticks(which='major', length=20, width=1, pad=10)
 
     chart.add_horizontal_line(axis_index=0)
+
     chart.add_data(x=headline_df.index, y=headline_df['y'], label="Headline YoY", y_axis=0, transformer=Pct(periods=12))
     chart.add_data(x=core_df.index, y=core_df['y'], label="Core YoY", y_axis=0, transformer=Pct(periods=12))
 
-    chart.add_data(x=food_df.index, y=food_df['weighted'], chart_type='bar', stacked=True, label="Food", y_axis=0,
-                   transformer=Pct(periods=1))
-    chart.add_data(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy",
-                   y_axis=0, transformer=Pct(periods=1))
-    chart.add_data(x=goods_df.index, y=goods_df['weighted'], chart_type='bar', stacked=True, label="Goods (Ex Food & Energy)",
-                   y_axis=0, transformer=Pct(periods=1))
     chart.add_data(x=services_df.index, y=services_df['weighted'], chart_type='bar', stacked=True,
-                   label="Services (Ex Food & Energy)", y_axis=0, transformer=Pct(periods=1))
+                   label="Services (Ex Food & Energy)", y_axis=0, transformer=Pct(periods=12))
+    chart.add_data(x=goods_df.index, y=goods_df['weighted'], chart_type='bar', stacked=True,
+                   label="Goods (Ex Food & Energy)",
+                   y_axis=0, transformer=Pct(periods=12))
+    chart.add_data(x=food_df.index, y=food_df['weighted'], chart_type='bar', stacked=True, label="Food", y_axis=0,
+                   transformer=Pct(periods=12))
+    chart.add_data(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy",
+                   y_axis=0, transformer=Pct(periods=12))
 
     chart.legend(frameon=False, ncol=2)
-    chart.plot(path="output/inflation-mom.png")
+    chart.plot(path="output/inflation.png")
