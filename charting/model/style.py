@@ -2,7 +2,7 @@
 Style Guide for D&R Charting Lib.
 """
 colors = ["#7EC0C6", "#124877", "#E91457", "#018C7D", "#6F3E2E", "#FD7200"]
-source_text_style = {'color': '#D3D3D3', 'fontsize': 8}
+source_text_style = {'fontsize': 8}
 title_style = {'fontsize': 18, 'fontweight': 'bold'}
 
 
