@@ -1,14 +1,14 @@
+import ntpath
+
 from pptx import Presentation
 from os.path import dirname, abspath
 
-from pptx.enum.text import MSO_AUTO_SIZE
-from pptx.oxml import parse_xml
-from pptx.util import Pt
+import win32com.client as win32
 
 
 class Ppt:
 
-    def __init__(self, template: str = 'D&R Präsentation.pptx'):
+    def __init__(self, template: str = 'D&R Präsentation.pptm'):
         parent_dir = dirname(dirname(abspath(__file__)))
         self.prs = Presentation(pptx=f'{parent_dir}/templates/{template}')
 
@@ -16,21 +16,17 @@ class Ppt:
         slide_layout = self.prs.slide_layouts[0]
         slide = self.prs.slides.add_slide(slide_layout)
 
-        title_original = self.prs.slide_master.slide_layouts[0].placeholders[3]
         title_obj = slide.placeholders[0]
-        original_text = title_original.text_frame.text
-        self.set_text(title_obj, title, len(original_text))
+        title_frame = title_obj.text_frame
+        title_frame.text = title
 
-        suptitle_original = self.prs.slide_master.slide_layouts[0].placeholders[4]
         suptitle_obj = slide.placeholders[14]
-        original_text = suptitle_original.text_frame.text
-        self.set_text(suptitle_obj, suptitle, len(original_text))
+        suptitle_frame = suptitle_obj.text_frame
+        suptitle_frame.text = suptitle
 
         second_title_obj = slide.placeholders[15]
-        second_title_original = self.prs.slide_master.slide_layouts[0].placeholders[2]
-        self.set_text(second_title_obj, second_title)
-        original_text = second_title_original.text_frame.text
-        self.set_text(suptitle_obj, suptitle, len(original_text))
+        second_title_frame = second_title_obj.text_frame
+        second_title_frame.text = second_title
 
     def add_image_slide(self, title: str, subtitle: str, comment: str = None):
         slide_layout = self.prs.slide_layouts[3]
@@ -49,20 +45,15 @@ class Ppt:
 
     def save(self, path: str):
         self.prs.save(path)
+        filename = ntpath.basename(path)
 
-    def set_text(self, shape, text, num_characters = 1):
+        powerpoint = win32.gencache.EnsureDispatch('PowerPoint.Application')
+        powerpoint.Visible = True
+        presentation = powerpoint.Presentations.Open(path)
+        presentation.Application.Run(f"{filename}!Modul1.AdjustShapeWidthToFitText")
 
-        if shape.has_text_frame:
+        presentation.Save()
+        presentation.Close()
 
-            original_left = shape.left
-            original_top = shape.top
-            original_height = shape.height
-            original_width = (shape.width / num_characters) * 1.5
-
-            shape.width = int(original_width * num_characters)
-            shape.text = text
-
-            shape.left = original_left
-            shape.top = original_top
-            shape.height = original_height
+        powerpoint.Quit()
 
