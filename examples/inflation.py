@@ -10,10 +10,10 @@ if __name__ == '__main__':
     headline_df, headline_title = fred.get_series(series_id='CPIAUCSL', observation_start='2016-01-01')
     core_df, core_title = fred.get_series(series_id='CPILFESL', observation_start='2016-01-01')
 
-    food_df, _ = blp.get_series(series_id='CPSFFOOD Index', observation_start='20161201')
-    energy_df, _ = blp.get_series(series_id='CPUPENER Index', observation_start='20161201')
-    goods_df, _ = blp.get_series(series_id='CPUPCXFE Index', observation_start='20161201')
-    services_df, _ = blp.get_series(series_id='CPUPSXEN Index', observation_start='20161201')
+    food_df, _ = blp.get_series(series_id='CPSFFOOD Index', observation_start='20160101')
+    energy_df, _ = blp.get_series(series_id='CPUPENER Index', observation_start='20160101')
+    goods_df, _ = blp.get_series(series_id='CPUPCXFE Index', observation_start='20160101')
+    services_df, _ = blp.get_series(series_id='CPUPSXEN Index', observation_start='20160101')
 
     chart = TimeSeriesChart(title="U.S. CPI by Component", num_y_axes=1)
 
@@ -41,4 +41,4 @@ if __name__ == '__main__':
                    label="Services (Ex Food & Energy)", y_axis=0, transformer=Pct(periods=1))
 
     chart.legend(frameon=False, ncol=2)
-    chart.plot(path="output/inflation.png")
+    chart.plot(path="output/inflation-mom.png")
