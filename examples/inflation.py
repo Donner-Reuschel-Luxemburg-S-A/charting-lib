@@ -10,10 +10,10 @@ if __name__ == '__main__':
     headline_df, headline_title = fred.get_series(series_id='CPIAUCSL', observation_start='2016-01-01')
     core_df, core_title = fred.get_series(series_id='CPILFESL', observation_start='2016-01-01')
 
-    food_df, _ = blp.get_series(series_id='CPIUFDSL', observation_start='2016-12-01')
-    energy_df, _ = blp.get_series(series_id='CPIENGSL', observation_start='2016-12-01')
-    goods_df, _ = blp.get_series(series_id='CPIENGSL', observation_start='2016-12-01')
-    services_df, _ = blp.get_series(series_id='CPIENGSL', observation_start='2016-12-01')
+    food_df, _ = blp.get_series(series_id='CPSFFOOD Index', observation_start='20161201')
+    energy_df, _ = blp.get_series(series_id='CPUPENER Index', observation_start='20161201')
+    goods_df, _ = blp.get_series(series_id='CPUPCXFE Index', observation_start='20161201')
+    services_df, _ = blp.get_series(series_id='CPUPSXEN Index', observation_start='20161201')
 
     chart = TimeSeriesChart(title="U.S. CPI by Component", num_y_axes=1)
 
