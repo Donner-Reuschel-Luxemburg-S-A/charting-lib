@@ -1,3 +1,4 @@
+import json
 import ntpath
 
 from pptx import Presentation
@@ -8,13 +9,16 @@ import win32com.client as win32
 
 class Ppt:
 
-    def __init__(self, title: str, template: str = 'D&R Präsentation.pptm', subtitle: str = None, suptitle: str = None):
+    def __init__(self, data: str, template: str = 'dr-template.pptm'):
         parent_dir = dirname(dirname(abspath(__file__)))
         self.prs = Presentation(pptx=f'{parent_dir}/templates/{template}')
-        self.title = title
-        self.subtitle = subtitle
-        self.suptitle = suptitle
+        f = open(data, "rb")
+        self.data = json.load(f)
+        f.close()
+
         self.__add_title_slide()
+        self.__add_chapter()
+        self.__add_disclaimer()
 
     def __add_title_slide(self):
         slide_layout = self.prs.slide_layouts[0]
@@ -22,29 +26,41 @@ class Ppt:
 
         title_obj = slide.placeholders[0]
         title_frame = title_obj.text_frame
-        title_frame.text = self.title
+        title_frame.text = self.data.get('title')
 
-        if self.subtitle is not None:
+        if self.data.get('subtitle') is not None:
             subtitle_obj = slide.placeholders[15]
             subtitle_frame = subtitle_obj.text_frame
-            subtitle_frame.text = self.subtitle
+            subtitle_frame.text = self.data.get('subtitle')
 
-        if self.suptitle is not None:
-
+        if self.data.get('suptitle') is not None:
             suptitle_obj = slide.placeholders[14]
             suptitle_frame = suptitle_obj.text_frame
-            suptitle_frame.text = self.suptitle
+            suptitle_frame.text = self.data.get('suptitle')
 
-    def add_image_slide(self, title: str, subtitle: str,  img: str, comment: str = None):
-        slide_layout = self.prs.slide_layouts[3]
+    def __add_chapter(self):
+        for chapter in self.data.get('chapter'):
+            title = chapter.get('title')
+            slides = chapter.get('slides')
+
+            for slide in slides:
+                slide_title = slide.get('title')
+                chart = slide.get('chart')
+
+                slide_layout = self.prs.slide_layouts[3]
+                slide = self.prs.slides.add_slide(slide_layout)
+
+                slide.placeholders[0].text = title
+                slide.placeholders[13].text = slide_title
+                slide.placeholders[19].insert_picture(chart)
+
+    def __add_disclaimer(self):
+        slide_layout = self.prs.slide_layouts[17]
         slide = self.prs.slides.add_slide(slide_layout)
 
-        slide.placeholders[0].text = title
-        slide.placeholders[13].text = subtitle
-        slide.placeholders[19].insert_picture(img)
-
-        if comment is not None:
-            slide.placeholders[14].text = comment
+        note = slide.placeholders[10]
+        sp = note.element
+        sp.getparent().remove(sp)
 
     def get_layout(self):
         for slide in self.prs.slide_layouts:
@@ -64,4 +80,5 @@ class Ppt:
         presentation.Close()
 
         powerpoint.Quit()
+
 

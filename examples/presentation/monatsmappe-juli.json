@@ -1,0 +1,25 @@
+{
+  "title": "Monatsmappe",
+  "subtitle": "Ausgabe Zinsen",
+  "suptitle": "Juli 2023",
+  "chapter": [
+    {
+      "title": "Volatilitätsmärkte",
+      "slides": [
+        {
+          "title": "Eingepreiste Volatilität",
+          "chart": "volatility/vix_v2x.png"
+        }
+      ]
+    },
+    {
+      "title": "Rohstoffmärkte",
+      "slides": [
+        {
+          "title": "Entwicklung der Ölpreise",
+          "chart": "commodities/oil.png"
+        }
+      ]
+    }
+  ]
+}

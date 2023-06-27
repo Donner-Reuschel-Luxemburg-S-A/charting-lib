@@ -50,7 +50,7 @@ class TimeSeriesChart(Chart):
         if y_axis >= self.num_y_axes:
             raise IndexError("Axis index out of range")
 
-        color = get_color(y_axis=y_axis)
+        color = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis == 0 else f'R{y_axis}'
 
         if transformer is not None:
