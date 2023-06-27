@@ -3,7 +3,7 @@ Style Guide for D&R Charting Lib.
 """
 colors = ["#66AAAE", "#0B3F6A", "#CE104C", "#017B6E", "#613628", "#E06300", "#A3D1D4"]
 source_text_style = {'fontsize': 8}
-title_style = {'fontsize': 18, 'fontweight': 'bold'}
+title_style = {'fontsize': 12, 'fontweight': 'bold'}
 
 
 def get_color(y_axis: int):

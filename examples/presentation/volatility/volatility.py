@@ -1,13 +1,11 @@
 from charting.charts.time_series_chart import TimeSeriesChart
 import matplotlib.dates as mdates
-from charting.transformer.center import Center
 from examples import fred, blp
 
 if __name__ == '__main__':
     d1, t1 = fred.get_series(series_id='VIXCLS', observation_start="2022-06-01")
 
-    chart = TimeSeriesChart(title="Volatilitätsmärkte",
-                            figsize=(7, 4), num_y_axes=1)
+    chart = TimeSeriesChart(title="Volatilitätsmärkte", num_y_axes=1)
 
     chart.configure_y_axis(axis_index=0, label="%", y_lim=(10, 50))
 
@@ -20,4 +18,5 @@ if __name__ == '__main__':
     chart.add_data(x=d1.index, y=d1['y'], label=t1, y_axis=0)
 
     chart.legend(frameon=False, ncol=1)
+
     chart.plot(path="vix_v2x.png")
