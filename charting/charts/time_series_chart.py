@@ -99,16 +99,12 @@ class TimeSeriesChart(Chart):
                     for idx, patches in enumerate(zip(*all_patches)):
                         bottom = 0
                         if y[idx] > 0:
-                            bottom = max(patch.get_height() for patch in patches)
-                            if np.sign(bottom) == -1:
-                                bottom = 0
+                            # if bar value > 0, just sum all positive bars and use this as bottom
+                            bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == 1])
                         if y[idx] < 0:
-                            bottom = min(patch.get_height() for patch in patches)
-                            if np.sign(bottom) == 1:
-                                bottom = 0
+                            bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == -1])
 
                         bar_bottom.append(bottom)
-
                 else:
                     bar_bottom = np.zeros(len(x))
 
