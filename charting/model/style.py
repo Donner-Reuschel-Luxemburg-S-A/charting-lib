@@ -1,9 +1,16 @@
 """
 Style Guide for D&R Charting Lib.
 """
-colors = ["#66AAAE", "#0B3F6A", "#CE104C", "#017B6E", "#613628", "#E06300", "#A3D1D4"]
+colors = ["#7EC0C6", "#124877", "#E91457", "#018C7D", "#6F3E2E", "#FD7200"]
+stacked_colors = ["#7A7978", "#87CBAC", "#90FFDC", "#8DE4FF", "#8AC4FF"]
 source_text_style = {'fontsize': 8}
 title_style = {'fontsize': 12, 'fontweight': 'bold'}
+
+
+def get_stacked_color(idx: int):
+    if idx >= len(stacked_colors):
+        idx = idx % len(stacked_colors)
+    return stacked_colors[idx]
 
 
 def get_color(y_axis: int):
