@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter, Locator, AutoLocator
 from datetime import datetime
+
 from charting.model.style import title_style, source_text_style
 
 
@@ -102,7 +103,7 @@ class Chart(ABC):
         """
         self.ax.tick_params(axis='x', which=which, length=length, width=width, rotation=rotation, pad=pad)
 
-    def configure_y_axis(self, axis_index: int, label: str = None, y_lim: Tuple[int, int] = None,
+    def configure_y_axis(self, axis_index: int, label: str = None, y_lim: Tuple[float, float] = None,
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,
@@ -282,5 +283,5 @@ class Chart(ABC):
         plt.title(self.title, fontdict=title_style)
         self.__add_bottom_label()
         plt.tight_layout()
-        plt.savefig(path, dpi=600)
+        plt.savefig(path, dpi=300)
         plt.close()

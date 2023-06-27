@@ -1,8 +1,7 @@
-import datetime
 from pandas import Series, DateOffset
 
-from charting.transformer import _generate_label
 from charting.model.transformer import Transformer
+from charting.transformer import _generate_label
 
 
 class Lead(Transformer):

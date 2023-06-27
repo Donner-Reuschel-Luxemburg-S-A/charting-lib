@@ -1,8 +1,11 @@
-from typing import Tuple, List, Union
-from charting.model.chart import Chart
-from charting.model.style import get_color
-from charting.model.transformer import Transformer
 from functools import reduce
+from typing import Tuple, List, Union
+
+import numpy as np
+
+from charting.model.chart import Chart
+from charting.model.style import get_color, get_stacked_color
+from charting.model.transformer import Transformer
 
 
 class TimeSeriesChart(Chart):
@@ -23,7 +26,8 @@ class TimeSeriesChart(Chart):
 
     def add_data(self, x, y, label: str, y_axis: int, chart_type: str = 'line', linestyle: str = '-',
                  linewidth: float = 1, fill: bool = False, fill_threshold: float = None, bar_bottom: float = 0,
-                 alpha: float = 1, transformer: Union[Transformer, List[Transformer]] = None, *args, **kwargs):
+                 stacked: bool = False, alpha: float = 1, transformer: Union[Transformer, List[Transformer]] = None,
+                 *args, **kwargs):
         """
         Adds a line series to the chart.
 
@@ -39,6 +43,7 @@ class TimeSeriesChart(Chart):
             fill_threshold (float): The threshold value to fill the area below (default: None).
                                If not specified, the area will be filled from the line to the bottom axis.
             bar_bottom (float): The bottom for bar charts to plot (default: 0).
+            stacked (bool): Indicates if the bar should be stacked (default: False).
             alpha (float): The alpha value for the data plot (default: 1).
             transformer (Union[Transformer, List[Transformer]]): Optional transformer(s) to apply to the series
                 (default: None). If a single transformer is provided, it will be applied to the series.
@@ -50,7 +55,7 @@ class TimeSeriesChart(Chart):
         if y_axis >= self.num_y_axes:
             raise IndexError("Axis index out of range")
 
-        color = get_color(y_axis=y_axis)
+        color = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis == 0 else f'R{y_axis}'
 
         if transformer is not None:
@@ -73,11 +78,40 @@ class TimeSeriesChart(Chart):
                 self.y_axes[y_axis].fill_between(x, y, fill_threshold, color=color, alpha=0.1)
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
+            bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
+            mean_bar_width = np.mean(bar_widths)
 
-            for i, (idx, diff) in enumerate(zip(x, y)):
-                bar_width = get_bar_width(i)
-                handle = self.y_axes[y_axis].bar(x[i], diff, align='edge', width=bar_width, bottom=bar_bottom, label=label,
-                                                 color=color, alpha=alpha)
+            if stacked:
+                patches = self.y_axes[y_axis].patches
+                if len(patches) == len(x):
+                    bar_bottom = [0 if (y_val > 0 > patch.get_height()) or (y_val < 0 < patch.get_height())
+                                  else patch.get_height() for y_val, patch in zip(y, patches)]
+                    color = get_stacked_color(1)
+                elif len(patches) > len(x):
+                    bar_bottom = []
+                    n = len(patches) // len(x)
+                    color = get_stacked_color(n+1)
+                    all_patches = []
+                    for i in range(n):
+                        start = i * len(x)
+                        end = (i + 1) * len(x)
+                        p = patches[start:end]
+                        all_patches.append(p)
+
+                    for idx, patches in enumerate(zip(*all_patches)):
+                        bottom = 0
+                        if y[idx] > 0:
+                            bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == 1])
+                        if y[idx] < 0:
+                            bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == -1])
+
+                        bar_bottom.append(bottom)
+                else:
+                    bar_bottom = np.zeros(len(x))
+                    color = get_stacked_color(0)
+
+            handle = self.y_axes[y_axis].bar(x, y, align='edge', width=mean_bar_width, bottom=bar_bottom,
+                                             label=label, color=color, alpha=alpha)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
