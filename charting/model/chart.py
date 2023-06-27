@@ -4,9 +4,8 @@ from typing import Tuple, List
 
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
-from matplotlib.pyplot import xlim
 from matplotlib.ticker import Formatter, Locator, AutoLocator
-
+from datetime import datetime
 from charting.model.style import title_style, source_text_style
 
 
@@ -266,8 +265,11 @@ class Chart(ABC):
         Adds a centered label at the bottom of the chart.
         """
 
-        self.ax.text(0.5, self.legend_y - 0.08, f'Source: Bloomberg ({datetime.datetime.today().strftime("%d.%m.%Y")})',
-                     transform=self.ax.transAxes, ha='center', va='bottom', **source_text_style)
+        x_min = min(self.x_min)
+        x_max = max(self.x_max)
+        self.ax.text(0, self.legend_y - 0.08, f'Source: Bloomberg & Federal Reserve Economic Data (FRED) '
+                                              f'as of {datetime.today().strftime("%d.%m.%Y")}, Time Series from {x_min.strftime("%m/%Y")} - {x_max.strftime("%m/%Y")}.',
+                     transform=self.ax.transAxes, ha='left', va='bottom', **source_text_style)
 
     def plot(self, path: str) -> None:
         """
