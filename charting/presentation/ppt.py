@@ -63,7 +63,9 @@ class Ppt:
 
                 slide.placeholders[0].text = title
                 slide.placeholders[13].text = slide_title
-                slide.placeholders[19].insert_picture(chart)
+
+                if chart != "":
+                    slide.placeholders[19].insert_picture(chart)
 
     def __add_disclaimer(self):
         slide_layout = self.prs.slide_layouts[17]
