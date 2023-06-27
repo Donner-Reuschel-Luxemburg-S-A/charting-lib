@@ -54,8 +54,8 @@ if __name__ == '__main__':
 
     chart.add_horizontal_line(axis_index=0)
 
-    chart.add_data(x=headline_df.index, y=headline_df['y'], label="Headline YoY", y_axis=0, transformer=Pct(periods=12))
-    chart.add_data(x=core_df.index, y=core_df['y'], label="Core YoY", y_axis=0, transformer=Pct(periods=12))
+    chart.add_data(x=headline_df.index, y=headline_df['y'], label="Headline YoY", y_axis=0, transformer=Pct(periods=12), linewidth=3)
+    chart.add_data(x=core_df.index, y=core_df['y'], label="Core YoY", y_axis=0, transformer=Pct(periods=12), linewidth=3)
 
     chart.add_data(x=services_df.index, y=services_df['weighted'], chart_type='bar', stacked=True,
                    label="Services (Ex Food & Energy)", y_axis=0)

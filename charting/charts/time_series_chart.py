@@ -4,7 +4,7 @@ from typing import Tuple, List, Union
 import numpy as np
 
 from charting.model.chart import Chart
-from charting.model.style import get_color
+from charting.model.style import get_color, get_stacked_color
 from charting.model.transformer import Transformer
 
 
@@ -86,9 +86,11 @@ class TimeSeriesChart(Chart):
                 if len(patches) == len(x):
                     bar_bottom = [0 if (y_val > 0 > patch.get_height()) or (y_val < 0 < patch.get_height())
                                   else patch.get_height() for y_val, patch in zip(y, patches)]
+                    color = get_stacked_color(0)
                 elif len(patches) > len(x):
                     bar_bottom = []
                     n = len(patches) // len(x)
+                    color = get_stacked_color(n)
                     all_patches = []
                     for i in range(n):
                         start = i * len(x)
@@ -99,7 +101,6 @@ class TimeSeriesChart(Chart):
                     for idx, patches in enumerate(zip(*all_patches)):
                         bottom = 0
                         if y[idx] > 0:
-                            # if bar value > 0, just sum all positive bars and use this as bottom
                             bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == 1])
                         if y[idx] < 0:
                             bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == -1])
@@ -107,6 +108,7 @@ class TimeSeriesChart(Chart):
                         bar_bottom.append(bottom)
                 else:
                     bar_bottom = np.zeros(len(x))
+                    color = '#000000'
 
             handle = self.y_axes[y_axis].bar(x, y, align='edge', width=mean_bar_width, bottom=bar_bottom,
                                              label=label, color=color, alpha=alpha)
