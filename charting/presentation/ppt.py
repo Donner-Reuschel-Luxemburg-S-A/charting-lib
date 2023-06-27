@@ -41,9 +41,20 @@ class Ppt:
     def __add_chapter(self):
         for chapter in self.data.get('chapter'):
             title = chapter.get('title')
-            slides = chapter.get('slides')
 
-            for slide in slides:
+            slide_layout = self.prs.slide_layouts[1]
+            slide = self.prs.slides.add_slide(slide_layout)
+            slide.placeholders[0].text = title
+
+            note = slide.placeholders[14]
+            sp = note.element
+            sp.getparent().remove(sp)
+
+            note = slide.placeholders[15]
+            sp = note.element
+            sp.getparent().remove(sp)
+
+            for slide in chapter.get('slides'):
                 slide_title = slide.get('title')
                 chart = slide.get('chart')
 

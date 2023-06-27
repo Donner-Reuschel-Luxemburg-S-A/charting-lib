@@ -20,6 +20,22 @@
           "chart": "commodities/oil.png"
         }
       ]
+    },
+    {
+      "title": "Währungsmärkte",
+      "slides": []
+    },
+    {
+      "title": "Inflationsentwicklung",
+      "slides": []
+    },
+    {
+      "title": "Zentralbanken",
+      "slides": []
+    },
+    {
+      "title": "Zinsmärkte",
+      "slides": []
     }
   ]
 }
