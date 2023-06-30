@@ -14,6 +14,8 @@ The Charting Library is a Python library for generating customizable charts usin
 ## Available Transformers
 
 - Invert 
+- Pct
+- Center
 - Average
 - Lead
 - Lag
@@ -21,8 +23,10 @@ The Charting Library is a Python library for generating customizable charts usin
 
 ## Available Charts
 
-- Time Series Chart
-- Bar Chart
+- Time Series Charts
+- Bar Charts
+- Stacked Bar Charts
+- Horizontal/Vertical Lines
 
 ## Example 1
 
