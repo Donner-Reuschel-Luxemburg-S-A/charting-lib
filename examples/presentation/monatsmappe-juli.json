@@ -1,0 +1,258 @@
+{
+  "title": "Monatsmappe",
+  "subtitle": "Ausgabe Zinsen",
+  "suptitle": "Juli 2023",
+  "chapter": [
+    {
+      "title": "Volatilitätsmärkte",
+      "slides": [
+        {
+          "title": "Eingepreiste Volatilität aus Optionen",
+          "chart": "volatility/vix_v2x.png"
+        },
+        {
+          "title": "Eingepreiste Volatilität aus Optionen",
+          "chart": ""
+        }
+      ]
+    },
+    {
+      "title": "Rohstoffmärkte",
+      "slides": [
+        {
+          "title": "Entwicklung der Ölpreise",
+          "chart": "commodities/oil.png"
+        },
+        {
+          "title": "Edelmetalle",
+          "chart": ""
+        },
+        {
+          "title": "Edelmetalle",
+          "chart": ""
+        },
+        {
+          "title": "Breiter Rohstoffe Index",
+          "chart": ""
+        }
+      ]
+    },
+    {
+      "title": "Währungsmärkte",
+      "slides": [
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Asien",
+          "chart": ""
+        },
+        {
+          "title": "Asien",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Asien-Pazifik",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Asien-Pazifik",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Westliche Welt",
+          "chart": ""
+        },
+        {
+          "title": "Asien-Pazifik",
+          "chart": ""
+        },
+        {
+          "title": "Asien-Pazifik",
+          "chart": ""
+        },
+        {
+          "title": "Asien-Pazifik",
+          "chart": ""
+        },
+        {
+          "title": "Afrika",
+          "chart": ""
+        },
+        {
+          "title": "Mittlerer Osten",
+          "chart": ""
+        }
+      ]
+    },
+    {
+      "title": "Inflationsentwicklung",
+      "slides": [
+        {
+          "title": "Inflationsraten YoY",
+          "chart": ""
+        }
+      ]
+    },
+    {
+      "title": "Zentralbanken",
+      "slides": [
+        {
+          "title": "Entwicklung der Bilanzsummen Weltweit",
+          "chart": ""
+        }
+      ]
+    },
+    {
+      "title": "Zinsmärkte",
+      "slides": [
+        {
+          "title": "Deutschland",
+          "chart": ""
+        },
+        {
+          "title": "Deutschland",
+          "chart": ""
+        },
+        {
+          "title": "Deutschland",
+          "chart": ""
+        },
+        {
+          "title": "Deutschland",
+          "chart": ""
+        },
+        {
+          "title": "Deutschland",
+          "chart": ""
+        },
+        {
+          "title": "Deutschland",
+          "chart": ""
+        },
+        {
+          "title": "USA",
+          "chart": ""
+        },
+        {
+          "title": "USA",
+          "chart": ""
+        },
+        {
+          "title": "USA",
+          "chart": ""
+        },
+        {
+          "title": "USA",
+          "chart": ""
+        },
+        {
+          "title": "USA",
+          "chart": ""
+        },
+        {
+          "title": "USA",
+          "chart": ""
+        },
+        {
+          "title": "Italien",
+          "chart": ""
+        },
+        {
+          "title": "Interbankenmarkt Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Interbankenmarkt Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Interbankenmarkt Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Interbankenmarkt Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Bund vs. Swap Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Bund vs. Swap Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Bund vs. Swap Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Bund vs. Swap Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Kreditrisiko Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Kreditrisiko Eurozone",
+          "chart": ""
+        },
+        {
+          "title": "Kreditrisiko USA",
+          "chart": ""
+        },
+        {
+          "title": "Kreditrisiko USA",
+          "chart": ""
+        },
+        {
+          "title": "Performance Eurozone",
+          "chart": ""
+        }
+      ]
+    },
+    {
+      "title": "Zentralbanken",
+      "slides": [
+        {
+          "title": "Leitzinsen Weltweit",
+          "chart": ""
+        }
+      ]
+    }
+  ]
+}

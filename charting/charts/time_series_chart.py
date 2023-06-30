@@ -13,7 +13,7 @@ class TimeSeriesChart(Chart):
     A Time Series Chart.
     """
 
-    def __init__(self, title: str = "", num_y_axes: int = 1, figsize: Tuple[int, int] = (12, 8)):
+    def __init__(self, title: str = "", num_y_axes: int = 1, figsize: Tuple[int, int] = (8.06, 5.05)):
         """
         Initializes a TimeSeriesChart object.
 

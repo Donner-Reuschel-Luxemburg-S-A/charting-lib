@@ -15,7 +15,7 @@ class Chart(ABC):
     Abstract base class representing a chart.
     """
 
-    def __init__(self, title: str = "", num_y_axes: int = 1, figsize: Tuple[int, int] = (12, 8)):
+    def __init__(self, title: str = "", num_y_axes: int = 1, figsize: Tuple[int, int] = (8.06, 5.05)):
         """
         Initializes a Chart object.
 
@@ -261,15 +261,18 @@ class Chart(ABC):
         """
         pass
 
+    def get_source_label(self) -> str:
+        x_min = min(self.x_min)
+        x_max = max(self.x_max)
+        return f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
+               f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
+               f'{x_min.strftime("%m/%Y")} - {x_max.strftime("%m/%Y")}.'
+
     def __add_bottom_label(self):
         """
         Adds a centered label at the bottom of the chart.
         """
-
-        x_min = min(self.x_min)
-        x_max = max(self.x_max)
-        self.ax.text(0, self.legend_y - 0.08, f'Source: Bloomberg & Federal Reserve Economic Data (FRED) '
-                                              f'as of {datetime.today().strftime("%d.%m.%Y")}, Time Series from {x_min.strftime("%m/%Y")} - {x_max.strftime("%m/%Y")}.',
+        self.ax.text(-0.03, self.legend_y - 0.08, self.get_source_label(),
                      transform=self.ax.transAxes, ha='left', va='bottom', **source_text_style)
 
     def plot(self, path: str) -> None:
@@ -283,5 +286,5 @@ class Chart(ABC):
         plt.title(self.title, fontdict=title_style)
         self.__add_bottom_label()
         plt.tight_layout()
-        plt.savefig(path, dpi=300)
+        plt.savefig(path)
         plt.close()
