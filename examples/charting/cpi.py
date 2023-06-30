@@ -23,12 +23,12 @@ if __name__ == '__main__':
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.configure_x_ticks(which='minor', length=3, width=1)
-    chart.configure_x_ticks(which='major', length=20, width=1, pad=10)
+    chart.configure_x_ticks(which='major', length=10, width=1, pad=5)
 
     chart.add_data(x=df1.index, y=df1['y'], label=t1, y_axis=0, fill=True,
                    fill_threshold=-35, transformer=[Resample('M'), Lead(offset=DateOffset(months=10))])
     chart.add_data(x=df2.index, y=df2['y'], label=t2, y_axis=1,  transformer=Resample('M'))
 
-    chart.legend(frameon=False, ncol=2)
+    chart.legend(frameon=False, ncol=1)
     chart.plot(path="output/cpi.png")
 

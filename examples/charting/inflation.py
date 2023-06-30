@@ -50,7 +50,7 @@ if __name__ == '__main__':
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.configure_x_ticks(which='minor', length=3, width=1)
-    chart.configure_x_ticks(which='major', length=20, width=1, pad=10)
+    chart.configure_x_ticks(which='major', length=10, width=1, pad=5)
 
     chart.add_horizontal_line(axis_index=0)
 
