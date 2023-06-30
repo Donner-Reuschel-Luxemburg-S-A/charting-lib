@@ -11,8 +11,7 @@ from examples import fred
 if __name__ == '__main__':
     d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
-    chart = TimeSeriesChart(title="US retail sales: YoY change",
-                            figsize=(10, 6), num_y_axes=1)
+    chart = TimeSeriesChart(title="US retail sales: YoY change",num_y_axes=1)
 
     major_locator = mdates.MonthLocator(interval=2)
     major_formatter = mdates.DateFormatter(fmt="%b %Y")

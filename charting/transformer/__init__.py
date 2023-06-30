@@ -18,7 +18,7 @@ def _generate_label(offset: DateOffset, action: str) -> str:
     for component in priority_order:
         if component in offset.kwds:
             value = offset.kwds[component]
-            label = f"{value} {'y' if value == 1 else component[0]}"
+            label = f"{value} {component[0]}"
             parts.append(label)
 
     label = ' '.join(parts)
