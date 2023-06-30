@@ -12,7 +12,7 @@ if __name__ == '__main__':
     chart.configure_y_axis(axis_index=0, label="USD", minor_locator=MultipleLocator(100), major_locator=MultipleLocator(200))
 
     major_locator = mdates.MonthLocator(interval=6)
-    minor_locator = mdates.MonthLocator(interval=1)
+    minor_locator = mdates.MonthLocator(interval=3)
 
     major_formatter = mdates.DateFormatter("%Y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
