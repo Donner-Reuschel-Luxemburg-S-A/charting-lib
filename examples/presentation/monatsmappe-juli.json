@@ -12,7 +12,7 @@
         },
         {
           "title": "Eingepreiste Volatilität aus Optionen",
-          "chart": ""
+          "chart": "volatility/move.png"
         }
       ]
     },
@@ -25,15 +25,15 @@
         },
         {
           "title": "Edelmetalle",
-          "chart": ""
+          "chart": "commodities/gold.png"
         },
         {
           "title": "Edelmetalle",
-          "chart": ""
+          "chart": "commodities/silver.png"
         },
         {
           "title": "Breiter Rohstoffe Index",
-          "chart": ""
+          "chart": "commodities/comdty_index.png"
         }
       ]
     },

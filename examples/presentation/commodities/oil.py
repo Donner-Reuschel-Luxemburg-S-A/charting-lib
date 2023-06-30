@@ -1,14 +1,16 @@
+from matplotlib.ticker import MultipleLocator
+
 from charting.charts.time_series_chart import TimeSeriesChart
 import matplotlib.dates as mdates
 from examples import fred, blp
 
 if __name__ == '__main__':
-    d1, t1 = fred.get_series(series_id='DCOILWTICO', observation_start="2020-01-01")
-    d2, t2 = fred.get_series(series_id='DCOILBRENTEU', observation_start="2020-01-01")
+    d1, t1 = blp.get_series(series_id='CLA Comdty', observation_start="20200101")
+    d2, t2 = blp.get_series(series_id='COA Comdty', observation_start="20200101")
 
     chart = TimeSeriesChart(title="Rohstoffmärkte", num_y_axes=1)
 
-    chart.configure_y_axis(axis_index=0, label="USD")
+    chart.configure_y_axis(axis_index=0, label="USD", minor_locator=MultipleLocator(5))
 
     major_locator = mdates.MonthLocator(interval=6)
     minor_locator = mdates.MonthLocator(interval=1)
