@@ -1,0 +1,29 @@
+from pandas import DateOffset
+
+from charting.charts.time_series_chart import TimeSeriesChart
+import matplotlib.dates as mdates
+
+from charting.transformer.avg import Avg
+from examples import fred, blp
+
+if __name__ == '__main__':
+    d1, t1 = blp.get_series(series_id='BNKRINDX Index', observation_start=20060101)
+    d2, t2 = fred.get_series(series_id='JHDUSRGDPBR', observation_start="2006-01-01")
+
+    chart = TimeSeriesChart(title="Bankruptcy filings moving up in recent weeks", num_y_axes=2)
+
+    chart.configure_y_axis(axis_index=0, label="Count")
+    chart.configure_y_axis(axis_index=1, label="Count")
+
+    major_locator = mdates.YearLocator(base=2)
+    major_formatter = mdates.DateFormatter("%Y")
+    chart.configure_x_axis(major_formatter=major_formatter, major_locator=major_locator)
+
+    chart.add_data(x=d1.index, y=d1['y'], label="Bankruptcy filings", y_axis=0,
+                   transformer=Avg(offset=DateOffset(months=1)))
+    chart.add_data(x=d1.index, y=d1['y'], label="Bankruptcy filings", y_axis=1,
+                   transformer=Avg(offset=DateOffset(months=3)))
+    chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
+
+    chart.legend(frameon=False, ncol=2)
+    chart.plot(path="output/bankruptcy.png")

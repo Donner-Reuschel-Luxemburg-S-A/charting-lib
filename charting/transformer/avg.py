@@ -1,4 +1,8 @@
-from pandas import Series, DateOffset
+import datetime
+
+import pandas as pd
+import pandas.tseries.offsets
+from pandas import Series, DateOffset, DataFrame
 
 from charting.model.transformer import Transformer
 from charting.transformer import _generate_label
@@ -32,9 +36,10 @@ class Avg(Transformer):
         Returns:
             (Series, Series): The transformed x-values and y-values.
         """
-        offset_days = self.offset.n
-        window = f"{offset_days}D"
-        return x, y.rolling(window=window).mean()
+        start_date = datetime.datetime.today()
+        end_date = start_date + self.offset
+        days = (end_date - start_date).days
+        return x, y.rolling(window=f'{days}D').mean()
 
     def label(self) -> str:
         """
