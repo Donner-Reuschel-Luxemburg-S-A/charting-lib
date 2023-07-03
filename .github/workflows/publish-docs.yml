@@ -32,6 +32,8 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libmariadb-dev
           python -m pip install --upgrade pip build
           pip install --index-url=https://bcms.bloomberg.com/pip/simple blpapi
           if [ -f requirements.txt ]; then pip install -r requirements.txt --force; fi
