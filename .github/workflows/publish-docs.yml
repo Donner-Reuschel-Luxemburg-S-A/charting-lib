@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   generate:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -21,22 +21,20 @@ jobs:
 
       - name: Set up Git SSH
         run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          mkdir C:\Users\runneradmin\.ssh
+          echo "$env:SSH_PRIVATE_KEY" > C:\Users\runneradmin\.ssh\id_rsa
+          chmod 600 C:\Users\runneradmin\.ssh\id_rsa
+          Start-Process ssh-agent -Verb RunAs
+          Start-Process ssh-add C:\Users\runneradmin\.ssh\id_rsa
+          ssh-keyscan -H github.com >> C:\Users\runneradmin\.ssh\known_hosts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libmariadb-dev
           python -m pip install --upgrade pip build
           pip install --index-url=https://bcms.bloomberg.com/pip/simple blpapi
-          if [ -f requirements.txt ]; then pip install -r requirements.txt --force; fi
+          pip install -r requirements.txt
 
       - run: pdoc --html charting/ --output-dir docs/ --template-dir docs/templates --force
 
