@@ -44,6 +44,8 @@ class Chart:
         self.__remove_top_spines()
         self.axis_dict = self.__init_y_axis()
         self.handles = []
+        self.x_min = []
+        self.x_max = []
 
     def __remove_top_spines(self) -> None:
         """
@@ -274,6 +276,8 @@ class Chart:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
         self.handles.append(handle)
+        self.x_min.append(min(x))
+        self.x_max.append(max(x))
 
     def add_horizontal_line(self, row_index: int = 0, y_axis_index: int = 0, y: float = 0) -> None:
         """
@@ -313,20 +317,24 @@ class Chart:
                 ax.axvspan(x[i], x[i + 1], facecolor='grey', alpha=0.3)
 
         if label is not None:
-            self.handles.append(plt.Rectangle((0, 0), 1, 1, fc='grey', alpha=0.3, label=label))
+            handle = plt.Rectangle((0, 0), 1, 1, fc='grey', alpha=0.3, label=label)
+
+            if handle not in self.handles:
+                self.handles.append(handle)
 
     def __add_bottom_label(self):
         """
         Adds a centered label at the bottom of the chart.
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
-        xmin, xmax = ax.get_xlim()
-        min_date = num2date(xmin).date()
-        max_date = num2date(xmax).date()
+        x_min = min(self.x_min)
+        x_max = max(self.x_max)
+
+        ax.set_xlim(x_min, x_max)
 
         label = f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
                 f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                f'{min_date.strftime("%m/%Y")} - {max_date.strftime("%m/%Y")}.'
+                f'{x_min.strftime("%m/%Y")} - {x_max.strftime("%m/%Y")}.'
 
         txt = offsetbox.TextArea(label, textprops=source_text_style)
 
@@ -365,3 +373,6 @@ class Chart:
         self.__add_bottom_label()
         plt.savefig(path, transparent=True)
         plt.close()
+
+    def add_sup_y_label(self, label: str):
+        self.fig.supylabel(label, fontsize=8)
