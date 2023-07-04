@@ -304,31 +304,33 @@ class Chart:
         except IndexError:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
 
-    def add_vertical_line(self, x, y, row_index: int = 0, beat: float = 1, label: str = None):
+    def add_vertical_line(self, x, y, row_index: Union[int, List[int]] = 0, beat: float = 1, label: str = None):
         """
         Adds a vertical line to the chart for specific values in the y-axis.
 
         Args:
             x: The x-values of the data.
             y: The y-values of the data.
-            row_index (int): The index of the row to plot the line (default: 0).
+            row_index (int, List[int): The index of the row to plot the line (default: 0).
             beat (float): The specific value in the y-axis to mark with a vertical line (default: 1).
             label (str): The title for the vertical line in the legend (default: None).
         """
-        try:
-            ax = self.axis_dict[row_index][0]
-        except IndexError:
-            raise YAxisIndexException(row_index=row_index, y_axis_index=0)
+        if isinstance(row_index, int):
+            row_index = [row_index]
 
-        for i, value in enumerate(y):
-            if value == beat:
-                ax.axvspan(x[i], x[i + 1], facecolor='grey', alpha=0.3)
+        for row in row_index:
+            try:
+                ax = self.axis_dict[row][0]
+            except IndexError:
+                raise YAxisIndexException(row_index=row, y_axis_index=0)
+
+            for i, value in enumerate(y):
+                if value == beat:
+                    ax.axvspan(x[i], x[i + 1], facecolor='grey', alpha=0.3)
 
         if label is not None:
             handle = plt.Rectangle((0, 0), 1, 1, fc='grey', alpha=0.3, label=label)
-
-            if handle not in self.handles:
-                self.handles.append(handle)
+            self.handles.append(handle)
 
     def __add_bottom_label(self):
         """
