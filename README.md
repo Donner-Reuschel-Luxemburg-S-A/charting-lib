@@ -28,7 +28,9 @@ The Charting Library is a Python library for generating customizable charts usin
 - Stacked Bar Charts
 - Horizontal/Vertical Lines
 
-## Example 1
+## Examples
+
+### Example 1
 
 ```python
 df1, t1 = blp.get_series(series_id='SBOIPRIC Index', observation_start='19950131')
@@ -59,7 +61,7 @@ Result:
 
 ![alt text](examples/charts/output/cpi.png)
 
-## Example 2
+### Example 2
 
 ```python
 d1, t1 = fred.get_series(series_id='DRTSCILM')
@@ -90,7 +92,7 @@ Result:
 
 ![alt text](examples/charts/output/loan.png)
 
-## Example 3:
+### Example 3:
 
 ```python
 d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
