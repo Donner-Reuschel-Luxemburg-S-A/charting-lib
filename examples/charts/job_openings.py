@@ -36,9 +36,7 @@ if __name__ == '__main__':
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator,
                            major_locator=major_locator)
 
-    chart.add_vertical_line(x=d0.index, y=d0["y"], row_index=0, label="US Recession")
-    chart.add_vertical_line(x=d0.index, y=d0["y"], row_index=1)
-    chart.add_vertical_line(x=d0.index, y=d0["y"], row_index=2)
+    chart.add_vertical_line(x=d0.index, y=d0["y"], row_index=[0, 1, 2], label="US Recession")
 
     chart.add_series(d1.index, d1["y"], row_index=0, label=t1, fill=True, fill_threshold=2000)
     chart.add_series(d2.index, d2["y"], row_index=1, label=t2, transformer=Center(val=250), fill=True, fill_threshold=0)
