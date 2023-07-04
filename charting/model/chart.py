@@ -270,7 +270,7 @@ class Chart:
                     bar_bottom = np.zeros(len(x))
                     color = get_stacked_color(0)
 
-            handle = ax.bar(x, y, align='center', width=mean_bar_width, bottom=bar_bottom,
+            handle = ax.bar(x, y, align='edge', width=mean_bar_width, bottom=bar_bottom,
                             label=label, color=color, alpha=alpha)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
@@ -329,7 +329,6 @@ class Chart:
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
         x_min = min(self.x_min)
         x_max = max(self.x_max)
-
         ax.set_xlim(x_min, x_max)
 
         label = f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
@@ -362,6 +361,15 @@ class Chart:
             ncol=ncol
         )
 
+    def add_sup_y_label(self, label: str):
+        """
+        Adds a super ylabel to the figure.
+
+        Args:
+            label (str): The label text to be added as the super ylabel.
+        """
+        self.fig.supylabel(label, fontsize=8)
+
     def plot(self, path: str) -> None:
         """
         Plots the chart and saves it as png.
@@ -374,5 +382,4 @@ class Chart:
         plt.savefig(path, transparent=True)
         plt.close()
 
-    def add_sup_y_label(self, label: str):
-        self.fig.supylabel(label, fontsize=8)
+
