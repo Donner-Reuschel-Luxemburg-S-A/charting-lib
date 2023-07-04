@@ -1,8 +1,8 @@
-import pandas as pd
+
 from matplotlib.ticker import AutoLocator, MultipleLocator
 from pandas import DataFrame
 
-from charting.charts.time_series_chart import TimeSeriesChart
+from charting.model.chart import Chart
 from charting.transformer.pct import Pct
 import matplotlib.dates as mdates
 
@@ -40,9 +40,9 @@ if __name__ == '__main__':
     services_df['weighted'] = services_df['y'] * services_weights_df['y'].shift(12) / 100
     services_df.index = services_df.index.to_period('M').to_timestamp(how='start')
 
-    chart = TimeSeriesChart(title="U.S. CPI by Component", num_y_axes=1)
+    chart = Chart(title="U.S. CPI by Component")
 
-    chart.configure_y_axis(axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
+    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
 
     major_locator = mdates.YearLocator(base=1)
     minor_locator = mdates.MonthLocator(interval=2)
@@ -52,22 +52,20 @@ if __name__ == '__main__':
     chart.configure_x_ticks(which='minor', length=3, width=1)
     chart.configure_x_ticks(which='major', length=10, width=1, pad=5)
 
-    chart.add_horizontal_line(axis_index=0)
+    chart.add_horizontal_line(y_axis_index=0)
 
-    chart.add_data(x=headline_df.index, y=headline_df['y'], label="Headline YoY", y_axis=0, transformer=Pct(periods=12), linewidth=2)
-    chart.add_data(x=core_df.index, y=core_df['y'], label="Core YoY", y_axis=0, transformer=Pct(periods=12), linewidth=2)
+    chart.add_series(x=headline_df.index, y=headline_df['y'], label="Headline YoY", transformer=Pct(periods=12), linewidth=2)
+    chart.add_series(x=core_df.index, y=core_df['y'], label="Core YoY", transformer=Pct(periods=12), linewidth=2)
 
-    chart.add_data(x=services_df.index, y=services_df['weighted'], chart_type='bar', stacked=True,
-                   label="Services (Ex Food & Energy)", y_axis=0)
+    chart.add_series(x=services_df.index, y=services_df['weighted'], chart_type='bar', stacked=True,
+                     label="Services (Ex Food & Energy)")
 
-    chart.add_data(x=goods_df.index, y=goods_df['weighted'], chart_type='bar', stacked=True,
-                   label="Goods (Ex Food & Energy)",
-                   y_axis=0)
+    chart.add_series(x=goods_df.index, y=goods_df['weighted'], chart_type='bar', stacked=True,
+                     label="Goods (Ex Food & Energy)")
 
-    chart.add_data(x=food_df.index, y=food_df['weighted'], chart_type='bar', stacked=True, label="Food", y_axis=0)
+    chart.add_series(x=food_df.index, y=food_df['weighted'], chart_type='bar', stacked=True, label="Food")
 
-    chart.add_data(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy",
-                   y_axis=0)
+    chart.add_series(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy")
 
-    chart.legend(frameon=False, ncol=2)
+    chart.legend(ncol=2)
     chart.plot(path="output/inflation.png")
