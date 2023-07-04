@@ -31,6 +31,7 @@ class Resample(Transformer):
         """
         df = DataFrame({'y': y}, index=x)
         resampled_df = df.resample(self.rule).mean()
+        resampled_df.index = resampled_df.index.to_period(self.rule).to_timestamp(how='start')
         resampled_x = resampled_df.index
         resampled_y = resampled_df['y']
 

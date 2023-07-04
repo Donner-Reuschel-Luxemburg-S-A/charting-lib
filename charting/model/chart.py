@@ -1,8 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import reduce
 from typing import Tuple, Union, List, Dict
 
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.dates import num2date
@@ -270,14 +271,21 @@ class Chart:
                     bar_bottom = np.zeros(len(x))
                     color = get_stacked_color(0)
 
-            handle = ax.bar(x, y, align='edge', width=mean_bar_width, bottom=bar_bottom,
+            handle = ax.bar(x, y, align='center', width=mean_bar_width, bottom=bar_bottom,
                             label=label, color=color, alpha=alpha)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
+        x_min = min(x)
+        x_max = max(x)
+
+        if chart_type == 'bar':
+            x_min = x_min - timedelta(days=mean_bar_width / 2)
+            x_max = x_max + timedelta(days=mean_bar_width / 2)
+
         self.handles.append(handle)
-        self.x_min.append(min(x))
-        self.x_max.append(max(x))
+        self.x_min.append(x_min)
+        self.x_max.append(x_max)
 
     def add_horizontal_line(self, row_index: int = 0, y_axis_index: int = 0, y: float = 0) -> None:
         """

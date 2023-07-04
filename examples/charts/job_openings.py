@@ -3,6 +3,7 @@ from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting.transformer.avg import Avg
+from charting.transformer.center import Center
 from charting.transformer.pct import Pct
 from charting.transformer.resample import Resample
 from examples import fred
@@ -39,10 +40,10 @@ if __name__ == '__main__':
     chart.add_vertical_line(x=d0.index, y=d0["y"], row_index=1)
     chart.add_vertical_line(x=d0.index, y=d0["y"], row_index=2)
 
-    chart.add_series(d1.index, d1["y"], row_index=0, label=t1, fill=True)
-    chart.add_series(d2.index, d2["y"], row_index=1, label=t2, fill=True, fill_threshold=500)
+    chart.add_series(d1.index, d1["y"], row_index=0, label=t1, fill=True, fill_threshold=2000)
+    chart.add_series(d2.index, d2["y"], row_index=1, label=t2, transformer=Center(val=250), fill=True, fill_threshold=0)
     chart.add_series(d3.index, d3["y"], row_index=2, chart_type='bar', label=t3,
-                     transformer=[Resample(rule='Y')])
+                     transformer=Resample(rule='Y'))
 
     chart.legend(ncol=2)
     chart.plot("output/job-openings.png")
