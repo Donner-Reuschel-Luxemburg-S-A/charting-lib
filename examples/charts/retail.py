@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
-    chart = Chart(title=title, metadata=metadata, path="output/retail.png")
+    chart = Chart(title=title, metadata=metadata, filename="retail.png")
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=3)

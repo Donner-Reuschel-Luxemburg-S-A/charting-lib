@@ -16,6 +16,7 @@ from matplotlib.axes import Axes
 from matplotlib.dates import num2date
 from matplotlib.ticker import Formatter, Locator
 
+from charting import base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color
@@ -27,7 +28,7 @@ from charting.model.transformer import Transformer
 class Chart:
 
     def __init__(self,
-                 path: str,
+                 filename: str,
                  title: str = "",
                  num_rows: int = 1,
                  num_y_axis: Union[int, List[int]] = 1,
@@ -38,7 +39,7 @@ class Chart:
         Initializes a Chart object.
 
         Args:
-            path (str): the path to save the file to.
+            filename (str): the path to save the file to.
             title (str): The title of the chart (default: "").
             num_y_axis (int, List[int]): The number of y-axes for the chart. If num_rows is > 1, you also can
                 define a list of int, defining the number of y-axis per row. If num_rows > 1 and num_y_axis a
@@ -46,12 +47,22 @@ class Chart:
             figsize (tuple): The figure size of the chart (default: (12, 8)).
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
-        self.path = path
+        self.filename = filename
+        self.path = base_path
         self.title = title
         self.num_rows = num_rows
         self.num_y_axis = num_y_axis
         self.figsize = figsize
         self.metadata = metadata
+
+        if metadata is None:
+            self.path = os.path.join(self.path, "development")
+        else:
+            self.path = os.path.join(self.path, metadata.country.name, metadata.category.value)
+
+        os.makedirs(self.path, exist_ok=True)
+
+        self.filepath = os.path.join(self.path, self.filename)
 
         self.fig, self.axis = plt.subplots(self.num_rows, 1, figsize=figsize, constrained_layout=True, sharex=True)
 
@@ -408,11 +419,11 @@ class Chart:
             for key, value in self.metadata:
                 data.add_text(key, value.value if isinstance(value, Enum) else value)
 
-        target_image.save(self.path, pnginfo=data)
+        target_image.save(self.filepath, pnginfo=data)
         os.remove("temp.png")
 
     def base64(self) -> str:
-        image = Image.open(self.path)
+        image = Image.open(self.path.join(self.filename))
         byte_stream = io.BytesIO()
         image.save(byte_stream, format="PNG")
         byte_stream.seek(0)
