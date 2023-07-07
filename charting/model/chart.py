@@ -1,4 +1,5 @@
 import base64
+import getpass
 import io
 import os
 from datetime import datetime, timedelta
@@ -52,7 +53,7 @@ class Chart:
         self.metadata = metadata
 
         if metadata is None:
-            self.path = os.path.join(self.path, "development")
+            self.path = os.path.join(self.path, "development", getpass.getuser())
         else:
             self.path = os.path.join(self.path, metadata.country.name, metadata.category.value)
 
