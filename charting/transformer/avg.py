@@ -1,8 +1,6 @@
 import datetime
 
-import pandas as pd
-import pandas.tseries.offsets
-from pandas import Series, DateOffset, DataFrame
+from pandas import Series, DateOffset
 
 from charting.model.transformer import Transformer
 from charting.transformer import _generate_label

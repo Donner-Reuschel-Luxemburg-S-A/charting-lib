@@ -1,16 +1,10 @@
-import base64
-import io
-
-from PIL import Image
+import matplotlib.dates as mdates
 from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Country, Category
-
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
-import matplotlib.dates as mdates
-
 from examples import fred
 
 if __name__ == '__main__':

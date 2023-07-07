@@ -1,5 +1,4 @@
 import base64
-import getpass
 import io
 import os
 from datetime import datetime, timedelta
@@ -7,21 +6,18 @@ from enum import Enum
 from functools import reduce
 from typing import Tuple, Union, List, Dict
 
+import matplotlib.offsetbox as offsetbox
 import numpy as np
-import pandas as pd
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
-from matplotlib.dates import num2date
 from matplotlib.ticker import Formatter, Locator
 
 from charting import base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color
-import matplotlib.offsetbox as offsetbox
-
 from charting.model.transformer import Transformer
 
 

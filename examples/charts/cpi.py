@@ -1,11 +1,10 @@
-from matplotlib.ticker import AutoLocator, MultipleLocator
+import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
-import matplotlib.dates as mdates
-
 from examples import blp
 
 if __name__ == '__main__':

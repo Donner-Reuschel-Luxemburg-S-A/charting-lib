@@ -1,6 +1,5 @@
-from pandas import DateOffset
-
 import matplotlib.dates as mdates
+from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting.transformer.avg import Avg

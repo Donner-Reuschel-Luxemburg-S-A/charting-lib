@@ -1,11 +1,10 @@
 
-from matplotlib.ticker import AutoLocator, MultipleLocator
+import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
 from pandas import DataFrame
 
 from charting.model.chart import Chart
 from charting.transformer.pct import Pct
-import matplotlib.dates as mdates
-
 from examples import blp, fred
 
 if __name__ == '__main__':

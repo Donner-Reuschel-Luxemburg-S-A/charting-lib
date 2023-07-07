@@ -1,13 +1,10 @@
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 
 from charting.model.chart import Chart
-from charting.transformer.avg import Avg
 from charting.transformer.center import Center
-from charting.transformer.pct import Pct
 from charting.transformer.resample import Resample
 from examples import fred
-import matplotlib.dates as mdates
 
 if __name__ == '__main__':
     d0, t0 = fred.get_series(series_id='JHDUSRGDPBR', observation_start="2002-01-01")
