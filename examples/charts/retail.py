@@ -1,6 +1,11 @@
+import base64
+import io
+
+from PIL import Image
 from pandas import DateOffset
 
 from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Country, Category
 
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
@@ -9,9 +14,12 @@ import matplotlib.dates as mdates
 from examples import fred
 
 if __name__ == '__main__':
+    title = "US retail sales: YoY change"
+    metadata = Metadata(title=title, country=Country.US, category=Category.CONSUMER)
+
     d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
-    chart = Chart(title="US retail sales: YoY change")
+    chart = Chart(title=title, metadata=metadata, path="output/retail.png")
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=3)
@@ -25,4 +33,4 @@ if __name__ == '__main__':
                      transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
 
     chart.legend()
-    chart.plot(path="output/retail.png")
+    chart.plot()
