@@ -4,31 +4,45 @@ import hashlib
 import io
 import os
 from datetime import datetime, timedelta
-from enum import Enum
 from functools import reduce
 from typing import Tuple, Union, List, Dict
 
 import matplotlib.offsetbox as offsetbox
 import numpy as np
-from PIL import Image
-from PIL.PngImagePlugin import PngInfo
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter, Locator
-from source_engine.chart_source import ChartSource
-from sqlalchemy.orm import Session
 
-import charting
 from charting import base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
-from charting.model.orm_chart import Base
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color
 from charting.model.transformer import Transformer
+from sqlalchemy import Column, String, Integer, Text, Date, DateTime
+from sqlalchemy.orm import declarative_base
+
+from PIL import Image
+from source_engine.chart_source import ChartSource
+from sqlalchemy.orm import Session
+
+
+Base = declarative_base()
+
+
+class ChartModel(Base):
+    __tablename__ = 'chart'
+    id = Column(String(255), primary_key=True)
+    title = Column(String(255))
+    last_update = Column(DateTime)
+    path = Column(String(255))
+    start = Column(Date)
+    end = Column(Date)
+    country = Column(String(255))
+    category = Column(String(255))
+    base64 = Column(Text(64000))
 
 
 class Chart:
-
     def __init__(self,
                  filename: str,
                  title: str = "",
@@ -410,60 +424,44 @@ class Chart:
         """
         self.fig.supylabel(label, fontsize=8)
 
-    def __tag_image(self) -> None:
-        """
-        Tags the image with metadata.
-        """
-        target_image = Image.open("temp.png")
-
-        data = PngInfo()
-
-        if self.metadata is not None:
-            for key, value in self.metadata:
-                data.add_text(key, value.value if isinstance(value, Enum) else value)
-
-            self.__upload()
-
-        target_image.save(self.filepath, pnginfo=data)
-        os.remove("temp.png")
-
-    def __base64(self) -> str:
-        image = Image.open("temp.png")
-        byte_stream = io.BytesIO()
-        image.save(byte_stream, format="PNG")
-        byte_stream.seek(0)
-        byte_stream_value = byte_stream.getvalue()
-        return base64.b64encode(byte_stream_value).decode("utf-8")
-
-    def __upload(self):
-        db: ChartSource = ChartSource(create_new_db=True)
-        Base.metadata.create_all(db.engine)
-
-        with Session(bind=db.engine) as session:
-            chart = charting.model.orm_chart.Chart(
-                id=hashlib.sha1(self.title.encode('utf-8')).hexdigest(),
-                title=self.title,
-                last_update=datetime.today(),
-                path=os.path.join(self.rel_path, self.filename),
-                start=min(self.x_min),
-                end=max(self.x_max),
-                country=self.metadata.country.value,
-                category=self.metadata.category.value,
-                base64=self.__base64()
-            )
-
-            session.merge(chart)
-            session.commit()
-            session.close()
-
     def plot(self) -> None:
         """
         Plots the chart and saves it as png.
         """
         plt.suptitle(self.title, fontdict=title_style)
         self.__add_bottom_label()
-        plt.savefig("temp.png", transparent=True)
+        plt.savefig(self.filepath)
         plt.close()
-        self.__tag_image()
+
+        if self.metadata is not None:
+            upload(chart=self)
 
 
+def as_base64(path: str) -> str:
+    image = Image.open(path)
+    byte_stream = io.BytesIO()
+    image.save(byte_stream, format="PNG")
+    byte_stream.seek(0)
+    byte_stream_value = byte_stream.getvalue()
+    return base64.b64encode(byte_stream_value).decode("utf-8")
+
+
+def upload(chart: Chart) -> None:
+    db: ChartSource = ChartSource(create_new_db=True)
+    Base.metadata.create_all(db.engine)
+
+    with Session(bind=db.engine) as session:
+        chart = ChartModel(
+            id=hashlib.sha1(chart.title.encode('utf-8')).hexdigest(),
+            title=chart.title,
+            last_update=datetime.today(),
+            path=os.path.join(chart.rel_path, chart.filename),
+            start=min(chart.x_min),
+            end=max(chart.x_max),
+            country=chart.metadata.country.value,
+            category=chart.metadata.category.value,
+            base64=as_base64(path=chart.filepath)
+        )
+        session.merge(chart)
+        session.commit()
+        session.close()
