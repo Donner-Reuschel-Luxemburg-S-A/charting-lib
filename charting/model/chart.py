@@ -1,5 +1,6 @@
 import base64
 import getpass
+import hashlib
 import io
 import os
 from datetime import datetime, timedelta
@@ -436,16 +437,22 @@ class Chart:
 
     def __upload(self):
         db: ChartSource = ChartSource(create_new_db=True)
+        db.drop_db()
         Base.metadata.create_all(db.engine)
 
         with Session(bind=db.engine) as session:
             chart = charting.model.orm_chart.Chart(
+                id=hashlib.sha1(self.title.encode('utf-8')).hexdigest(),
                 title=self.title,
+                last_update=datetime.today(),
+                path=os.path.join(self.rel_path, self.filename),
+                start=min(self.x_min),
+                end=max(self.x_max),
                 country=self.metadata.country.value,
                 category=self.metadata.category.value,
-                path=os.path.join(self.rel_path, self.filename),
                 base64=self.__base64()
             )
+
             session.merge(chart)
             session.commit()
             session.close()
