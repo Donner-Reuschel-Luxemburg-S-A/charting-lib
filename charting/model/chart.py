@@ -388,7 +388,7 @@ class Chart:
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        ax.set_xlim(min(self.x_min_axes), min(self.x_max_axes))
+        ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
 
         label = f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
                 f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
@@ -438,7 +438,7 @@ class Chart:
                         arrow_style = 'rarrow' if i == 0 else 'larrow'
                         ax.annotate(y, xy=(1, y), xytext=(10, 0), color='white',
                                     xycoords=ax.get_yaxis_transform(), textcoords="offset points",
-                                    size=7, va="center", bbox=dict(boxstyle=f"{arrow_style},pad=0.3",
+                                    size=5, va="center", bbox=dict(boxstyle=f"{arrow_style},pad=0.3",
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
