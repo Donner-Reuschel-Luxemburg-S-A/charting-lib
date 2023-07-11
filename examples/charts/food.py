@@ -23,14 +23,13 @@ if __name__ == '__main__':
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
-    chart.configure_y_axis(y_axis_index=0, label="Index", y_lim=(-5, 22.5), minor_locator=MultipleLocator(1),
+    chart.configure_y_axis(y_axis_index=0, label="%", y_lim=(-5, 22.5), minor_locator=MultipleLocator(1),
                            major_locator=MultipleLocator(5))
     chart.configure_y_axis(y_axis_index=1, label="Index", y_lim=(-20, 90), minor_locator=MultipleLocator(5),
                            major_locator=MultipleLocator(20))
 
-    chart.add_series(x=d1.index, y=d1['y'], label=t1, y_axis_index=0)
-    chart.add_series(x=d2.index, y=d2['y'], label=t2, y_axis_index=1, transformer=Lead(offset=DateOffset(months=6)))
-
+    chart.add_series(x=d1.index, y=d1['y'], label=t1, linewidth=2, y_axis_index=0)
+    chart.add_series(x=d2.index, y=d2['y'], label=t2, linewidth=2, y_axis_index=1, transformer=Lead(offset=DateOffset(months=6)))
 
     chart.legend()
     chart.plot()

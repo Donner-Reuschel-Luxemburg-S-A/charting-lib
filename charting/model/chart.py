@@ -63,7 +63,7 @@ class Chart:
             figsize (tuple): The figure size of the chart (default: (12, 8)).
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
-        self.filename = filename
+        self.filename = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
         self.title = title
         self.num_rows = num_rows
         self.num_y_axis = num_y_axis
@@ -430,7 +430,7 @@ class Chart:
         """
         plt.suptitle(self.title, fontdict=title_style)
         self.__add_bottom_label()
-        plt.savefig(self.filepath)
+        plt.savefig(self.filepath, dpi=500)
         plt.close()
 
         if self.metadata is not None:
