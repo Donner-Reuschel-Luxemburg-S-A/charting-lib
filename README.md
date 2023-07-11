@@ -59,7 +59,7 @@ chart.plot(path="output/cpi.png")
 
 Result:
 
-![alt text](examples/charts/output/cpi.png)
+![alt text](docs/charts/cpi.png)
 
 ### Example 2
 
@@ -90,14 +90,17 @@ chart.plot(path="output/loan.png")
 
 Result:
 
-![alt text](examples/charts/output/loan.png)
+![alt text](docs/charts/loan.png)
 
 ### Example 3:
 
 ```python
+title = "US retail sales: YoY change"
+metadata = Metadata(title=title, country=Country.US, category=Category.CONSUMER)
+
 d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
-chart = Chart(title="US retail sales: YoY change")
+chart = Chart(title=title, metadata=metadata, filename="retail.png")
 
 minor_locator = mdates.MonthLocator(interval=1)
 major_locator = mdates.MonthLocator(interval=3)
@@ -111,10 +114,10 @@ chart.add_series(x=d1.index, y=d1['y'], label=t1, chart_type='bar', bar_bottom=0
                  transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
 
 chart.legend()
-chart.plot(path="output/retail.png")
+chart.plot()
 ```
 
-![alt text](examples/charts/output/retail.png)
+![alt text](docs/charts/retail.png)
 
 ### Example 4:
 
@@ -142,7 +145,7 @@ chart.legend(ncol=2)
 chart.plot(path="output/bankruptcy.png")
 ```
 
-![alt text](examples/charts/output/bankruptcy.png)
+![alt text](docs/charts/bankruptcy.png)
 
 ### Example 5:
 
@@ -209,7 +212,7 @@ chart.legend(ncol=2)
 chart.plot(path="output/inflation.png")
 ```
 
-![alt text](examples/charts/output/inflation.png)
+![alt text](docs/charts/inflation.png)
 
 ### Example 6:
 
@@ -251,4 +254,4 @@ chart.legend(ncol=2)
 chart.plot("output/job-openings.png")
 ```
 
-![alt text](examples/charts/output/job-openings.png)
+![alt text](docs/charts/job-openings.png)

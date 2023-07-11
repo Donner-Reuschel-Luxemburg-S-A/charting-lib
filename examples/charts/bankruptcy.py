@@ -9,7 +9,7 @@ if __name__ == '__main__':
     d1, t1 = blp.get_series(series_id='BNKRINDX Index', observation_start="20060101")
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR', observation_start="2006-01-01")
 
-    chart = Chart(title="Bankruptcy filings moving up in recent weeks", num_y_axis=2)
+    chart = Chart(title="Bankruptcy filings moving up in recent weeks", num_y_axis=2, filename="bankruptcy.png")
 
     chart.configure_y_axis(y_axis_index=0, label="Count")
     chart.configure_y_axis(y_axis_index=1, label="Count")
@@ -26,4 +26,4 @@ if __name__ == '__main__':
     chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
 
     chart.legend(ncol=2)
-    chart.plot(path="output/bankruptcy.png")
+    chart.plot()

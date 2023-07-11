@@ -14,10 +14,14 @@ from PIL.PngImagePlugin import PngInfo
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter, Locator
+from source_engine.chart_source import ChartSource
+from sqlalchemy.orm import Session
 
+import charting
 from charting import base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
+from charting.model.orm_chart import Base
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color
 from charting.model.transformer import Transformer
 
@@ -45,7 +49,6 @@ class Chart:
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
         self.filename = filename
-        self.path = base_path
         self.title = title
         self.num_rows = num_rows
         self.num_y_axis = num_y_axis
@@ -53,9 +56,11 @@ class Chart:
         self.metadata = metadata
 
         if metadata is None:
-            self.path = os.path.join(self.path, "development", getpass.getuser())
+            self.rel_path = os.path.join("development", getpass.getuser())
         else:
-            self.path = os.path.join(self.path, metadata.country.name, metadata.category.value)
+            self.rel_path = os.path.join(metadata.country.name, metadata.category.value)
+
+        self.path = os.path.join(base_path, self.rel_path)
 
         os.makedirs(self.path, exist_ok=True)
 
@@ -416,16 +421,34 @@ class Chart:
             for key, value in self.metadata:
                 data.add_text(key, value.value if isinstance(value, Enum) else value)
 
+            self.__upload()
+
         target_image.save(self.filepath, pnginfo=data)
         os.remove("temp.png")
 
-    def base64(self) -> str:
-        image = Image.open(self.path.join(self.filename))
+    def __base64(self) -> str:
+        image = Image.open("temp.png")
         byte_stream = io.BytesIO()
         image.save(byte_stream, format="PNG")
         byte_stream.seek(0)
         byte_stream_value = byte_stream.getvalue()
         return base64.b64encode(byte_stream_value).decode("utf-8")
+
+    def __upload(self):
+        db: ChartSource = ChartSource(create_new_db=True)
+        Base.metadata.create_all(db.engine)
+
+        with Session(bind=db.engine) as session:
+            chart = charting.model.orm_chart.Chart(
+                title=self.title,
+                country=self.metadata.country.value,
+                category=self.metadata.category.value,
+                path=os.path.join(self.rel_path, self.filename),
+                base64=self.__base64()
+            )
+            session.merge(chart)
+            session.commit()
+            session.close()
 
     def plot(self) -> None:
         """
