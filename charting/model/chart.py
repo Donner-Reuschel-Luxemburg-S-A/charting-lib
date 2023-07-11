@@ -437,7 +437,6 @@ class Chart:
 
     def __upload(self):
         db: ChartSource = ChartSource(create_new_db=True)
-        db.drop_db()
         Base.metadata.create_all(db.engine)
 
         with Session(bind=db.engine) as session:
