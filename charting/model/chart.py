@@ -232,7 +232,7 @@ class Chart:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
 
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
-                   linestyle: str = '-', linewidth: float = 1, fill: bool = False, fill_threshold: float = None,
+                   linestyle: str = '-', linewidth: float = 2, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1,
                    transformer: Union[Transformer, List[Transformer]] = None):
         """
@@ -246,7 +246,7 @@ class Chart:
             y_axis_index (int): The index of the y-axis to plot the series on (default: 0).
             chart_type (str): The type of chart to plot ('line' or 'bar', default: 'line').
             linestyle (str): The line style of the series (default: '-').
-            linewidth (float): The width of the line (default: 1)
+            linewidth (float): The width of the line (default: 2)
             fill (bool): True if area between x and y should be filled (default: False).
             fill_threshold (float): The threshold value to fill the area below (default: None).
                                If not specified, the area will be filled from the line to the bottom axis.
