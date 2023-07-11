@@ -29,7 +29,10 @@ if __name__ == '__main__':
                            major_locator=MultipleLocator(20))
 
     chart.add_series(x=d1.index, y=d1['y'], label=t1, linewidth=2, y_axis_index=0)
-    chart.add_series(x=d2.index, y=d2['y'], label=t2, linewidth=2, y_axis_index=1, transformer=Lead(offset=DateOffset(months=6)))
+    chart.add_series(x=d2.index, y=d2['y'], label=t2, linewidth=2, y_axis_index=1,
+                     transformer=Lead(offset=DateOffset(months=6)))
+
+    chart.add_last_value_badge()
 
     chart.legend()
     chart.plot()

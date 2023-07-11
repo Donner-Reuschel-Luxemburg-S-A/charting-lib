@@ -9,8 +9,9 @@ from typing import Tuple, Union, List, Dict
 
 import matplotlib.offsetbox as offsetbox
 import numpy as np
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, patches, path
 from matplotlib.axes import Axes
+from matplotlib.path import Path
 from matplotlib.ticker import Formatter, Locator
 
 from charting import base_path
@@ -429,7 +430,17 @@ class Chart:
         self.fig.supylabel(label, fontsize=8)
 
     def add_last_value_badge(self):
-        pass
+        for axis in self.axis_dict.values():
+            for i, ax in enumerate(axis):
+                for line in ax.lines:
+                    if len(set(line.get_ydata())) > 1:
+                        y = line.get_ydata()[-1]
+                        arrow_style = 'rarrow' if i == 0 else 'larrow'
+                        ax.annotate(y, xy=(1, y), xytext=(10, 0), color='white',
+                                    xycoords=ax.get_yaxis_transform(), textcoords="offset points",
+                                    size=7, va="center", bbox=dict(boxstyle=f"{arrow_style},pad=0.3",
+                                                                   facecolor=line.get_color(),
+                                                                   edgecolor=line.get_color()))
 
     def plot(self) -> None:
         """
