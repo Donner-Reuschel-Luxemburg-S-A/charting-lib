@@ -3,7 +3,7 @@ Style Guide for D&R Charting Lib.
 """
 colors = ["#7EC0C6", "#124877", "#E91457", "#018C7D", "#6F3E2E", "#FD7200"]
 stacked_colors = ["#7A7978", "#87CBAC", "#90FFDC", "#8DE4FF", "#8AC4FF"]
-source_text_style = {'fontsize': 6}
+source_text_style = {'fontsize': 4}
 title_style = {'size': 12, 'weight': 'bold'}
 
 

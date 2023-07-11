@@ -436,8 +436,8 @@ class Chart:
                     if len(set(line.get_ydata())) > 1:
                         y = line.get_ydata()[-1]
                         arrow_style = 'rarrow' if i == 0 else 'larrow'
-                        ax.annotate(y, xy=(1, y), xytext=(10, 0), color='white',
-                                    xycoords=ax.get_yaxis_transform(), textcoords="offset points",
+                        ax.annotate(round(y, 1), xy=(1, y), xytext=(10, 0), color='white',
+                                    xycoords=ax.get_yaxis_transform(), textcoords="axes points",
                                     size=5, va="center", bbox=dict(boxstyle=f"{arrow_style},pad=0.3",
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
