@@ -89,8 +89,10 @@ class Chart:
         self.__remove_top_spines()
         self.axis_dict = self.__init_y_axis()
         self.handles = []
-        self.x_min = []
-        self.x_max = []
+        self.x_min_axes = []
+        self.x_max_axes = []
+        self.x_min_label = []
+        self.x_max_label = []
 
     def __remove_top_spines(self) -> None:
         """
@@ -264,6 +266,9 @@ class Chart:
         except IndexError:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
 
+        self.x_min_label.append(min(x))
+        self.x_max_label.append(max(x))
+
         if transformer is not None:
             if isinstance(transformer, list):
                 x, y = reduce(lambda xy, trans: trans.transform(*xy), transformer, (x, y))
@@ -328,8 +333,8 @@ class Chart:
             x_max = x_max + timedelta(days=mean_bar_width / 2)
 
         self.handles.append(handle)
-        self.x_min.append(x_min)
-        self.x_max.append(x_max)
+        self.x_min_axes.append(x_min)
+        self.x_max_axes.append(x_max)
 
     def add_horizontal_line(self, row_index: int = 0, y_axis_index: int = 0, y: float = 0) -> None:
         """
@@ -381,13 +386,12 @@ class Chart:
         Adds a centered label at the bottom of the chart.
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
-        x_min = min(self.x_min)
-        x_max = max(self.x_max)
-        ax.set_xlim(x_min, x_max)
+
+        ax.set_xlim(min(self.x_min_axes), min(self.x_max_axes))
 
         label = f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
                 f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                f'{x_min.strftime("%m/%Y")} - {x_max.strftime("%m/%Y")}.'
+                f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
 
         txt = offsetbox.TextArea(label, textprops=source_text_style)
 
@@ -424,6 +428,9 @@ class Chart:
         """
         self.fig.supylabel(label, fontsize=8)
 
+    def add_last_value_badge(self):
+        pass
+
     def plot(self) -> None:
         """
         Plots the chart and saves it as png.
@@ -456,8 +463,8 @@ def upload(chart: Chart) -> None:
             title=chart.title,
             last_update=datetime.today(),
             path=os.path.join(chart.rel_path, chart.filename),
-            start=min(chart.x_min),
-            end=max(chart.x_max),
+            start=min(chart.x_min_label),
+            end=max(chart.x_max_label),
             country=chart.metadata.country.value,
             category=chart.metadata.category.value,
             base64=as_base64(path=chart.filepath)
