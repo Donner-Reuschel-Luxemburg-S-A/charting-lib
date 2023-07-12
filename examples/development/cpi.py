@@ -1,18 +1,18 @@
-from matplotlib.ticker import AutoLocator, MultipleLocator
+import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
-import matplotlib.dates as mdates
-
 from examples import blp
 
 if __name__ == '__main__':
     df1, t1 = blp.get_series(series_id='SBOIPRIC Index', observation_start='19950131')
     df2, t2 = blp.get_series(series_id='CLEVCPIA Index', observation_start='19950131')
 
-    chart = Chart(title="NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business", num_y_axis=2)
+    chart = Chart(title="NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business", num_y_axis=2,
+                  filename="cpi.png")
 
     chart.configure_y_axis(y_axis_index=0, label="Last Price [€]", y_lim=(-35, 70), minor_locator=MultipleLocator(10))
     chart.configure_y_axis(y_axis_index=1, label="Last Price [€]", minor_locator=MultipleLocator(0.5))
@@ -30,5 +30,5 @@ if __name__ == '__main__':
     chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1,  transformer=Resample('M'))
 
     chart.legend()
-    chart.plot(path="output/cpi.png")
+    chart.plot()
 

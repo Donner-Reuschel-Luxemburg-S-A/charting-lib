@@ -1,10 +1,9 @@
 import json
 import ntpath
-
-from pptx import Presentation
 from os.path import dirname, abspath
 
 import win32com.client as win32
+from pptx import Presentation
 
 
 class Ppt:

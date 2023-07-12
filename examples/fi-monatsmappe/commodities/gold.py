@@ -1,9 +1,8 @@
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 
-import matplotlib.dates as mdates
-
 from charting.model.chart import Chart
-from examples import fred, blp
+from examples import blp
 
 if __name__ == '__main__':
     d1, t1 = blp.get_series(series_id='XAU Curncy', observation_start="20170101")

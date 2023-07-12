@@ -10,6 +10,7 @@ The Charting Library is a Python library for generating customizable charts usin
 - Multiple y-axes support for displaying multiple series with different scales.
 - Support for applying transformation functions to time series data.
 - Save charts as PNG images.
+- Tag images with metadata
 
 ## Available Transformers
 
@@ -28,7 +29,50 @@ The Charting Library is a Python library for generating customizable charts usin
 - Stacked Bar Charts
 - Horizontal/Vertical Lines
 
-## Examples
+## Metadata
+
+Each chart can be tagged with metadata to store it in a database. 
+Therefor you need to add the metadata to the chart:
+
+```python
+title = "US Weekly Bankruptcies"
+
+metadata = Metadata(title=title, country=Country.US, category=Category.CREDIT)
+chart = Chart(title=title, metadata=metadata, filename="us_weekly_bankruptcy.png")
+```
+
+If no metadata is needed for the image and this is only for development, 
+it can simply be omitted. By default, these are `None`.
+
+## Storage
+
+All charts are stored on the OneDrive drive under the following link:
+
+```
+C:\Users\<username>\OneDrive - Donner Reuschel\General - Portfolio Management\Organisation Development\charts
+```
+
+Images without metadata end up sorted by user in the `development` folder.
+
+Images with metadata are stored sorted by the metadata. In addition, these charts are written to a database 
+that stores the following things:
+
+```python
+CREATE TABLE `chart` (
+  `id` varchar(255) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `last_update` datetime DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL,
+  `base64` mediumtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+```
+
+## Development Examples
 
 ### Example 1
 
@@ -36,7 +80,8 @@ The Charting Library is a Python library for generating customizable charts usin
 df1, t1 = blp.get_series(series_id='SBOIPRIC Index', observation_start='19950131')
 df2, t2 = blp.get_series(series_id='CLEVCPIA Index', observation_start='19950131')
 
-chart = Chart(title="NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business", num_y_axis=2)
+chart = Chart(title="NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business", num_y_axis=2,
+              filename="cpi.png")
 
 chart.configure_y_axis(y_axis_index=0, label="Last Price [€]", y_lim=(-35, 70), minor_locator=MultipleLocator(10))
 chart.configure_y_axis(y_axis_index=1, label="Last Price [€]", minor_locator=MultipleLocator(0.5))
@@ -54,12 +99,12 @@ chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0, fill=True,
 chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1,  transformer=Resample('M'))
 
 chart.legend()
-chart.plot(path="output/cpi.png")
+chart.plot()
 ```
 
 Result:
 
-![alt text](examples/charts/output/cpi.png)
+![alt text](docs/charts/12_07_2023_cpi.png)
 
 ### Example 2
 
@@ -68,7 +113,8 @@ d1, t1 = fred.get_series(series_id='DRTSCILM')
 d2, t2 = fred.get_series(series_id='JHDUSRGDPBR')
 d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=19900131)
 
-chart = Chart(title="As industrial loan standards tighten, manufacturing contracts", num_y_axis=2)
+chart = Chart(title="As industrial loan standards tighten, manufacturing contracts", num_y_axis=2,
+              filename="loan.png")
 
 chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))
 chart.configure_y_axis(y_axis_index=1, label="%", y_lim=(80, -40), invert_axis=True)
@@ -85,19 +131,21 @@ chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
 chart.add_horizontal_line(y_axis_index=1)
 
 chart.legend(ncol=2)
-chart.plot(path="output/loan.png")
+chart.plot()
 ```
 
 Result:
 
-![alt text](examples/charts/output/loan.png)
+![alt text](docs/charts/12_07_2023_loan.png)
 
 ### Example 3:
 
 ```python
+title = "US retail sales: YoY change"
+
 d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
-chart = Chart(title="US retail sales: YoY change")
+chart = Chart(title=title, filename="retail.png")
 
 minor_locator = mdates.MonthLocator(interval=1)
 major_locator = mdates.MonthLocator(interval=3)
@@ -111,10 +159,10 @@ chart.add_series(x=d1.index, y=d1['y'], label=t1, chart_type='bar', bar_bottom=0
                  transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
 
 chart.legend()
-chart.plot(path="output/retail.png")
+chart.plot()
 ```
 
-![alt text](examples/charts/output/retail.png)
+![alt text](docs/charts/12_07_2023_retail.png)
 
 ### Example 4:
 
@@ -122,7 +170,7 @@ chart.plot(path="output/retail.png")
 d1, t1 = blp.get_series(series_id='BNKRINDX Index', observation_start="20060101")
 d2, t2 = fred.get_series(series_id='JHDUSRGDPBR', observation_start="2006-01-01")
 
-chart = Chart(title="Bankruptcy filings moving up in recent weeks", num_y_axis=2)
+chart = Chart(title="Bankruptcy filings moving up in recent weeks", num_y_axis=2, filename="bankruptcy.png")
 
 chart.configure_y_axis(y_axis_index=0, label="Count")
 chart.configure_y_axis(y_axis_index=1, label="Count")
@@ -139,10 +187,10 @@ chart.add_series(x=d1.index, y=d1['y'], label="Bankruptcy filings", y_axis_index
 chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
 
 chart.legend(ncol=2)
-chart.plot(path="output/bankruptcy.png")
+chart.plot()
 ```
 
-![alt text](examples/charts/output/bankruptcy.png)
+![alt text](docs/charts/12_07_2023_bankruptcy.png)
 
 ### Example 5:
 
@@ -178,7 +226,7 @@ services_df = DataFrame({'y': y}, index=x)
 services_df['weighted'] = services_df['y'] * services_weights_df['y'].shift(12) / 100
 services_df.index = services_df.index.to_period('M').to_timestamp(how='start')
 
-chart = Chart(title="U.S. CPI by Component")
+chart = Chart(title="U.S. CPI by Component", filename="inflation.png")
 
 chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
 
@@ -206,10 +254,10 @@ chart.add_series(x=food_df.index, y=food_df['weighted'], chart_type='bar', stack
 chart.add_series(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy")
 
 chart.legend(ncol=2)
-chart.plot(path="output/inflation.png")
+chart.plot()
 ```
 
-![alt text](examples/charts/output/inflation.png)
+![alt text](docs/charts/12_07_2023_inflation.png)
 
 ### Example 6:
 
@@ -220,7 +268,7 @@ d1, t1 = fred.get_series(series_id="JTSJOL", observation_start="2002-01-01")
 d2, t2 = fred.get_series(series_id="JTS2300JOL", observation_start="2002-01-01")
 d3, t3 = fred.get_series(series_id="JTS3000JOL", observation_start="2002-01-01")
 
-chart = Chart(title="Job Openings", num_rows=3, num_y_axis=1)
+chart = Chart(title="Job Openings", num_rows=3, num_y_axis=1, filename="job-openings.png")
 
 chart.configure_y_axis(row_index=0, y_axis_index=0,
                        minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(2000))
@@ -248,7 +296,7 @@ chart.add_series(d3.index, d3["y"], row_index=2, chart_type='bar', label=t3,
                  transformer=Resample(rule='Y'))
 
 chart.legend(ncol=2)
-chart.plot("output/job-openings.png")
+chart.plot()
 ```
 
-![alt text](examples/charts/output/job-openings.png)
+![alt text](docs/charts/12_07_2023_job-openings.png)

@@ -1,11 +1,10 @@
 
-from matplotlib.ticker import AutoLocator, MultipleLocator
+import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
 from pandas import DataFrame
 
 from charting.model.chart import Chart
 from charting.transformer.pct import Pct
-import matplotlib.dates as mdates
-
 from examples import blp, fred
 
 if __name__ == '__main__':
@@ -40,7 +39,7 @@ if __name__ == '__main__':
     services_df['weighted'] = services_df['y'] * services_weights_df['y'].shift(12) / 100
     services_df.index = services_df.index.to_period('M').to_timestamp(how='start')
 
-    chart = Chart(title="U.S. CPI by Component")
+    chart = Chart(title="U.S. CPI by Component", filename="inflation.png")
 
     chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
 
@@ -68,4 +67,4 @@ if __name__ == '__main__':
     chart.add_series(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy")
 
     chart.legend(ncol=2)
-    chart.plot(path="output/inflation.png")
+    chart.plot()

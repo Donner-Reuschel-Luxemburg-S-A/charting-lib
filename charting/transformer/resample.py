@@ -8,15 +8,17 @@ class Resample(Transformer):
     A transformer that resamples time series data.
     """
 
-    def __init__(self, rule: str):
+    def __init__(self, rule: str, resampler: str = 'mean'):
         """
         Initializes a Resample transformer with the specified resampling rule.
 
         Args:
             rule (str): The resampling rule, such as 'W' for weekly, 'M' for monthly, 'Y' for yearly.
+            resampler (str): the resample algorithm (default: mean)
         """
         super().__init__()
         self.rule = rule
+        self.resampler = resampler
 
     def transform(self, x: Series, y: Series) -> (Series, Series):
         """
@@ -30,7 +32,7 @@ class Resample(Transformer):
             (Series, Series): The resampled x-values and y-values as separate Series.
         """
         df = DataFrame({'y': y}, index=x)
-        resampled_df = df.resample(self.rule).mean()
+        resampled_df = getattr(df.resample(self.rule), self.resampler)()
         resampled_df.index = resampled_df.index.to_period(self.rule).to_timestamp(how='start')
         resampled_x = resampled_df.index
         resampled_y = resampled_df['y']
@@ -45,10 +47,10 @@ class Resample(Transformer):
             str: The label for the transformation.
         """
         if self.rule == 'W':
-            return 'weekly'
+            return f'weekly {self.resampler}'
         if self.rule == 'M':
-            return 'monthly'
+            return f'monthly {self.resampler}'
         if self.rule == 'Y':
-            return 'yearly'
+            return f'yearly {self.resampler}'
 
         return 'unknown'

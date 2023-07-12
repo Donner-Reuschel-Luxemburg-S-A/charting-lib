@@ -10,7 +10,8 @@ if __name__ == '__main__':
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR')
     d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=19900131)
 
-    chart = Chart(title="As industrial loan standards tighten, manufacturing contracts", num_y_axis=2)
+    chart = Chart(title="As industrial loan standards tighten, manufacturing contracts", num_y_axis=2,
+                  filename="loan.png")
 
     chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))
     chart.configure_y_axis(y_axis_index=1, label="%", y_lim=(80, -40), invert_axis=True)
@@ -27,4 +28,4 @@ if __name__ == '__main__':
     chart.add_horizontal_line(y_axis_index=1)
 
     chart.legend(ncol=2)
-    chart.plot(path="output/loan.png")
+    chart.plot()
