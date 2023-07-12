@@ -9,24 +9,20 @@ from typing import Tuple, Union, List, Dict
 
 import matplotlib.offsetbox as offsetbox
 import numpy as np
-from matplotlib import pyplot as plt, patches, path
+from PIL import Image
+from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
-from matplotlib.path import Path
 from matplotlib.ticker import Formatter, Locator
-from pandas import DataFrame
+from source_engine.chart_source import ChartSource
+from sqlalchemy import Column, String, Text, Date, DateTime
+from sqlalchemy.orm import Session
+from sqlalchemy.orm import declarative_base
 
 from charting import base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style
 from charting.model.transformer import Transformer
-from sqlalchemy import Column, String, Integer, Text, Date, DateTime
-from sqlalchemy.orm import declarative_base
-
-from PIL import Image
-from source_engine.chart_source import ChartSource
-from sqlalchemy.orm import Session
-
 
 Base = declarative_base()
 
@@ -447,7 +443,7 @@ class Chart:
                 for line in ax.lines:
                     if len(set(line.get_ydata())) > 1:
                         y = line.get_ydata()[-1]
-                        x_marker = ax.get_xlim()[1] - 800
+                        x_marker = ax.get_xlim()[1]
 
                         ax.annotate(round(y, 1), xy=(x_marker, y), xytext=(x_marker, y), color='white',
                                     xycoords=ax.get_yaxis_transform(), textcoords="data",

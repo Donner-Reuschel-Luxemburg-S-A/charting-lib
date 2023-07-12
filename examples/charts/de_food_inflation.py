@@ -1,3 +1,4 @@
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 
@@ -5,7 +6,6 @@ from charting.model.chart import Chart
 from charting.model.metadata import Category, Country, Metadata
 from charting.transformer.lead import Lead
 from examples import blp
-import matplotlib.dates as mdates
 
 if __name__ == '__main__':
     title = "German food inflation and price expectations of food manufacturers"

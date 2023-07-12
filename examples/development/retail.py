@@ -2,7 +2,6 @@ import matplotlib.dates as mdates
 from pandas import DateOffset
 
 from charting.model.chart import Chart
-from charting.model.metadata import Metadata, Country, Category
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
 from examples import fred
