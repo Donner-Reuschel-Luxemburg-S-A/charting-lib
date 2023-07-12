@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt, patches, path
 from matplotlib.axes import Axes
 from matplotlib.path import Path
 from matplotlib.ticker import Formatter, Locator
+from pandas import DataFrame
 
 from charting import base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
@@ -236,7 +237,7 @@ class Chart:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
 
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
-                   linestyle: str = '-', linewidth: float = 2, fill: bool = False, fill_threshold: float = None,
+                   linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1,
                    transformer: Union[Transformer, List[Transformer]] = None):
         """
@@ -283,6 +284,8 @@ class Chart:
                 label = f"{label}, {axis_label} ({transformer.label()})"
         else:
             label = f"{label}, {axis_label}"
+
+
 
         if chart_type == 'line':
             handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
@@ -440,7 +443,7 @@ class Chart:
                 for line in ax.lines:
                     if len(set(line.get_ydata())) > 1:
                         y = line.get_ydata()[-1]
-                        x_marker = ax.get_xlim()[1]
+                        x_marker = ax.get_xlim()[1] - 800
 
                         ax.annotate(round(y, 1), xy=(x_marker, y), xytext=(x_marker, y), color='white',
                                     xycoords=ax.get_yaxis_transform(), textcoords="data",
