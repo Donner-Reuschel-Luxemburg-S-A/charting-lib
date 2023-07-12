@@ -9,11 +9,10 @@ from examples import fred
 
 if __name__ == '__main__':
     title = "US retail sales: YoY change"
-    metadata = Metadata(title=title, country=Country.US, category=Category.CONSUMER)
 
     d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
-    chart = Chart(title=title, metadata=metadata, filename="retail.png")
+    chart = Chart(title=title, filename="retail.png")
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=3)
