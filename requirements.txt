@@ -8,6 +8,6 @@ fredapi~=0.5.0
 source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@feature/chart-db
 python-pptx~=0.6.21
 pypiwin32
-numpy~=1.24.3
+numpy~=1.25.1
 Pillow~=9.5.0
 SQLAlchemy~=2.0.17
