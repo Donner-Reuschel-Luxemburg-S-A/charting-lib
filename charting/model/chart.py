@@ -17,7 +17,7 @@ from matplotlib.ticker import Formatter, Locator
 from charting import base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
-from charting.model.style import title_style, source_text_style, get_color, get_stacked_color
+from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style
 from charting.model.transformer import Transformer
 from sqlalchemy import Column, String, Integer, Text, Date, DateTime
 from sqlalchemy.orm import declarative_base
@@ -87,8 +87,8 @@ class Chart:
         if isinstance(self.axis, Axes):
             self.axis = [self.axis]
 
-        self.__remove_top_spines()
         self.axis_dict = self.__init_y_axis()
+        self.__remove_top_spines()
         self.handles = []
         self.x_min_axes = []
         self.x_max_axes = []
@@ -101,6 +101,10 @@ class Chart:
         """
         for ax in self.axis:
             ax.spines.top.set_visible(False)
+
+        if len(self.axis_dict.keys()) == 1:
+            for ax in self.axis:
+                ax.spines.right.set_visible(False)
 
     def __init_y_axis(self) -> Dict[int, List[Axes]]:
         """
@@ -401,7 +405,7 @@ class Chart:
             box.get_children().append(txt)
             box.set_figure(box.figure)
         else:
-            ax.annotate(label, xy=(0.5, -0.4), xycoords='axes fraction', ha='center', va='center', **source_text_style)
+            ax.annotate(label, xy=(0.5, -0.7), xycoords='axes fraction', ha='center', va='center', **source_text_style)
 
     def legend(self, ncol: int = 1):
         """
@@ -417,7 +421,8 @@ class Chart:
             borderaxespad=3,
             handles=self.handles,
             frameon=False,
-            ncol=ncol
+            ncol=ncol,
+            prop=legend_style
         )
 
     def add_sup_y_label(self, label: str):
@@ -435,10 +440,11 @@ class Chart:
                 for line in ax.lines:
                     if len(set(line.get_ydata())) > 1:
                         y = line.get_ydata()[-1]
-                        arrow_style = 'larrow'
-                        ax.annotate(round(y, 1), xy=(1, y), xytext=(10, 0), color='white',
-                                    xycoords=ax.get_yaxis_transform(), textcoords="offset points",
-                                    size=5, va="center", bbox=dict(boxstyle=f"{arrow_style},pad=0.3",
+                        x_marker = ax.get_xlim()[1]
+
+                        ax.annotate(round(y, 1), xy=(x_marker, y), xytext=(x_marker, y), color='white',
+                                    xycoords=ax.get_yaxis_transform(), textcoords="data",
+                                    size=5, va="center", bbox=dict(boxstyle="larrow,pad=0.3",
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
