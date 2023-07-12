@@ -32,4 +32,5 @@ if __name__ == '__main__':
     chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
 
     chart.legend(ncol=2)
-    chart.plot()
+
+    chart.plot(bloomberg_source_override='BIC')

@@ -10,10 +10,12 @@ import matplotlib.dates as mdates
 if __name__ == '__main__':
     title = "German food inflation and price expectations of food manufacturers"
 
+    metadata = Metadata(title=title, country=Country.DE, category=Category.INFLATION)
+
     d1, t1 = blp.get_series(series_id='GRCPH11Y Index', observation_start="19920331")
     d2, t2 = blp.get_series(series_id='GMFDDSE3 Index', observation_start="19920331")
 
-    chart = Chart(title=title, num_y_axis=2, filename="german_food_inflation.png")
+    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="german_food_inflation.png")
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=5)

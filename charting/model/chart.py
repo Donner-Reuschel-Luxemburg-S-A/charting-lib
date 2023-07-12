@@ -389,15 +389,19 @@ class Chart:
             handle = plt.Rectangle((0, 0), 1, 1, fc='grey', alpha=0.3, label=label)
             self.handles.append(handle)
 
-    def __add_bottom_label(self):
+    def __add_bottom_label(self, bloomberg_source_override: str = None):
         """
         Adds a centered label at the bottom of the chart.
+
+        Args:
+            bloomberg_source_override (str): An override for bloomberg source (default: None).
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
         ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
+        bloomberg_label = 'Bloomberg' if bloomberg_source_override is None else f'Bloomberg ({bloomberg_source_override})'
 
-        label = f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
+        label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
                 f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
                 f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
 
@@ -451,12 +455,15 @@ class Chart:
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
-    def plot(self) -> None:
+    def plot(self, bloomberg_source_override: str = None) -> None:
         """
         Plots the chart and saves it as png.
+
+        Args:
+            bloomberg_source_override (str): An override for bloomberg source (default: None).
         """
         plt.suptitle(self.title, fontdict=title_style)
-        self.__add_bottom_label()
+        self.__add_bottom_label(bloomberg_source_override)
         plt.savefig(self.filepath, dpi=500)
         plt.close()
 
