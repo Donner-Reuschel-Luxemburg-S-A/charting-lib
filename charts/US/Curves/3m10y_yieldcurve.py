@@ -13,7 +13,7 @@ if __name__ == '__main__':
     metadata = Metadata(title=title, country=Country.US, category=Category.CURVES)
     chart = Chart(title=title, metadata=metadata, filename="us_3m10y_curve.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(10), major_locator=MultipleLocator(20))
+    chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(20), major_locator=MultipleLocator(40))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=4)
