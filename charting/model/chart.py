@@ -187,7 +187,7 @@ class Chart:
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,
                          major_locator: Locator = None,
-                         invert_axis: bool = False):
+                         reverse_axis: bool = False):
         """
         Configures a y-axis with a label and color.
 
@@ -200,8 +200,7 @@ class Chart:
             major_formatter (Formatter): The major formatter for the y-axis (default: None)
             minor_locator (Locator): The minor locator for the y-axis (default: AutoLocator)
             major_locator (Locator): The major locator for the y-axis (default: AutoLocator)
-            invert_axis (bool): Whether to invert the y-axis (default: False)
-
+            reverse_axis (bool): Indicates whether the axis should be reversed (default: False).
         Raises:
             YAxisIndexException: If the provided row or y-axis index is invalid.
         """
@@ -210,12 +209,12 @@ class Chart:
             ax = self.axis_dict[row_index][y_axis_index]
             ax.set_ylabel(label)
 
-            if invert_axis:
-                ax.invert_yaxis()
-                ax.set_ylabel(f'{label} (reversed axis)')
-
             if y_lim is not None:
                 ax.set_ylim(*y_lim)
+
+            if reverse_axis:
+                ax.invert_yaxis()
+                ax.set_ylabel(f'{label} (reversed axis)')
 
             if minor_formatter is not None:
                 ax.yaxis.set_minor_formatter(minor_formatter)
@@ -234,7 +233,7 @@ class Chart:
 
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
-                   bar_bottom: float = 0, stacked: bool = False, alpha: float = 1,
+                   bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
                    transformer: Union[Transformer, List[Transformer]] = None):
         """
         Adds a series to the chart.
@@ -254,6 +253,7 @@ class Chart:
             bar_bottom (float): The bottom for bar charts to plot (default: 0).
             stacked (bool): Indicates if the bar should be stacked (default: False).
             alpha (float): The alpha value for the data plot (default: 1).
+            invert (bool): Indicates whether the series should be inverted (default: False).
             transformer (Union[Transformer, List[Transformer]]): Optional transformer(s) to apply to the series
                 (default: None). If a single transformer is provided, it will be applied to the series.
                 If a list of transformers is provided, they will be applied sequentially to the series.
@@ -271,6 +271,10 @@ class Chart:
         self.x_min_label.append(min(x))
         self.x_max_label.append(max(x))
 
+        if invert:
+            y = -y
+            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)')
+
         if transformer is not None:
             if isinstance(transformer, list):
                 x, y = reduce(lambda xy, trans: trans.transform(*xy), transformer, (x, y))
@@ -280,8 +284,6 @@ class Chart:
                 label = f"{label}, {axis_label} ({transformer.label()})"
         else:
             label = f"{label}, {axis_label}"
-
-
 
         if chart_type == 'line':
             handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
