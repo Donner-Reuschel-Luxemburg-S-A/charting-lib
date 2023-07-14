@@ -4,7 +4,7 @@ from matplotlib.ticker import MultipleLocator
 from charting.model.chart import Chart
 from charting.transformer.center import Center
 from charting.transformer.resample import Resample
-from examples import fred
+from charting import fred
 
 if __name__ == '__main__':
     d0, t0 = fred.get_series(series_id='JHDUSRGDPBR', observation_start="2002-01-01")

@@ -3,7 +3,7 @@ from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting.transformer.avg import Avg
-from examples import fred, blp
+from charting import fred, blp
 
 if __name__ == '__main__':
     d1, t1 = blp.get_series(series_id='BNKRINDX Index', observation_start="20060101")

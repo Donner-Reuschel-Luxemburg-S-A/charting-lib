@@ -5,7 +5,7 @@ from pandas import DateOffset
 from charting.model.chart import Chart
 from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
-from examples import blp
+from charting import blp
 
 if __name__ == '__main__':
     df1, t1 = blp.get_series(series_id='SBOIPRIC Index', observation_start='19950131')

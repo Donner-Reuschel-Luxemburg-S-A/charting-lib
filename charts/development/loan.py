@@ -3,7 +3,7 @@ import matplotlib.dates as mdates
 
 from charting.model.chart import Chart
 from charting.transformer.center import Center
-from examples import fred, blp
+from charting import fred, blp
 
 if __name__ == '__main__':
     d1, t1 = fred.get_series(series_id='DRTSCILM')
