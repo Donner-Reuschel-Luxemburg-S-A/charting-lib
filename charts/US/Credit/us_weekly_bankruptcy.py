@@ -36,4 +36,4 @@ if __name__ == '__main__':
 
     chart.legend(ncol=2)
 
-    chart.plot(bloomberg_source_override='BIC')
+    chart.plot(bloomberg_source_override='BCY')
