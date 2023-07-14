@@ -4,7 +4,7 @@ from pandas import DateOffset
 from charting.model.chart import Chart
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
-from examples import fred
+from charting import fred
 
 if __name__ == '__main__':
     title = "US retail sales: YoY change"

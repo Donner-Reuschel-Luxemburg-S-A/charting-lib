@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from charting.model.chart import Chart
 from charting.transformer.pct import Pct
-from examples import blp, fred
+from charting import blp, fred
 
 if __name__ == '__main__':
     headline_df, headline_title = fred.get_series(series_id='CPIAUCSL', observation_start='2016-01-01')
