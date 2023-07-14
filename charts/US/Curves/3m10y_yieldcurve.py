@@ -7,10 +7,7 @@ from charting import fred, blp
 from charting.model.metadata import Metadata, Category, Country
 
 if __name__ == '__main__':
-    df1, t1 = blp.get_series(series_id='USBMMY3M Index', observation_start="20220131")
-    df2, t2 = blp.get_series(series_id='USGG10YR Index', observation_start="20220131")
-
-    df2['spread'] = df2['y'] - df1['y']
+    df1, t1 = blp.get_series(series_id='USYC3M10 Index', observation_start="20220131")
 
     title = "10 Year - 3 Month Treasury Yield Spread"
     metadata = Metadata(title=title, country=Country.US, category=Category.CURVES)
@@ -23,7 +20,7 @@ if __name__ == '__main__':
     major_formatter = mdates.DateFormatter("%b %Y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
-    chart.add_series(x=df2.index, y=df2['spread'], label=title)
+    chart.add_series(x=df1.index, y=df1['y'], label=title)
     chart.add_horizontal_line()
 
     chart.legend()

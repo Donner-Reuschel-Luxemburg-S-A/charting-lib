@@ -15,8 +15,9 @@ if __name__ == '__main__':
     # df3, t3 = blp.get_series(series_id='LEI YOY Index', observation_start='20220331')
     # df4, t4 = blp.get_series(series_id='USYC2Y10 Index', observation_start='20220331')
 
-    list_sector = ["s5tels index","s5util index"]
+    list_sector = ["s5tels index", "s5util index"]
     # ["s5inft index","s5hlth index","s5cons index","s5cond index","s5enrs index","s5rlst index","s5matr index","s5indu index","s5finl index"]
+
     for sector in list_sector:
         df2, t2 = blp.get_series(series_id=sector, observation_start='20220331')
 
