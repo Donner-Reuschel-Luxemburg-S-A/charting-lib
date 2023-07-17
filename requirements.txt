@@ -1,4 +1,4 @@
-pip~=23.1
+pip~=23.2
 pdoc3~=0.10.0
 flake8~=6.0.0
 matplotlib~=3.7.2
