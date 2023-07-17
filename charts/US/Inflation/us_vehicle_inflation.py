@@ -8,9 +8,9 @@ from charting.model.metadata import Metadata, Country, Category
 from charting.transformer.lead import Lead
 
 if __name__ == '__main__':
-    d1, t1 = blp.get_series(series_id='MUVIYOY Index', observation_start=19950101)
-    d2, t2 = blp.get_series(series_id='MUVIMOM Index', observation_start=19950101)
-    d3, t3 = blp.get_series(series_id='CPRTUCT% Index', observation_start=19950101)
+    d1, t1 = blp.get_series(series_id='MUVIYOY Index', observation_start=20200101)
+    d2, t2 = blp.get_series(series_id='MUVIMOM Index', observation_start=20200101)
+    d3, t3 = blp.get_series(series_id='CPRTUCT% Index', observation_start=20200101)
 
     title = "Manheim US Vehicle Inflation"
     metadata = Metadata(title=title, country=Country.US, category=Category.INFLATION)
