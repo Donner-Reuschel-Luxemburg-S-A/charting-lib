@@ -289,7 +289,7 @@ class Chart:
 
         if chart_type == 'line':
             handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha,
-                              **({zorder} or {}))
+                              **({'zorder': zorder} or {}))
 
             if fill:
                 if fill_threshold is None:
@@ -330,7 +330,7 @@ class Chart:
                     color = get_stacked_color(0)
 
             handle = ax.bar(x, y, align='center', width=mean_bar_width, bottom=bar_bottom,
-                            label=label, color=color, alpha=alpha, **({zorder} or {}))
+                            label=label, color=color, alpha=alpha, **({'zorder': zorder} or {}))
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
