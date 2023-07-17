@@ -27,10 +27,10 @@ if __name__ == '__main__':
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=d2.index, y=d2['y'], label="Manheim US Used Vehicle Value (MoM)", chart_type='bar', alpha=0.7,
-                     y_axis_index=1, transformer=Lead(offset=DateOffset(months=2)))
+                     y_axis_index=1, transformer=Lead(offset=DateOffset(months=2)), zorder=1)
     chart.add_series(x=d1.index, y=d1['y'], label="Manheim US Used Vehicle Value (YoY)",
-                     transformer=Lead(offset=DateOffset(months=2)))
-    chart.add_series(x=d3.index, y=d3['y'], label=t3)
+                     transformer=Lead(offset=DateOffset(months=2)), zorder=3)
+    chart.add_series(x=d3.index, y=d3['y'], label=t3, zorder=2)
 
     chart.add_horizontal_line()
     chart.add_last_value_badge()
