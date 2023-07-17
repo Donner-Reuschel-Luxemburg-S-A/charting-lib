@@ -234,7 +234,6 @@ class Chart:
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
-                   zorder: float = None,
                    transformer: Union[Transformer, List[Transformer]] = None):
         """
         Adds a series to the chart.
@@ -255,7 +254,6 @@ class Chart:
             stacked (bool): Indicates if the bar should be stacked (default: False).
             alpha (float): The alpha value for the data plot (default: 1).
             invert (bool): Indicates whether the series should be inverted (default: False).
-            zorder (float): The order for z axis (default: None).
             transformer (Union[Transformer, List[Transformer]]): Optional transformer(s) to apply to the series
                 (default: None). If a single transformer is provided, it will be applied to the series.
                 If a list of transformers is provided, they will be applied sequentially to the series.
@@ -288,8 +286,7 @@ class Chart:
             label = f"{label}, {axis_label}"
 
         if chart_type == 'line':
-            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha,
-                              **({'zorder': zorder} or {}))
+            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
 
             if fill:
                 if fill_threshold is None:
@@ -330,7 +327,7 @@ class Chart:
                     color = get_stacked_color(0)
 
             handle = ax.bar(x, y, align='center', width=mean_bar_width, bottom=bar_bottom,
-                            label=label, color=color, alpha=alpha, **({'zorder': zorder} or {}))
+                            label=label, color=color, alpha=alpha)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
