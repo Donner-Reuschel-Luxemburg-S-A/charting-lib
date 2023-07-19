@@ -18,7 +18,7 @@ from sqlalchemy import Column, String, Text, Date, DateTime
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 
-from charting import base_path
+from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style
@@ -35,7 +35,7 @@ class ChartModel(Base):
     path = Column(String(255))
     start = Column(Date)
     end = Column(Date)
-    country = Column(String(255))
+    region = Column(String(255))
     category = Column(String(255))
     base64 = Column(Text(64000))
 
@@ -71,9 +71,9 @@ class Chart:
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
         else:
-            self.rel_path = os.path.join(metadata.country.name, metadata.category.value)
+            self.rel_path = os.path.join("production")
 
-        self.path = os.path.join(base_path, self.rel_path)
+        self.path = os.path.join(chart_base_path, self.rel_path)
 
         os.makedirs(self.path, exist_ok=True)
 
@@ -91,6 +91,9 @@ class Chart:
         self.x_max_axes = []
         self.x_min_label = []
         self.x_max_label = []
+
+    def id(self) -> str:
+        return hashlib.sha1(self.title.encode('utf-8')).hexdigest()
 
     def __remove_top_spines(self) -> None:
         """
@@ -484,14 +487,14 @@ def upload(chart: Chart) -> None:
 
     with Session(bind=db.engine) as session:
         chart = ChartModel(
-            id=hashlib.sha1(chart.title.encode('utf-8')).hexdigest(),
+            id=chart.id(),
             title=chart.title,
             last_update=datetime.today(),
             path=os.path.join(chart.rel_path, chart.filename),
             start=min(chart.x_min_label),
             end=max(chart.x_max_label),
-            country=chart.metadata.country.value,
-            category=chart.metadata.category.value,
+            region=','.join(country.value for country in chart.metadata.region),
+            category=','.join(category.value for category in chart.metadata.category),
             base64=as_base64(path=chart.filepath)
         )
         session.merge(chart)

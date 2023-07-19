@@ -4,7 +4,7 @@ from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting import blp
-from charting.model.metadata import Metadata, Country, Category
+from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.lead import Lead
 
 if __name__ == '__main__':
@@ -13,7 +13,7 @@ if __name__ == '__main__':
     d3, t3 = blp.get_series(series_id='CPRTUCT% Index', observation_start=20200101)
 
     title = "Manheim US Vehicle Inflation"
-    metadata = Metadata(title=title, country=Country.US, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="us_vehicle_inflation.png", num_y_axis=2)
 
     chart.configure_y_axis(y_axis_index=0, label="%", y_lim=(-55, 55), minor_locator=MultipleLocator(5),

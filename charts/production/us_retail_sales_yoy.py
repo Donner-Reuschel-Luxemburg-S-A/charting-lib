@@ -2,7 +2,7 @@ import matplotlib.dates as mdates
 from pandas import DateOffset
 
 from charting.model.chart import Chart
-from charting.model.metadata import Metadata, Category, Country
+from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
 from charting import fred
@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
 
-    metadata = Metadata(title=title, country=Country.US, category=Category.CONSUMER)
+    metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
     chart = Chart(title=title, metadata=metadata, filename="us_retail_sales_yoy.png")
 
     minor_locator = mdates.MonthLocator(interval=1)

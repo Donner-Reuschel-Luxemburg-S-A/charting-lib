@@ -4,13 +4,13 @@ import matplotlib.dates as mdates
 
 from charting.model.chart import Chart
 from charting import fred, blp
-from charting.model.metadata import Metadata, Country, Category
+from charting.model.metadata import Metadata, Region, Category
 
 if __name__ == '__main__':
     d1, t1 = blp.get_series(series_id='USYC2Y10 Index', observation_start="20220131")
 
     title = "10 Year - 2 Year Treasury Yield Spread"
-    metadata = Metadata(title=title, country=Country.US, category=Category.CURVES)
+    metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="us_2y10y_curve.png")
 
     chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(10), major_locator=MultipleLocator(20))
