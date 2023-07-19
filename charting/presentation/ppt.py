@@ -16,7 +16,7 @@ class Ppt:
     def __init__(self, data: str, template: str = 'dr-template.pptm'):
         parent_dir = dirname(dirname(abspath(__file__)))
         self.prs = Presentation(pptx=f'{parent_dir}/templates/{template}')
-        self.data = json.loads(data) 
+        self.data = json.loads(data)
 
         self.__add_title_slide()
         self.__add_chapter()

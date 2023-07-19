@@ -4,14 +4,14 @@ from pandas import DateOffset
 
 from charting import blp
 from charting.model.chart import Chart
-from charting.model.metadata import Category, Country, Metadata
+from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.lead import Lead
 
 
 if __name__ == '__main__':
     title = "German food inflation and price expectations of food manufacturers"
 
-    metadata = Metadata(title=title, country=Country.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     d1, t1 = blp.get_series(series_id='GRCPH11Y Index', observation_start="19920331")
     d2, t2 = blp.get_series(series_id='GMFDDSE3 Index', observation_start="19920331")
