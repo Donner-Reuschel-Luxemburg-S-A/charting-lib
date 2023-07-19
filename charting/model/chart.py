@@ -92,6 +92,9 @@ class Chart:
         self.x_min_label = []
         self.x_max_label = []
 
+    def id(self) -> str:
+        return hashlib.sha1(self.title.encode('utf-8')).hexdigest()
+
     def __remove_top_spines(self) -> None:
         """
         Sets the visibility of the top spines of each axis to False.
@@ -484,7 +487,7 @@ def upload(chart: Chart) -> None:
 
     with Session(bind=db.engine) as session:
         chart = ChartModel(
-            id=hashlib.sha1(chart.title.encode('utf-8')).hexdigest(),
+            id=chart.id(),
             title=chart.title,
             last_update=datetime.today(),
             path=os.path.join(chart.rel_path, chart.filename),
