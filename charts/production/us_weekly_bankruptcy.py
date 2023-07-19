@@ -4,7 +4,7 @@ from pandas import DataFrame, DateOffset
 
 from charting import fred
 from charting.model.chart import Chart
-from charting.model.metadata import Metadata, Country, Category
+from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 from charting.transformer.resample import Resample
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     title = "US Weekly Bankruptcies"
 
-    metadata = Metadata(title=title, country=Country.US, category=Category.CREDIT)
+    metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
     chart = Chart(title=title, metadata=metadata, filename="us_weekly_bankruptcy.png")
 
     chart.configure_y_axis(y_axis_index=0, label="Number of Bankruptcies")

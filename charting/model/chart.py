@@ -35,7 +35,7 @@ class ChartModel(Base):
     path = Column(String(255))
     start = Column(Date)
     end = Column(Date)
-    country = Column(String(255))
+    region = Column(String(255))
     category = Column(String(255))
     base64 = Column(Text(64000))
 
@@ -71,7 +71,7 @@ class Chart:
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
         else:
-            self.rel_path = os.path.join(metadata.country.name, metadata.category.value)
+            self.rel_path = os.path.join("production")
 
         self.path = os.path.join(chart_base_path, self.rel_path)
 
@@ -493,8 +493,8 @@ def upload(chart: Chart) -> None:
             path=os.path.join(chart.rel_path, chart.filename),
             start=min(chart.x_min_label),
             end=max(chart.x_max_label),
-            country=chart.metadata.country.value,
-            category=chart.metadata.category.value,
+            region=','.join(country.value for country in chart.metadata.region),
+            category=','.join(category.value for category in chart.metadata.category),
             base64=as_base64(path=chart.filepath)
         )
         session.merge(chart)

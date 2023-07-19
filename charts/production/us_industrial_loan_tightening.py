@@ -2,7 +2,7 @@
 import matplotlib.dates as mdates
 
 from charting.model.chart import Chart
-from charting.model.metadata import Category, Country, Metadata
+from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.center import Center
 from charting import fred, blp
 
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=19900131)
 
     title = "As industrial loan standards tighten, manufacturing contracts"
-    metadata = Metadata(title=title, country=Country.US, category=Category.CREDIT)
+    metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
     chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening.png")
 
     chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))

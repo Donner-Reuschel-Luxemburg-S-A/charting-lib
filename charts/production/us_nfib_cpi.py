@@ -3,7 +3,7 @@ from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 
 from charting.model.chart import Chart
-from charting.model.metadata import Country, Category, Metadata
+from charting.model.metadata import Region, Category, Metadata
 from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
 from charting import blp
@@ -13,7 +13,7 @@ if __name__ == '__main__':
     df2, t2 = blp.get_series(series_id='CLEVCPIA Index', observation_start='19950131')
 
     title = "NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business"
-    metadata = Metadata(title=title, country=Country.US, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.US, category=[Category.INFLATION, Category.SURVEY])
     chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="us_nfib_cpi.png")
 
     chart.configure_y_axis(y_axis_index=0, label="Last Price [€]", y_lim=(-35, 70), minor_locator=MultipleLocator(10))

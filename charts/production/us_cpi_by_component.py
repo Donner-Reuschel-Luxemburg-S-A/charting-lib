@@ -4,7 +4,7 @@ from matplotlib.ticker import MultipleLocator
 from pandas import DataFrame
 
 from charting.model.chart import Chart
-from charting.model.metadata import Category, Country, Metadata
+from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.pct import Pct
 from charting import blp, fred
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     services_df.index = services_df.index.to_period('M').to_timestamp(how='start')
 
     title = "U.S. CPI by Component"
-    metadata = Metadata(title=title, country=Country.US, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="us_cpi_by_component.png")
 
     chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))

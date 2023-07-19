@@ -5,7 +5,7 @@ import matplotlib.dates as mdates
 
 from charting.model.chart import Chart
 from charting import fred
-from charting.model.metadata import Metadata, Country, Category
+from charting.model.metadata import Metadata, Region, Category
 
 if __name__ == '__main__':
     d1, t1 = fred.get_series(series_id='JTSJOL', observation_start="2000-12-01")
@@ -13,7 +13,7 @@ if __name__ == '__main__':
     d3, t3 = fred.get_series(series_id='JHDUSRGDPBR')
 
     title = "Job Openings (Total Nonfarm) vs. Unemployment Rate"
-    metadata = Metadata(title=title, country=Country.US, category=Category.EMPLOYMENT)
+    metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
     chart = Chart(title=title, metadata=metadata, filename="us_job_openings_vs_unemployment.png", num_y_axis=2)
 
     chart.configure_y_axis(y_axis_index=0, label="Level in Thousands", minor_locator=MultipleLocator(500),
