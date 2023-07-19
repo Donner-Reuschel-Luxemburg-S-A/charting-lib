@@ -494,7 +494,7 @@ def upload(chart: Chart) -> None:
             start=min(chart.x_min_label),
             end=max(chart.x_max_label),
             region=','.join(country.value for country in chart.metadata.region),
-            category=','.join(category.value for category in chart.metadata.region),
+            category=','.join(category.value for category in chart.metadata.category),
             base64=as_base64(path=chart.filepath)
         )
         session.merge(chart)
