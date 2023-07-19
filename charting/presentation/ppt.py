@@ -1,9 +1,14 @@
+import datetime
 import json
 import ntpath
+import os
+import uuid
 from os.path import dirname, abspath
 
 import win32com.client as win32
 from pptx import Presentation
+
+from charting import ppt_base_path
 
 
 class Ppt:
@@ -77,7 +82,8 @@ class Ppt:
             for shape in slide.placeholders:
                 print('%d %d %s' % (self.prs.slide_layouts.index(slide), shape.placeholder_format.idx, shape.name))
 
-    def save(self, path: str):
+    def save(self):
+        path = os.path.join(ppt_base_path, f'{uuid.uuid4().__str__()}.ppt')
         self.prs.save(path)
         filename = ntpath.basename(path)
 

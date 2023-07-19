@@ -18,7 +18,7 @@ from sqlalchemy import Column, String, Text, Date, DateTime
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 
-from charting import base_path
+from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style
@@ -73,7 +73,7 @@ class Chart:
         else:
             self.rel_path = os.path.join(metadata.country.name, metadata.category.value)
 
-        self.path = os.path.join(base_path, self.rel_path)
+        self.path = os.path.join(chart_base_path, self.rel_path)
 
         os.makedirs(self.path, exist_ok=True)
 
