@@ -2,6 +2,7 @@
 import matplotlib.dates as mdates
 
 from charting.model.chart import Chart
+from charting.model.metadata import Category, Country, Metadata
 from charting.transformer.center import Center
 from charting import fred, blp
 
@@ -10,11 +11,12 @@ if __name__ == '__main__':
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR')
     d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=19900131)
 
-    chart = Chart(title="As industrial loan standards tighten, manufacturing contracts", num_y_axis=2,
-                  filename="loan.png")
+    title = "As industrial loan standards tighten, manufacturing contracts"
+    metadata = Metadata(title=title, country=Country.US, category=Category.CREDIT)
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening.png")
 
     chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))
-    chart.configure_y_axis(y_axis_index=1, label="%", y_lim=(80, -40), invert_axis=True)
+    chart.configure_y_axis(y_axis_index=1, label="%", y_lim=(80, -40), reverse_axis=True)
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=4)
