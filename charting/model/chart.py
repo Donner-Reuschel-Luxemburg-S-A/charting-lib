@@ -482,7 +482,7 @@ def as_base64(path: str) -> str:
 
 
 def upload(chart: Chart) -> None:
-    db: ChartSource = ChartSource(create_new_db=True)
+    db: ChartSource = ChartSource()
     Base.metadata.create_all(db.engine)
 
     with Session(bind=db.engine) as session:
