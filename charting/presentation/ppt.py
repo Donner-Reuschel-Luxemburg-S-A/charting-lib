@@ -1,12 +1,11 @@
 import datetime
-import json
 import ntpath
 import os
 import uuid
 from os.path import dirname, abspath
 from typing import List, Type
-
-import win32com.client as win32
+import pythoncom
+import win32com.client
 from pptx import Presentation
 from source_engine.chart_source import ChartSource
 from sqlalchemy.orm import Session
@@ -85,7 +84,8 @@ class Ppt:
         self.prs.save(path)
         filename = ntpath.basename(path)
 
-        powerpoint = win32.gencache.EnsureDispatch('PowerPoint.Application')
+        pythoncom.CoInitialize()
+        powerpoint = win32com.client.Dispatch('PowerPoint.Application')
         powerpoint.Visible = True
         presentation = powerpoint.Presentations.Open(path)
         presentation.Application.Run(f"{filename}!Modul1.AdjustShapeWidthToFitText")
