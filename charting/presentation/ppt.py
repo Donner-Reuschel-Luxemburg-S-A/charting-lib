@@ -85,7 +85,7 @@ class Ppt:
         filename = ntpath.basename(path)
 
         pythoncom.CoInitialize()
-        powerpoint = win32com.client.Dispatch('PowerPoint.Application')
+        powerpoint = win32com.client.gencache.EnsureDispatch('PowerPoint.Application')
         powerpoint.Visible = True
         presentation = powerpoint.Presentations.Open(path)
         presentation.Application.Run(f"{filename}!Modul1.AdjustShapeWidthToFitText")
