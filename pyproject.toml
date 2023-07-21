@@ -23,4 +23,4 @@ version = {attr = "charting.__version__"}
 dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.package-data]
-source_engine = ["templates/*.pptm"]
+charting = ["templates/*.pptm"]
