@@ -94,6 +94,7 @@ class Ppt:
         presentation.Close()
 
         powerpoint.Quit()
+        pythoncom.CoUninitialize()
 
         return path
 
