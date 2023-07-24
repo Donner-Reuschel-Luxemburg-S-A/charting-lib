@@ -13,31 +13,13 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter, Locator
-from source_engine.chart_source import ChartSource
-from sqlalchemy import Column, String, Text, Date, DateTime
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import declarative_base
+from source_engine.chart_source import ChartSource, ChartModel
 
 from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style
 from charting.model.transformer import Transformer
-
-Base = declarative_base()
-
-
-class ChartModel(Base):
-    __tablename__ = 'chart'
-    id = Column(String(255), primary_key=True)
-    title = Column(String(255))
-    last_update = Column(DateTime)
-    path = Column(String(255))
-    start = Column(Date)
-    end = Column(Date)
-    region = Column(String(255))
-    category = Column(String(255))
-    base64 = Column(Text(64000))
 
 
 class Chart:
@@ -483,20 +465,15 @@ def as_base64(path: str) -> str:
 
 def upload(chart: Chart) -> None:
     db: ChartSource = ChartSource()
-    Base.metadata.create_all(db.engine)
-
-    with Session(bind=db.engine) as session:
-        chart = ChartModel(
-            id=chart.id(),
-            title=chart.title,
-            last_update=datetime.today(),
-            path=os.path.join(chart.rel_path, chart.filename),
-            start=min(chart.x_min_label),
-            end=max(chart.x_max_label),
-            region=','.join(country.value for country in chart.metadata.region),
-            category=','.join(category.value for category in chart.metadata.category),
-            base64=as_base64(path=chart.filepath)
-        )
-        session.merge(chart)
-        session.commit()
-        session.close()
+    chart_model = ChartModel(
+        id=chart.id(),
+        title=chart.title,
+        last_update=datetime.today(),
+        path=os.path.join(chart.rel_path, chart.filename),
+        start=min(chart.x_min_label),
+        end=max(chart.x_max_label),
+        region=','.join(country.value for country in chart.metadata.region),
+        category=','.join(category.value for category in chart.metadata.category),
+        base64=as_base64(path=chart.filepath)
+    )
+    db.upload(chart=chart_model)
