@@ -62,8 +62,8 @@ class Ppt:
             slide_layout = self.prs.slide_layouts[3]
             slide = self.prs.slides.add_slide(slide_layout)
 
-            slide.placeholders[0].text = ', '.join(chart.region.split(','))
-            slide.placeholders[13].text = ', '.join(chart.category.split(','))
+            slide.placeholders[0].text = ', '.join(chart.category.split(','))
+            slide.placeholders[13].text = ', '.join(chart.region.split(','))
             slide.placeholders[19].insert_picture(chart_path)
 
     def __add_disclaimer(self):
