@@ -9,8 +9,10 @@ import os.path
 
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
+from source_engine.indeed_source import IndeedSource
 
 fred = FredSource()
+indeed = IndeedSource()
 try:
     blp = BloombergSource()
 except Exception:
