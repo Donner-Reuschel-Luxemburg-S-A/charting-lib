@@ -2,7 +2,7 @@
 .. include:: ../README.md
 """
 
-__version__ = "1.5.3"
+__version__ = "1.5.4"
 
 import getpass
 import os.path
