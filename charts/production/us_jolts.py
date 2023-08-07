@@ -6,9 +6,10 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting import fred, indeed
 from charting.transformer.lag import Lag
+from charting.transformer.lead import Lead
 
 if __name__ == '__main__':
-    d0, t0 = fred.get_series(series_id="JTSJOL", observation_start="2019-07-01")
+    d0, t0 = fred.get_series(series_id="JTSJOL", observation_start="2019-06-01")
     percentage_change = (d0['y'] / d0['y'][0]) * 100
 
     d1, t1 = indeed.get_series(series_id="US")
@@ -29,8 +30,8 @@ if __name__ == '__main__':
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator,
                            major_locator=major_locator)
 
-    chart.add_series(d0.index, percentage_change, label=t0)
-    chart.add_series(d1.index, d1["indeed_job_postings_index_SA"].values, label="Indeed, Seasonally Adjusted", transformer=Lag(offset=DateOffset(months=1)))
+    chart.add_series(d0.index, percentage_change, label=t0, transformer=Lead(offset=DateOffset(months=1)))
+    chart.add_series(d1.index, d1["indeed_job_postings_index_SA"].values, label="Indeed, Seasonally Adjusted")
     chart.add_horizontal_line(y=100)
 
     chart.legend(ncol=2)
