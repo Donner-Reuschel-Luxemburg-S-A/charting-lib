@@ -6,7 +6,7 @@ from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.center import Center
 from charting import fred, blp
 
-if __name__ == '__main__':
+def main():
     d1, t1 = fred.get_series(series_id='DRTSCILM')
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR')
     d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=19900131)
@@ -31,3 +31,8 @@ if __name__ == '__main__':
 
     chart.legend(ncol=2)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+

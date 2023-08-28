@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 
 from charting.transformer.pct import Pct
 
-if __name__ == '__main__':
+def main():
     bbk = Bbk()
     d1, t1 = bbk.get_data(flow_ref="BBXP1", key="M.U2.N.HICP.000000.IND.I00", parameters={'startPeriod': '2006-01'})
     d1['y'] = d1['y'].astype(float)
@@ -30,3 +30,8 @@ if __name__ == '__main__':
 
     chart.legend()
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+

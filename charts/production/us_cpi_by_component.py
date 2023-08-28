@@ -8,7 +8,7 @@ from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.pct import Pct
 from charting import blp, fred
 
-if __name__ == '__main__':
+def main():
     headline_df, headline_title = fred.get_series(series_id='CPIAUCSL', observation_start='2019-01-01')
     core_df, core_title = fred.get_series(series_id='CPILFESL', observation_start='2019-01-01')
 
@@ -71,3 +71,8 @@ if __name__ == '__main__':
 
     chart.legend(ncol=2)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+

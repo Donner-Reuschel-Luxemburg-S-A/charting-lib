@@ -8,7 +8,7 @@ from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.lead import Lead
 
 
-if __name__ == '__main__':
+def main():
     title = "German food inflation and price expectations of food manufacturers"
 
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
@@ -36,3 +36,7 @@ if __name__ == '__main__':
 
     chart.legend()
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()

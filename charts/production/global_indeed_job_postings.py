@@ -8,7 +8,7 @@ from charting import fred, indeed
 from charting.transformer.lag import Lag
 from charting.transformer.lead import Lead
 
-if __name__ == '__main__':
+def main():
     au, au_t = indeed.get_series(series_id="AU")
     ca, ca_t = indeed.get_series(series_id="CA")
     de, de_t = indeed.get_series(series_id="DE")
@@ -45,3 +45,7 @@ if __name__ == '__main__':
 
     chart.legend(ncol=4)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()

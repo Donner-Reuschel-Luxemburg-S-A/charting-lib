@@ -9,7 +9,7 @@ from charting.transformer.avg import Avg
 from charting.transformer.resample import Resample
 
 
-if __name__ == '__main__':
+def main():
     df = pd.read_excel('data/bankruptcy_data.xlsx', parse_dates=True, index_col="Date")
     df = DataFrame({'count': df.groupby("Date").size()}, index=df.index)
 
@@ -37,3 +37,8 @@ if __name__ == '__main__':
     chart.legend(ncol=2)
 
     chart.plot(bloomberg_source_override='BCY')
+
+
+if __name__ == '__main__':
+    main()
+

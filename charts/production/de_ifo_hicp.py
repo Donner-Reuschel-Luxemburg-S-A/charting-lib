@@ -7,7 +7,8 @@ from charting.model.metadata import Region, Category, Metadata
 from charting.transformer.lag import Lag
 from charting import blp
 
-if __name__ == '__main__':
+
+def main():
     df1, t1 = blp.get_series(series_id='GEIFSGPE Index', observation_start='20180701')
     df2, t2 = blp.get_series(series_id='GRCP2HYY Index', observation_start='20190101')
 
@@ -31,3 +32,6 @@ if __name__ == '__main__':
     chart.legend(ncol=2)
     chart.plot()
 
+
+if __name__ == '__main__':
+    main()

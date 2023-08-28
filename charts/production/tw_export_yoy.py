@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting import blp
 from charting.model.metadata import Metadata, Region, Category
 
-if __name__ == '__main__':
+def main():
     d1, t1 = blp.get_series(series_id='TWTREXPY Index', observation_start="19900101")
 
     title = "Taiwan - Total Export Trade (YoY)"
@@ -26,3 +26,9 @@ if __name__ == '__main__':
 
     chart.legend()
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+
+

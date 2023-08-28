@@ -7,7 +7,8 @@ from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
 from charting import blp, fred
 
-if __name__ == '__main__':
+
+def main():
     title = "Redbook Research: Same Store, Retails Sales Average"
 
     d1, t1 = blp.get_series(series_id='REDSWYOY Index', observation_start="20131101")
@@ -29,3 +30,8 @@ if __name__ == '__main__':
 
     chart.legend()
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+

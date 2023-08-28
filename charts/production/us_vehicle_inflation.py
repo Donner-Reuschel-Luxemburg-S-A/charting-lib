@@ -7,7 +7,8 @@ from charting import blp
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.lead import Lead
 
-if __name__ == '__main__':
+
+def main():
     d1, t1 = blp.get_series(series_id='MUVIYOY Index', observation_start=20200101)
     d2, t2 = blp.get_series(series_id='MUVIMOM Index', observation_start=20200101)
     d3, t3 = blp.get_series(series_id='CPRTUCT% Index', observation_start=20200101)
@@ -36,3 +37,8 @@ if __name__ == '__main__':
     chart.add_last_value_badge()
     chart.legend(ncol=2)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+
