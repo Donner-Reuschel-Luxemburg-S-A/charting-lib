@@ -1,6 +1,7 @@
 import base64
 import getpass
 import hashlib
+import inspect
 import io
 import os
 import sys
@@ -44,6 +45,12 @@ class Chart:
             figsize (tuple): The figure size of the chart (default: (12, 8)).
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
+        module = os.path.basename(str(sys.modules['__main__'].__file__))[:-3]
+        if module != "update":
+            self.module = module
+        else:
+            frame, _, _, _, _, _ = inspect.stack()[2]
+            self.module = os.path.basename(str(frame.f_locals.get('module').__file__))[:-3]
         self.filename = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
         self.title = title
         self.num_rows = num_rows
@@ -465,13 +472,12 @@ def as_base64(path: str) -> str:
 
 
 def upload(chart: Chart) -> None:
-    module = os.path.basename(str(sys.modules['__main__'].__file__))[:-3]
     db: ChartSource = ChartSource()
     chart_model = ChartModel(
         id=chart.id(),
         title=chart.title,
         last_update=datetime.today(),
-        module=f'charts.production.{module}',
+        module=f'charts.production.{chart.module}',
         path=os.path.join(chart.rel_path, chart.filename),
         start=min(chart.x_min_label),
         end=max(chart.x_max_label),

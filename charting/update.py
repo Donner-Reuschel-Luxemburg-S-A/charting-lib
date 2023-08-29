@@ -27,4 +27,4 @@ def update(module: str):
 
 
 if __name__ == "__main__":
-    execute_main_methods()
+    update("charts.production.global_indeed_job_postings")
