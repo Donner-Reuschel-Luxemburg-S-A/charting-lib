@@ -24,4 +24,4 @@ dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.package-data]
 charting = ["templates/*.pptm"]
-charts = ["production/data"]
+charts = ["production/data/*"]
