@@ -12,7 +12,7 @@ from charting.transformer.resample import Resample
 
 
 def main():
-    excel_path = os.path.join(os.getcwd(), "data", "bankruptcy_data.xlsx")
+    excel_path = os.path.join(os.path.dirname(__file__), "data", "bankruptcy_data.xlsx")
     df = pd.read_excel(excel_path, parse_dates=True, index_col="Date")
     df = DataFrame({'count': df.groupby("Date").size()}, index=df.index)
 
