@@ -6,7 +6,7 @@ The Charting Library is a Python library for generating customizable charts usin
 
 ## Update Charts
 
-To update all chart, just execute the [main](charts/update.py) script in `charts.update` module.
+To update all chart, just execute the [main](charting/update.py) script in `charting.update` module.
 
 ## Features
 

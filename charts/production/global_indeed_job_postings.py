@@ -1,12 +1,10 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting import fred, indeed
-from charting.transformer.lag import Lag
-from charting.transformer.lead import Lead
+
 
 def main():
     au, au_t = indeed.get_series(series_id="AU")

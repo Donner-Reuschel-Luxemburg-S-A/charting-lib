@@ -3,6 +3,7 @@ import getpass
 import hashlib
 import io
 import os
+import sys
 from datetime import datetime, timedelta
 from functools import reduce
 from typing import Tuple, Union, List, Dict
@@ -464,11 +465,13 @@ def as_base64(path: str) -> str:
 
 
 def upload(chart: Chart) -> None:
+    module = os.path.basename(str(sys.modules['__main__'].__file__))[:-3]
     db: ChartSource = ChartSource()
     chart_model = ChartModel(
         id=chart.id(),
         title=chart.title,
         last_update=datetime.today(),
+        module=f'charts.production.{module}',
         path=os.path.join(chart.rel_path, chart.filename),
         start=min(chart.x_min_label),
         end=max(chart.x_max_label),
