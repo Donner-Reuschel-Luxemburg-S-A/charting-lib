@@ -13,6 +13,7 @@ import matplotlib.offsetbox as offsetbox
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
+plt.switch_backend('agg')
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter, Locator
 from source_engine.chart_source import ChartSource, ChartModel
