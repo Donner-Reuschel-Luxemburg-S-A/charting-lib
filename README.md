@@ -4,6 +4,10 @@
 
 The Charting Library is a Python library for generating customizable charts using Matplotlib. It provides a simple and intuitive way to create various types of charts, including line charts, bar charts, and scatter plots.
 
+## Update Charts
+
+To update all chart, just execute the [main](charts/update.py) script in `charts.update` module.
+
 ## Features
 
 - Customizable axes, labels, and formatting options.

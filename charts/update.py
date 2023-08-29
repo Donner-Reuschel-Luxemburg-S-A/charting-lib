@@ -10,11 +10,13 @@ def execute_main_methods():
     for file_name in file_list:
         if file_name.endswith('.py'):
             module_name = file_name[:-3]
-            module = importlib.import_module(f'charts.production.{module_name}')
+            try:
+                module = importlib.import_module(f'charts.production.{module_name}')
 
-            if hasattr(module, 'main') and callable(getattr(module, 'main')):
-                print(f"Executing main method from {module_name}")
-                module.main()
+                if hasattr(module, 'main') and callable(getattr(module, 'main')):
+                    module.main()
+            except Exception as e:
+                print(f"Could not update chart {module_name}. Please update it manually.")
 
 
 if __name__ == "__main__":
