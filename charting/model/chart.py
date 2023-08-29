@@ -47,7 +47,7 @@ class Chart:
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
         module = os.path.basename(str(sys.modules['__main__'].__file__))[:-3]
-        if module != "update":
+        if module != "update" and module != "main":
             self.module = module
         else:
             frame, _, _, _, _, _ = inspect.stack()[2]
