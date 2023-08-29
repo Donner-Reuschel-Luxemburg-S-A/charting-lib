@@ -3,7 +3,7 @@ import importlib
 
 
 def execute_main_methods():
-    path = os.path.join(os.getcwd(), "production")
+    path = os.path.join(os.path.dirname(os.getcwd()), "charts", "production")
 
     file_list = os.listdir(path)
 
