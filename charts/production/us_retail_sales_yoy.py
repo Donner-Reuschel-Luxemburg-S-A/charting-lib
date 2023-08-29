@@ -7,7 +7,7 @@ from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
 from charting import fred
 
-if __name__ == '__main__':
+def main():
     title = "US retail sales: YoY change"
 
     d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")
@@ -28,3 +28,8 @@ if __name__ == '__main__':
 
     chart.legend()
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+

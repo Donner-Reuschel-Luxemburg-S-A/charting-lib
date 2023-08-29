@@ -8,7 +8,7 @@ from charting import fred, indeed
 from charting.transformer.lag import Lag
 from charting.transformer.lead import Lead
 
-if __name__ == '__main__':
+def main():
     d0, t0 = fred.get_series(series_id="JTSJOL", observation_start="2019-06-01")
     percentage_change = (d0['y'] / d0['y'][0]) * 100
 
@@ -36,3 +36,8 @@ if __name__ == '__main__':
 
     chart.legend(ncol=2)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+

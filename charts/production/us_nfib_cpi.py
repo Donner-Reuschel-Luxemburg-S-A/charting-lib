@@ -8,7 +8,8 @@ from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
 from charting import blp
 
-if __name__ == '__main__':
+
+def main():
     df1, t1 = blp.get_series(series_id='SBOIPRIC Index', observation_start='19950131')
     df2, t2 = blp.get_series(series_id='CLEVCPIA Index', observation_start='19950131')
 
@@ -33,4 +34,9 @@ if __name__ == '__main__':
 
     chart.legend()
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+
 

@@ -7,7 +7,8 @@ from charting import blp, fred
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 
-if __name__ == '__main__':
+
+def main():
     df1, t1 = blp.get_series(series_id='INJCJC Index', observation_start='19800101')
     df2, t2 = blp.get_series(series_id='SBOIHIRE Index', observation_start='19800101')
     df3, t3 = fred.get_series(series_id='JHDUSRGDPBR')
@@ -32,4 +33,8 @@ if __name__ == '__main__':
 
     chart.legend(ncol=2)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
 

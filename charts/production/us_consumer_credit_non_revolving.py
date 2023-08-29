@@ -8,7 +8,7 @@ from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 from charting import fred, blp
 
-if __name__ == '__main__':
+def main():
     d1, t1 = blp.get_series(series_id='CCOSNREV Index', observation_start="20070101")
     d1["mom_change"] = d1["y"].diff()
     title = "US Nonrevolving Consumer Credit - Change on Month"
@@ -30,3 +30,9 @@ if __name__ == '__main__':
     chart.add_last_value_badge()
     chart.legend(ncol=2)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+
+

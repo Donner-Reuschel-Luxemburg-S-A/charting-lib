@@ -7,7 +7,7 @@ from charting.model.chart import Chart
 from charting import fred
 from charting.model.metadata import Metadata, Region, Category
 
-if __name__ == '__main__':
+def main():
     d1, t1 = fred.get_series(series_id='JTSJOL', observation_start="2000-12-01")
     d2, t2 = fred.get_series(series_id='UNRATE', observation_start="2000-12-01")
     d3, t3 = fred.get_series(series_id='JHDUSRGDPBR')
@@ -33,3 +33,8 @@ if __name__ == '__main__':
 
     chart.legend(ncol=2)
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
+
