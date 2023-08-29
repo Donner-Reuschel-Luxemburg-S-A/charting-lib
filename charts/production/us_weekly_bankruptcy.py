@@ -1,3 +1,5 @@
+import os
+
 import matplotlib.dates as mdates
 import pandas as pd
 from pandas import DataFrame, DateOffset
@@ -10,7 +12,8 @@ from charting.transformer.resample import Resample
 
 
 def main():
-    df = pd.read_excel('data/bankruptcy_data.xlsx', parse_dates=True, index_col="Date")
+    excel_path = os.path.join(os.getcwd(), "data", "bankruptcy_data.xlsx")
+    df = pd.read_excel(excel_path, parse_dates=True, index_col="Date")
     df = DataFrame({'count': df.groupby("Date").size()}, index=df.index)
 
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR')
