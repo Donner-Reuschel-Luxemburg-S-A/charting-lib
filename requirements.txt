@@ -2,7 +2,7 @@ pip~=23.2
 pdoc3~=0.10.0
 flake8~=6.1.0
 matplotlib~=3.7.2
-pandas~=2.0.3
+pandas~=2.1.0
 python-dateutil~=2.8.2
 fredapi~=0.5.1
 source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.10.0
