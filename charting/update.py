@@ -3,20 +3,17 @@ import importlib
 
 
 def execute_main_methods():
-    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "charts", "production")
+    path = os.path.join(os.path.dirname(__file__), "charts", "production")
 
     file_list = os.listdir(path)
 
     for file_name in file_list:
         if file_name.endswith('.py') and file_name != "__init__.py":
             module_name = file_name[:-3]
-            try:
-                module = importlib.import_module(f'charts.production.{module_name}')
+            module = importlib.import_module(f'charting.charts.production.{module_name}')
 
-                if hasattr(module, 'main') and callable(getattr(module, 'main')):
-                    module.main()
-            except Exception as e:
-                print(f"Could not update chart {module_name}. Please update it manually.")
+            if hasattr(module, 'main') and callable(getattr(module, 'main')):
+                module.main()
 
 
 def update(module: str):

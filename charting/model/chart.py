@@ -478,7 +478,7 @@ def upload(chart: Chart) -> None:
         id=chart.id(),
         title=chart.title,
         last_update=datetime.today(),
-        module=f'charts.production.{chart.module}',
+        module=f'charting.charts.production.{chart.module}',
         path=os.path.join(chart.rel_path, chart.filename),
         start=min(chart.x_min_label),
         end=max(chart.x_max_label),
