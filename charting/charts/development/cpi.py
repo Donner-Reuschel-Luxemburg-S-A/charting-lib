@@ -1,8 +1,11 @@
+import pandas as pd
 from matplotlib.ticker import MultipleLocator
 
 from charting import fred, blp
 from charting.model.chart import Chart
 import matplotlib.dates as mdates
+
+from charting.transformer.lag import Lag
 
 if __name__ == '__main__':
     credit_df, credit_title = fred.get_series(series_id="TOTBKCR", observation_start="1976-01-01")
@@ -21,7 +24,7 @@ if __name__ == '__main__':
 
     chart.add_series(credit_df.index, credit_df['y'], label=credit_title)
     chart.add_series(gdp_df.index, gdp_df['y'], label=gdp_title)
-    chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
+    chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title, transformer=Lag(offset=pd.DateOffset(months=12)))
 
     chart.add_horizontal_line()
     chart.legend()
