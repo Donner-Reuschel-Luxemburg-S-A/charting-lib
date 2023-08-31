@@ -46,12 +46,6 @@ class Chart:
             figsize (tuple): The figure size of the chart (default: (12, 8)).
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
-        module = os.path.basename(str(sys.modules['__main__'].__file__))[:-3]
-        if module != "update" and module != "main":
-            self.module = module
-        else:
-            frame, _, _, _, _, _ = inspect.stack()[2]
-            self.module = os.path.basename(str(frame.f_locals.get('module').__file__))[:-3]
         self.filename = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
         self.title = title
         self.num_rows = num_rows
@@ -478,7 +472,6 @@ def upload(chart: Chart) -> None:
         id=chart.id(),
         title=chart.title,
         last_update=datetime.today(),
-        module=f'charting.charts.production.{chart.module}',
         path=os.path.join(chart.rel_path, chart.filename),
         start=min(chart.x_min_label),
         end=max(chart.x_max_label),
