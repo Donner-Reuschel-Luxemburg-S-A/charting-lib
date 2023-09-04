@@ -5,9 +5,10 @@ from charting import fred, blp
 from charting.model.chart import Chart
 import matplotlib.dates as mdates
 
+from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
 
-if __name__ == '__main__':
+def main():
     credit_df, credit_title = fred.get_series(series_id="TOTBKCR", observation_start="1976-01-01")
     credit_df = credit_df.resample("QS").last()
 
@@ -17,15 +18,22 @@ if __name__ == '__main__':
     credit_df = credit_df.pct_change(periods=4) * 100
     gdp_df = gdp_df.pct_change(periods=4) * 100
 
+    final_df = credit_df - gdp_df
+
     title = "Bank Credit, GDP & CPI (YoY)"
-    chart = Chart(title=title, filename="cpi_gdp.png")
+    metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
+
+    chart = Chart(title=title, metadata=metadata, filename="cpi_gdp.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 
-    chart.add_series(credit_df.index, credit_df['y'], label=credit_title)
-    chart.add_series(gdp_df.index, gdp_df['y'], label=gdp_title)
-    chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title, transformer=Lag(offset=pd.DateOffset(months=12)))
+    chart.add_series(final_df.index, final_df['y'], label="Credit/GDP Diff")
+    chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title, transformer=Lag(offset=pd.DateOffset(months=24)))
 
     chart.add_horizontal_line()
     chart.legend()
     chart.plot()
+
+
+if __name__ == '__main__':
+    main()
