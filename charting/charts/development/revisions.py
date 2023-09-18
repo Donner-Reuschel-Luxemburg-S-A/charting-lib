@@ -1,6 +1,6 @@
 from matplotlib.ticker import FuncFormatter, MultipleLocator
+from source_engine.fred_source import FredSource
 
-from charting import fred
 from charting.model.chart import Chart
 import matplotlib.dates as mdates
 
@@ -10,6 +10,7 @@ def millions(x, pos):
 
 
 if __name__ == '__main__':
+    fred = FredSource()
     chart = Chart(title="Revisions vs. Adjusted", num_y_axis=2,
                   filename="revisions-vs-adjusted.png")
 

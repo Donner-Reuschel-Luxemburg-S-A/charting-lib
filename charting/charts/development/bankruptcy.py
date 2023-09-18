@@ -1,11 +1,16 @@
 import matplotlib.dates as mdates
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
+from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.transformer.avg import Avg
-from charting import fred, blp
+
 
 if __name__ == '__main__':
+    fred = FredSource()
+    blp = BloombergSource()
+
     d1, t1 = blp.get_series(series_id='BNKRINDX Index', observation_start="20060101")
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR', observation_start="2006-01-01")
 

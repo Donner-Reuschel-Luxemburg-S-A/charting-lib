@@ -1,5 +1,6 @@
 from matplotlib.ticker import AutoLocator, MultipleLocator
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.transformer.lead import Lead
@@ -7,10 +8,9 @@ from charting.transformer.pct import Pct
 from charting.transformer.resample import Resample
 import matplotlib.dates as mdates
 
-from charting import blp
 
 if __name__ == '__main__':
-
+    blp = BloombergSource()
     df1, t1 = blp.get_series(series_id='SPX Index', observation_start='20220631')
     # df3, t3 = blp.get_series(series_id='LEI YOY Index', observation_start='20220331')
     # df4, t4 = blp.get_series(series_id='USYC2Y10 Index', observation_start='20220331')

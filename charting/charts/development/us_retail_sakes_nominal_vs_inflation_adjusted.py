@@ -1,10 +1,12 @@
-from charting import fred
+from source_engine.fred_source import FredSource
+
 from charting.model.chart import Chart
 import matplotlib.dates as mdates
 
 from charting.transformer.pct import Pct
 
 if __name__ == '__main__':
+    fred = FredSource()
     chart = Chart(title="US Retail Sales - Nominal vs. Inflation Adjusted", num_rows=2, num_y_axis=1,
                   filename="us_retail_sakes_nominal_vs_inflation_adjusted.png")
 
