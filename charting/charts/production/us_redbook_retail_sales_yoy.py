@@ -1,14 +1,15 @@
 import matplotlib.dates as mdates
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
+from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.avg import Avg
-from charting.transformer.pct import Pct
-from charting import blp, fred
 
 
 def main():
+    blp = BloombergSource()
+    fred = FredSource()
     title = "Redbook Research: Same Store, Retails Sales Average"
 
     d1, t1 = blp.get_series(series_id='REDSWYOY Index', observation_start="20131101")

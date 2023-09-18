@@ -1,14 +1,18 @@
 import pandas as pd
 from matplotlib.ticker import MultipleLocator
+from source_engine.bloomberg_source import BloombergSource
+from source_engine.fred_source import FredSource
 
-from charting import fred, blp
 from charting.model.chart import Chart
 import matplotlib.dates as mdates
 
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
 
+
 def main():
+    blp = BloombergSource()
+    fred = FredSource()
     credit_df, credit_title = fred.get_series(series_id="TOTBKCR", observation_start="1976-01-01")
     credit_df = credit_df.resample("QS").last()
 

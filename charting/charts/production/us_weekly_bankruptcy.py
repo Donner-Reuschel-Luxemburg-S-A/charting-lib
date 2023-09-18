@@ -3,8 +3,8 @@ import os
 import matplotlib.dates as mdates
 import pandas as pd
 from pandas import DataFrame, DateOffset
+from source_engine.fred_source import FredSource
 
-from charting import fred
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
@@ -12,6 +12,7 @@ from charting.transformer.resample import Resample
 
 
 def main():
+    fred = FredSource()
     excel_path = os.path.join(os.path.dirname(__file__), "data", "bankruptcy_data.xlsx")
     df = pd.read_excel(excel_path, parse_dates=True, index_col="Date")
     df = DataFrame({'count': df.groupby("Date").size()}, index=df.index)

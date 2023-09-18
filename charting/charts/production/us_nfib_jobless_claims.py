@@ -1,14 +1,17 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
+from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-from charting import blp, fred
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 
 
 def main():
+    blp = BloombergSource()
+    fred = FredSource()
     df1, t1 = blp.get_series(series_id='INJCJC Index', observation_start='19800101')
     df2, t2 = blp.get_series(series_id='SBOIHIRE Index', observation_start='19800101')
     df3, t3 = fred.get_series(series_id='JHDUSRGDPBR')

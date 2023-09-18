@@ -2,13 +2,15 @@ import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
-from charting import fred, blp
+
 
 def main():
+    blp = BloombergSource()
     d1, t1 = blp.get_series(series_id='CCOSNREV Index', observation_start="20070101")
     d1["mom_change"] = d1["y"].diff()
     title = "US Nonrevolving Consumer Credit - Change on Month"

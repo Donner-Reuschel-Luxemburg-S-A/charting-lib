@@ -1,15 +1,19 @@
 
 import matplotlib.dates as mdates
+from source_engine.bloomberg_source import BloombergSource
+from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.center import Center
-from charting import fred, blp
+
 
 def main():
+    blp = BloombergSource()
+    fred = FredSource()
     d1, t1 = fred.get_series(series_id='DRTSCILM')
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR')
-    d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=19900131)
+    d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start='19900131')
 
     title = "As industrial loan standards tighten, manufacturing contracts"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)

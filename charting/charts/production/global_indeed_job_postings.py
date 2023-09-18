@@ -1,12 +1,13 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
+from source_engine.indeed_source import IndeedSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting import fred, indeed
 
 
 def main():
+    indeed = IndeedSource()
     au, au_t = indeed.get_series(series_id="AU")
     ca, ca_t = indeed.get_series(series_id="CA")
     de, de_t = indeed.get_series(series_id="DE")

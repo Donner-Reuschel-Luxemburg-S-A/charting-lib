@@ -1,14 +1,18 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
+from source_engine.fred_source import FredSource
+from source_engine.indeed_source import IndeedSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting import fred, indeed
 from charting.transformer.lag import Lag
 from charting.transformer.lead import Lead
 
+
 def main():
+    fred = FredSource()
+    indeed = IndeedSource()
     d0, t0 = fred.get_series(series_id="JTSJOL", observation_start="2019-06-01")
     percentage_change = (d0['y'] / d0['y'][0]) * 100
 

@@ -1,13 +1,15 @@
 import matplotlib.dates as mdates
 from pandas import DateOffset
+from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
-from charting import fred
+
 
 def main():
+    fred = FredSource()
     title = "US retail sales: YoY change"
 
     d1, t1 = fred.get_series(series_id='RSAFS', observation_start="2020-01-01")

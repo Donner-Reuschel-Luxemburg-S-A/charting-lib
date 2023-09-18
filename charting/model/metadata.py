@@ -10,6 +10,7 @@ class Region(Enum):
     EU = "Europe"
     CN = "CN"
     DE = "DE"
+    CH = "CH"
     JP = "JP"
     TW = "TW"
     UK = "UK"

@@ -1,14 +1,16 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
 from charting.transformer.lag import Lag
-from charting import blp
 
 
 def main():
+    blp = BloombergSource()
+
     df1, t1 = blp.get_series(series_id='GEIFSGPE Index', observation_start='20180701')
     df2, t2 = blp.get_series(series_id='GRCP2HYY Index', observation_start='20190101')
 

@@ -427,7 +427,7 @@ class Chart:
         """
         self.fig.supylabel(label, fontsize=8)
 
-    def add_last_value_badge(self):
+    def add_last_value_badge(self, decimals: int = 1):
         for axis in self.axis_dict.values():
             for i, ax in enumerate(axis):
                 for line in ax.lines:
@@ -435,7 +435,7 @@ class Chart:
                         y = line.get_ydata()[-1]
                         x_marker = ax.get_xlim()[1]
 
-                        ax.annotate(round(y, 1), xy=(x_marker, y), xytext=(x_marker, y), color='white',
+                        ax.annotate(round(y, decimals), xy=(x_marker, y), xytext=(x_marker, y), color='white',
                                     xycoords=ax.get_yaxis_transform(), textcoords="data",
                                     size=5, va="center", bbox=dict(boxstyle="larrow,pad=0.3",
                                                                    facecolor=line.get_color(),

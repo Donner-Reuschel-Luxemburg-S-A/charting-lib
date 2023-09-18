@@ -1,12 +1,14 @@
 from matplotlib.ticker import MultipleLocator
 
 import matplotlib.dates as mdates
+from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
-from charting import fred, blp
 from charting.model.metadata import Metadata, Category, Region
 
+
 def main():
+    blp = BloombergSource()
     df1, t1 = blp.get_series(series_id='USYC3M10 Index', observation_start="20220131")
 
     title = "10 Year - 3 Month Treasury Yield Spread"

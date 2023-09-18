@@ -1,12 +1,14 @@
 from matplotlib.ticker import MultipleLocator
 
 import matplotlib.dates as mdates
+from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
-from charting import blp
 from charting.model.metadata import Metadata, Region, Category
 
+
 def main():
+    blp = BloombergSource()
     d1, t1 = blp.get_series(series_id='TWTREXPY Index', observation_start="19900101")
 
     title = "Taiwan - Total Export Trade (YoY)"

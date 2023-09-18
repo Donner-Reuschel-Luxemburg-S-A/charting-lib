@@ -2,12 +2,12 @@ import pandas as pd
 from matplotlib.ticker import MultipleLocator
 from source_engine.sdmx_source import Bbk
 
-from charting import blp
 from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
 import matplotlib.dates as mdates
 
 from charting.transformer.pct import Pct
+
 
 def main():
     bbk = Bbk()

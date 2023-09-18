@@ -1,14 +1,15 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
 
-from charting import blp
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.lead import Lead
 
 
 def main():
+    blp = BloombergSource()
     title = "German food inflation and price expectations of food manufacturers"
 
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)

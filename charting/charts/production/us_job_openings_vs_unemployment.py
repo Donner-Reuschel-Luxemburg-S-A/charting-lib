@@ -2,12 +2,14 @@ from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 
 import matplotlib.dates as mdates
+from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-from charting import fred
 from charting.model.metadata import Metadata, Region, Category
 
+
 def main():
+    fred = FredSource()
     d1, t1 = fred.get_series(series_id='JTSJOL', observation_start="2000-12-01")
     d2, t2 = fred.get_series(series_id='UNRATE', observation_start="2000-12-01")
     d3, t3 = fred.get_series(series_id='JHDUSRGDPBR')

@@ -2,13 +2,17 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DataFrame
+from source_engine.bloomberg_source import BloombergSource
+from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.pct import Pct
-from charting import blp, fred
+
 
 def main():
+    blp = BloombergSource()
+    fred = FredSource()
     headline_df, headline_title = fred.get_series(series_id='CPIAUCSL', observation_start='2019-01-01')
     core_df, core_title = fred.get_series(series_id='CPILFESL', observation_start='2019-01-01')
 

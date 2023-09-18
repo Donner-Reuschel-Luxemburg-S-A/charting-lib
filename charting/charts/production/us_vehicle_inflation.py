@@ -1,17 +1,18 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
-from charting import blp
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.lead import Lead
 
 
 def main():
-    d1, t1 = blp.get_series(series_id='MUVIYOY Index', observation_start=20200101)
-    d2, t2 = blp.get_series(series_id='MUVIMOM Index', observation_start=20200101)
-    d3, t3 = blp.get_series(series_id='CPRTUCT% Index', observation_start=20200101)
+    blp = BloombergSource()
+    d1, t1 = blp.get_series(series_id='MUVIYOY Index', observation_start='20200101')
+    d2, t2 = blp.get_series(series_id='MUVIMOM Index', observation_start='20200101')
+    d3, t3 = blp.get_series(series_id='CPRTUCT% Index', observation_start='20200101')
 
     title = "Manheim US Vehicle Inflation"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
