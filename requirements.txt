@@ -5,7 +5,7 @@ matplotlib~=3.8.0
 pandas~=2.0.3
 python-dateutil~=2.8.2
 fredapi~=0.5.1
-source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.11.1
+source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.12.0
 python-pptx~=0.6.21
 pypiwin32
 numpy~=1.25.2
