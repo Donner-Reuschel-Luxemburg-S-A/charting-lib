@@ -23,11 +23,11 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
-                           major_locator=MultipleLocator(.25))
+    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(0.25),
+                           major_locator=MultipleLocator(1))
 
-    minor_locator = mdates.YearLocator(base=4)
-    major_locator = mdates.YearLocator(base=1)
+    minor_locator = mdates.YearLocator(base=1)
+    major_locator = mdates.YearLocator(base=2)
     major_formatter = mdates.DateFormatter("%Y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
@@ -38,6 +38,7 @@ def main():
     chart.add_series(x=d5.index, y=d5["y"], label="United States")
     chart.add_series(x=d6.index, y=d6["y"], label="Eurozone")
     chart.add_series(x=d7.index, y=d7["y"], label="Canada")
+    chart.add_horizontal_line()
 
     chart.legend(ncol=3)
     chart.plot()
