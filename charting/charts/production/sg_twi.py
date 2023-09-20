@@ -16,8 +16,8 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="sg_twi.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="Index", minor_locator=MultipleLocator(1),
-                           major_locator=MultipleLocator(2))
+    chart.configure_y_axis(y_axis_index=0, label="Index", minor_locator=MultipleLocator(20),
+                           major_locator=MultipleLocator(100))
 
     minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.MonthLocator(interval=12)

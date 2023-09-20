@@ -17,7 +17,7 @@ def main():
     chart = Chart(title=title, metadata=metadata, filename="jp_twi.png")
 
     chart.configure_y_axis(y_axis_index=0, label="Index", minor_locator=MultipleLocator(1),
-                           major_locator=MultipleLocator(2))
+                           major_locator=MultipleLocator(4))
 
     minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.MonthLocator(interval=12)
