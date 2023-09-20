@@ -1,4 +1,6 @@
+import base64
 import datetime
+import io
 import ntpath
 import os
 import uuid
@@ -57,14 +59,17 @@ class Ppt:
 
         for chart in charts:
             slide_title = chart.title
-            chart_path = os.path.join(chart_base_path, chart.path)
 
             slide_layout = self.prs.slide_layouts[3]
             slide = self.prs.slides.add_slide(slide_layout)
 
             slide.placeholders[0].text = ', '.join(chart.category.split(','))
             slide.placeholders[13].text = ', '.join(chart.region.split(','))
-            slide.placeholders[19].insert_picture(chart_path)
+
+            image_data = base64.b64decode(chart.base64)
+            image_stream = io.BytesIO(image_data)
+
+            slide.placeholders[19].insert_picture(image_stream)
 
     def __add_disclaimer(self):
         slide_layout = self.prs.slide_layouts[17]
