@@ -24,7 +24,8 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="global_central_banks.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="Index")
+    chart.configure_y_axis(y_axis_index=0, label="Index", major_locator=MultipleLocator(200),
+                           minor_locator=MultipleLocator(100))
 
     major_locator = mdates.YearLocator(base=2)
     minor_locator = mdates.YearLocator(base=1)
