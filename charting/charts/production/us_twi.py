@@ -16,12 +16,12 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="us_twi.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="Points", minor_locator=MultipleLocator(2),
-                           major_locator=MultipleLocator(1))
+    chart.configure_y_axis(y_axis_index=0, label="Index", minor_locator=MultipleLocator(1),
+                           major_locator=MultipleLocator(2))
 
-    minor_locator = mdates.MonthLocator(interval=1)
-    major_locator = mdates.MonthLocator(interval=6)
-    major_formatter = mdates.DateFormatter("%b %Y")
+    minor_locator = mdates.MonthLocator(interval=3)
+    major_locator = mdates.MonthLocator(interval=12)
+    major_formatter = mdates.DateFormatter("%Y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=df.index, y=df['y'], label=t)
