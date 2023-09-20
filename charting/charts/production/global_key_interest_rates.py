@@ -37,7 +37,7 @@ def main():
     chart.add_series(x=d4.index, y=d4["y"], label="Sweden")
     chart.add_series(x=d5.index, y=d5["y"], label="United States")
     chart.add_series(x=d6.index, y=d6["y"], label="Eurozone")
-    chart.add_series(x=d7.index, y=d7["y"], label="Canada")
+    chart.add_series(x=d7.index, y=d7["y"], label="Canada", linestyle='--')
     chart.add_horizontal_line()
 
     chart.legend(ncol=3)
