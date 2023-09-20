@@ -15,6 +15,15 @@ class Region(Enum):
     TW = "TW"
     UK = "UK"
     US = "US"
+    AU = "AU"
+    NO = "NO"
+    CA = "CA"
+    SE = "SE"
+    NZ = "NZ"
+    IN = "IN"
+    SG = "SG"
+    ZA = "ZA"
+    TR = "TR"
 
 
 class Category(Enum):
