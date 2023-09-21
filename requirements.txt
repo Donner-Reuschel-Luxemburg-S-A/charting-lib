@@ -9,5 +9,5 @@ source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-eng
 python-pptx~=0.6.21
 pypiwin32
 numpy~=1.26.0
-Pillow~=10.0.0
+Pillow~=10.0.1
 SQLAlchemy~=2.0.21
