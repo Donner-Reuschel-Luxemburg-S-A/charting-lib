@@ -85,21 +85,25 @@ class Ppt:
                 print('%d %d %s' % (self.prs.slide_layouts.index(slide), shape.placeholder_format.idx, shape.name))
 
     def __save(self) -> str:
-        path = os.path.join(ppt_base_path, f'{uuid.uuid4().__str__()}.ppt')
-        self.prs.save(path)
-        filename = ntpath.basename(path)
+        try:
+            path = os.path.join(ppt_base_path, f'{uuid.uuid4().__str__()}.ppt')
+            self.prs.save(path)
+            filename = ntpath.basename(path)
 
-        pythoncom.CoInitialize()
-        powerpoint = win32com.client.gencache.EnsureDispatch('PowerPoint.Application')
-        powerpoint.Visible = True
-        presentation = powerpoint.Presentations.Open(path)
-        presentation.Application.Run(f"{filename}!Modul1.AdjustShapeWidthToFitText")
+            pythoncom.CoInitialize()
+            powerpoint = win32com.client.gencache.EnsureDispatch('PowerPoint.Application')
+            powerpoint.Visible = True
+            presentation = powerpoint.Presentations.Open(path)
+            presentation.Application.Run(f"{filename}!Modul1.AdjustShapeWidthToFitText")
 
-        presentation.Save()
-        presentation.Close()
+            presentation.Save()
+            presentation.Close()
 
-        powerpoint.Quit()
-        pythoncom.CoUninitialize()
+            powerpoint.Quit()
+            pythoncom.CoUninitialize()
+        except Exception as e:
+            print(e)
+            return str(e)
 
         return path
 
