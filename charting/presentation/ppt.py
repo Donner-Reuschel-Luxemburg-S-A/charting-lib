@@ -32,7 +32,7 @@ class Ppt:
         return self.__save()
 
     def create_monatsmappe(self) -> str:
-        f = open('monatsmappe-zinsen.json')
+        f = open('monatsmappe-zinsen.json', encoding='utf-8')
         data = json.load(f)
         f.close()
 
