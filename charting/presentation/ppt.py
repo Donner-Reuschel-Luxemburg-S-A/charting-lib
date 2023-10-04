@@ -20,8 +20,8 @@ from charting.model.chart import ChartModel
 class Ppt:
 
     def __init__(self, template: str = 'dr-template.pptm'):
-        parent_dir = dirname(dirname(abspath(__file__)))
-        self.prs = Presentation(pptx=f'{parent_dir}/templates/{template}')
+        self.parent_dir = dirname(dirname(abspath(__file__)))
+        self.prs = Presentation(pptx=f'{self.parent_dir}/templates/{template}')
         self.db: ChartSource = ChartSource()
 
     def create(self, chart_ids: List[str], title: str = "Charts", subtitle: str = None,
@@ -32,7 +32,7 @@ class Ppt:
         return self.__save()
 
     def create_monatsmappe(self) -> str:
-        f = open('monatsmappe-zinsen.json', encoding='utf-8')
+        f = open(f'{self.parent_dir}/templates/monatsmappe-zinsen.json', encoding='utf-8')
         data = json.load(f)
         f.close()
 
