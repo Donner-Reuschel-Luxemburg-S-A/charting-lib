@@ -13,7 +13,6 @@ def main():
     de, de_t = indeed.get_series(series_id="DE")
     fr, fr_t = indeed.get_series(series_id="FR")
     gb, gb_t = indeed.get_series(series_id="GB")
-    jp, jp_t = indeed.get_series(series_id="JP")
     us, us_t = indeed.get_series(series_id="US")
 
     title = "Indeed Job Postings"
@@ -37,8 +36,7 @@ def main():
     chart.add_series(de.index, de["indeed_job_postings_index_SA"].values, label=de_t)
     chart.add_series(fr.index, fr["indeed_job_postings_index_SA"].values, label=fr_t)
     chart.add_series(gb.index, gb["indeed_job_postings_index_SA"].values, label=gb_t)
-    chart.add_series(jp.index, jp["indeed_job_postings_index_SA"].values, label=jp_t)
-    chart.add_series(us.index, us["indeed_job_postings_index_SA"].values, label=us_t, linestyle='--')
+    chart.add_series(us.index, us["indeed_job_postings_index_SA"].values, label=us_t)
 
     chart.add_horizontal_line(y=100)
 
