@@ -1,5 +1,6 @@
 import os
 import importlib
+from typing import List
 
 
 def get_files():
@@ -9,8 +10,9 @@ def get_files():
     return path, file_list
 
 
-def execute_main_methods():
+def execute_main_methods() -> List[str]:
     path, file_list = get_files()
+    errors = []
 
     for file_name in file_list:
         if (file_name.endswith('.py') or file_name.endswith('.pyc')) and file_name != "__init__.py":
@@ -18,7 +20,12 @@ def execute_main_methods():
             module = importlib.import_module(f'charting.charts.production.{module_name}')
 
             if hasattr(module, 'main') and callable(getattr(module, 'main')):
-                module.main()
+                try:
+                    module.main()
+                except Exception as e:
+                    errors.append(module_name)
+
+    return errors
 
 
 def update(module: str):
