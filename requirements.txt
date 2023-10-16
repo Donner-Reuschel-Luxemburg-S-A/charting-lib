@@ -8,6 +8,6 @@ fredapi~=0.5.1
 source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.13.0
 python-pptx~=0.6.21
 pypiwin32
-numpy~=1.26.0
+numpy~=1.26.1
 Pillow~=10.0.1
 SQLAlchemy~=2.0.21
