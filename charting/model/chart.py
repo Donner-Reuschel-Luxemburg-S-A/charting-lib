@@ -398,7 +398,7 @@ class Chart:
             box.get_children().append(txt)
             box.set_figure(box.figure)
         else:
-            ax.annotate(label, xy=(0.5, -0.7), xycoords='axes fraction', ha='center', va='center', **source_text_style)
+            ax.annotate(label, xy=(0.02, -0.8), xycoords='axes fraction', va='center', **source_text_style)
 
     def legend(self, ncol: int = 1):
         """

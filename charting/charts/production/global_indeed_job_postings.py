@@ -40,7 +40,7 @@ def main():
 
     chart.add_horizontal_line(y=100)
 
-    chart.legend(ncol=4)
+    chart.legend(ncol=3)
     chart.plot()
 
 
