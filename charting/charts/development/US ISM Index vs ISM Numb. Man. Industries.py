@@ -1,8 +1,8 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
+from source_engine.bloomberg_source import BloombergSource
 
-from charting import blp
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.lead import Lead
@@ -10,7 +10,7 @@ from charting.transformer.lead import Lead
 
 if __name__ == '__main__':
     title = "US ISM Index vs. IS"
-
+    blp = BloombergSource()
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     d1, t1 = blp.get_series(series_id='NAPMPMI Index', observation_start="20000331")
