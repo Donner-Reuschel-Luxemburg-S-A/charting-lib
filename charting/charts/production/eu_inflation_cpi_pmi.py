@@ -22,7 +22,7 @@ def main():
                            major_locator=MultipleLocator(3))
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=3)
-    major_formatter = mdates.DateFormatter("%y")
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=d1.index, y=d1['y'], label="Eurozone Harmonized CPI", transformer=Pct(periods=12))

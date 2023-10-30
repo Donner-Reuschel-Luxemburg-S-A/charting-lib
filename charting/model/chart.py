@@ -288,9 +288,9 @@ class Chart:
 
                     for idx, patches in enumerate(zip(*all_patches)):
                         bottom = 0
-                        if y[idx] > 0:
+                        if y.iloc[idx] > 0:
                             bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == 1])
-                        if y[idx] < 0:
+                        if y.iloc[idx] < 0:
                             bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == -1])
 
                         bar_bottom.append(bottom)

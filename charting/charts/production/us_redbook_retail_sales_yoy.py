@@ -20,7 +20,7 @@ def main():
 
     minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.MonthLocator(interval=12)
-    major_formatter = mdates.DateFormatter("%y")
+    major_formatter = mdates.DateFormatter("%b %y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
     chart.configure_y_axis(y_axis_index=0, label="% YoY", y_lim=(-15, 25))
