@@ -15,11 +15,11 @@ def main():
     metadata = Metadata(title=title, region=Region.TW, category=Category.ECONOMY)
     chart = Chart(title=title, metadata=metadata, filename="tw_export_yoy.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=5)
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=d1.index, y=d1['y'], label=title)

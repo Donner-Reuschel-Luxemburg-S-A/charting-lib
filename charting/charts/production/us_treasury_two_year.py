@@ -14,7 +14,7 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="us_treasury_2y.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(0.5), major_locator=MultipleLocator(1))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(0.5), major_locator=MultipleLocator(1))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=6)

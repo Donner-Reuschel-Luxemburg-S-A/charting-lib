@@ -17,7 +17,7 @@ def main():
     metadata = Metadata(title=title, region=[Region.US, Region.EU], category=Category.VOLATILITY)
     chart = Chart(title=title, metadata=metadata, filename="us_vix_v2x.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", y_lim=(10, 50))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(10, 50))
 
     major_locator = mdates.MonthLocator(interval=3)
     minor_locator = mdates.MonthLocator(interval=1)

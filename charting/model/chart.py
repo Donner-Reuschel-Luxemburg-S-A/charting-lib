@@ -153,23 +153,7 @@ class Chart:
         if major_locator is not None:
             ax.xaxis.set_major_locator(major_locator)
 
-    def configure_x_ticks(self, which: str = 'both', length: float = 1, width: float = 0.5,
-                          rotation: float = 0, pad: float = 0):
-        """
-        Configures the x-axis ticks.
-
-        Args:
-            which (str): The ticks to configure. Possible values: 'major', 'minor', or 'both' (default: 'both').
-            length (float): The length of the ticks in points (default: 1).
-            width (float): The width of the ticks in points (default: 0.5).
-            rotation (float): The rotation angle of the tick labels in degrees (default: 0).
-            pad (float): The padding between the ticks and the tick labels in points (default: 0).
-            pad (float): The padding between the ticks and the tick labels in points (default: 0).
-        """
-        ax = self.axis_dict[next(reversed(self.axis_dict))][0]
-        ax.tick_params(axis='x', which=which, length=length, width=width, rotation=rotation, pad=pad)
-
-    def configure_y_axis(self, row_index: int = 0, y_axis_index: int = 0, label: str = None,
+    def configure_y_axis(self, label: str, row_index: int = 0, y_axis_index: int = 0,
                          y_lim: Tuple[float, float] = None,
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
@@ -195,14 +179,14 @@ class Chart:
 
         try:
             ax = self.axis_dict[row_index][y_axis_index]
-            ax.set_ylabel(label)
+            ax.set_ylabel(label, loc="top", rotation=90)
 
             if y_lim is not None:
                 ax.set_ylim(*y_lim)
 
             if reverse_axis:
                 ax.invert_yaxis()
-                ax.set_ylabel(f'{label} (reversed axis)')
+                ax.set_ylabel(f'{label} (reversed axis)', loc="top", rotation=90)
 
             if minor_formatter is not None:
                 ax.yaxis.set_minor_formatter(minor_formatter)
@@ -261,7 +245,7 @@ class Chart:
 
         if invert:
             y = -y
-            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)')
+            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)', rotate=90, loc="top")
 
         if transformer is not None:
             if isinstance(transformer, list):
@@ -393,12 +377,15 @@ class Chart:
 
         txt = offsetbox.TextArea(label, textprops=source_text_style)
 
+        label_y_position = -0.1
+
         if ax.get_legend() is not None:
             box = ax.get_legend()._legend_box
-            box.get_children().append(txt)
-            box.set_figure(box.figure)
-        else:
-            ax.annotate(label, xy=(0.02, -0.8), xycoords='axes fraction', va='center', **source_text_style)
+            extent = box.get_window_extent(self.fig.canvas.get_renderer())
+            extent = ax.transAxes.inverted().transform(extent)
+            label_y_position = extent[0][1] - 0.05
+
+        ax.text(-0.05, label_y_position, label, transform=ax.transAxes, va='top', ha='left', **source_text_style)
 
     def legend(self, ncol: int = 1):
         """

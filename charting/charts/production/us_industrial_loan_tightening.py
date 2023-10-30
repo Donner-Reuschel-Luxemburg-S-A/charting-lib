@@ -20,7 +20,7 @@ def main():
     chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening.png")
 
     chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))
-    chart.configure_y_axis(y_axis_index=1, label="%", reverse_axis=True)
+    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", reverse_axis=True)
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=4)

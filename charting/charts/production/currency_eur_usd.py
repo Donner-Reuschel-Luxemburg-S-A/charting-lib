@@ -18,7 +18,7 @@ def main():
 
     major_locator = mdates.MonthLocator(interval=12)
     minor_locator = mdates.MonthLocator(interval=3)
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 

@@ -20,12 +20,12 @@ def main():
 
     chart.configure_y_axis(y_axis_index=0, label="Level in Thousands", minor_locator=MultipleLocator(500),
                            major_locator=MultipleLocator(1000))
-    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(0.5),
+    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", minor_locator=MultipleLocator(0.5),
                            major_locator=MultipleLocator(1))
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=3)
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 

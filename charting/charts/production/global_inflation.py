@@ -25,7 +25,7 @@ def main():
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="global_inflation.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
 
     major_locator = mdates.YearLocator(base=2)
     minor_locator = mdates.YearLocator(base=1)

@@ -18,9 +18,9 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="us_vehicle_inflation.png", num_y_axis=2)
 
-    chart.configure_y_axis(y_axis_index=0, label="%", y_lim=(-55, 55), minor_locator=MultipleLocator(5),
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(-55, 55), minor_locator=MultipleLocator(5),
                            major_locator=MultipleLocator(10))
-    chart.configure_y_axis(y_axis_index=1, label="%", y_lim=(-15, 15), minor_locator=MultipleLocator(1),
+    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", y_lim=(-15, 15), minor_locator=MultipleLocator(1),
                            major_locator=MultipleLocator(5))
 
     minor_locator = mdates.MonthLocator(interval=3)

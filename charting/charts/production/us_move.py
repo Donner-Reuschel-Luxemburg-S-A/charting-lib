@@ -13,7 +13,7 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.VOLATILITY)
     chart = Chart(title=title, metadata=metadata, filename="us_move_index.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", y_lim=(50, 210))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(50, 210))
 
     major_locator = mdates.MonthLocator(interval=3)
     minor_locator = mdates.MonthLocator(interval=1)
