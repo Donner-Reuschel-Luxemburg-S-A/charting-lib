@@ -23,11 +23,8 @@ def main():
 
     major_locator = mdates.YearLocator(base=5)
     minor_locator = mdates.YearLocator(base=1)
-    major_formatter = mdates.AutoDateFormatter(major_locator)
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
-
-    chart.configure_x_ticks(which='minor', length=3, width=1)
-    chart.configure_x_ticks(which='major', length=10, width=1, pad=5)
 
     chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0, fill=True,
                      fill_threshold=-35, transformer=[Resample('M'), Lead(offset=DateOffset(months=10))])

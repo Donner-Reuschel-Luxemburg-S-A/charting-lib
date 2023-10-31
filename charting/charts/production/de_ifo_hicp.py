@@ -20,11 +20,11 @@ def main():
     chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="de_ifo_hicp.png")
 
     chart.configure_y_axis(y_axis_index=0, label="Index", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
-    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(0.5), major_locator=MultipleLocator(1))
+    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", minor_locator=MultipleLocator(0.5), major_locator=MultipleLocator(1))
 
     major_locator = mdates.MonthLocator(interval=6)
-    minor_locator = mdates.MonthLocator(interval=3)
-    major_formatter = mdates.DateFormatter("%b-%Y")
+    minor_locator = mdates.MonthLocator(interval=1)
+    major_formatter = mdates.DateFormatter("%b %y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 

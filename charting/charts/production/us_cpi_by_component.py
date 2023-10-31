@@ -48,15 +48,12 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="us_cpi_by_component.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
 
     major_locator = mdates.YearLocator(base=1)
     minor_locator = mdates.MonthLocator(interval=2)
-    major_formatter = mdates.AutoDateFormatter(major_locator)
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
-
-    chart.configure_x_ticks(which='minor', length=3, width=1)
-    chart.configure_x_ticks(which='major', length=10, width=1, pad=5)
 
     chart.add_horizontal_line(y_axis_index=0)
 

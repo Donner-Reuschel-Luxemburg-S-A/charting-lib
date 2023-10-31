@@ -16,10 +16,10 @@ def main():
     df3, t3 = blp.get_series(series_id='QW5A Index', observation_start='20220101')
     df4, t4 = blp.get_series(series_id='LBEATREU Index', observation_start='20220101')
 
-    df1['y'] = (df1['y'] / df1['y'][0]) * 100
-    df2['y'] = (df2['y'] / df2['y'][0]) * 100
-    df3['y'] = (df3['y'] / df3['y'][0]) * 100
-    df4['y'] = (df4['y'] / df4['y'][0]) * 100
+    df1['y'] = (df1['y'] / df1['y'].iloc[0]) * 100
+    df2['y'] = (df2['y'] / df2['y'].iloc[0]) * 100
+    df3['y'] = (df3['y'] / df3['y'].iloc[0]) * 100
+    df4['y'] = (df4['y'] / df4['y'].iloc[0]) * 100
 
     title = "European Interest Rate Markets"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
@@ -31,7 +31,7 @@ def main():
 
     major_locator = mdates.MonthLocator(interval=3)
     minor_locator = mdates.MonthLocator(interval=1)
-    major_formatter = mdates.DateFormatter("%b %Y")
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=df1.index, y=df1['y'], label=t1)

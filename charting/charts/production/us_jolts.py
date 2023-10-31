@@ -14,7 +14,7 @@ def main():
     fred = FredSource()
     indeed = IndeedSource()
     d0, t0 = fred.get_series(series_id="JTSJOL", observation_start="2019-06-01")
-    percentage_change = (d0['y'] / d0['y'][0]) * 100
+    percentage_change = (d0['y'] / d0['y'].iloc[0]) * 100
 
     d1, t1 = indeed.get_series(series_id="US")
 
@@ -23,13 +23,12 @@ def main():
 
     chart = Chart(title=title, filename="us_jolts.png", metadata=metadata)
 
-    chart.configure_y_axis(y_axis_index=0, minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
-
-    chart.add_sup_y_label(label="%")
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(5),
+                           major_locator=MultipleLocator(10))
 
     major_locator = mdates.MonthLocator(interval=6)
-    minor_locator = mdates.MonthLocator(interval=3)
-    major_formatter = mdates.DateFormatter("%b-%Y")
+    minor_locator = mdates.MonthLocator(interval=1)
+    major_formatter = mdates.DateFormatter("%b %y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator,
                            major_locator=major_locator)

@@ -19,10 +19,10 @@ def main():
     chart.configure_y_axis(y_axis_index=0, label="Thousand of Persons",
                            minor_locator=MultipleLocator(100), major_locator=MultipleLocator(500))
 
-    major_locator = mdates.YearLocator(base=2)
+    major_locator = mdates.YearLocator(base=3)
     minor_locator = mdates.YearLocator(base=1)
 
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=d1.index, y=d1['y'], label=t1)
