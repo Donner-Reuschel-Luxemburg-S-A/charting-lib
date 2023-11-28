@@ -6,7 +6,6 @@ from source_engine.indeed_source import IndeedSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting.transformer.lag import Lag
 from charting.transformer.lead import Lead
 
 

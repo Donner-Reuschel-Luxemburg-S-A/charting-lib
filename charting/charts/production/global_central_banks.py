@@ -2,7 +2,6 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
-from source_engine.sdmx_source import Ecb
 
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata

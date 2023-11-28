@@ -1,10 +1,8 @@
 import base64
 import getpass
 import hashlib
-import inspect
 import io
 import os
-import sys
 from datetime import datetime, timedelta
 from functools import reduce
 from typing import Tuple, Union, List, Dict
@@ -13,6 +11,7 @@ import matplotlib.offsetbox as offsetbox
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
+
 plt.switch_backend('agg')
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter, Locator

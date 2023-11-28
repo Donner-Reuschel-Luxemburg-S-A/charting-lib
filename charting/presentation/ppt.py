@@ -6,14 +6,15 @@ import ntpath
 import os
 import uuid
 from os.path import dirname, abspath
-from typing import List, Type
+from typing import List
+
 import pythoncom
 import win32com.client
 from pptx import Presentation
 from source_engine.chart_source import ChartSource
 from sqlalchemy.orm import Session
 
-from charting import ppt_base_path, chart_base_path
+from charting import ppt_base_path
 from charting.model.chart import ChartModel
 
 

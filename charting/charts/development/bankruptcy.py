@@ -6,7 +6,6 @@ from source_engine.fred_source import FredSource
 from charting.model.chart import Chart
 from charting.transformer.avg import Avg
 
-
 if __name__ == '__main__':
     fred = FredSource()
     blp = BloombergSource()

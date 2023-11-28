@@ -1,8 +1,8 @@
-from matplotlib.ticker import FuncFormatter, MultipleLocator
+import matplotlib.dates as mdates
+from matplotlib.ticker import FuncFormatter
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
 
 
 def millions(x, pos):

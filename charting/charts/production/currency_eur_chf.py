@@ -1,8 +1,8 @@
+import matplotlib.dates as mdates
 from source_engine.sdmx_source import Ecb
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-import matplotlib.dates as mdates
 
 
 def main():

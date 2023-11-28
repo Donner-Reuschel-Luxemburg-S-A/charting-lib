@@ -1,7 +1,6 @@
 import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart

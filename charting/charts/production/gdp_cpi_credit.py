@@ -1,11 +1,10 @@
+import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
-
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
 

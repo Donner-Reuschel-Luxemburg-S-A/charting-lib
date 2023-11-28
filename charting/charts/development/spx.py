@@ -1,13 +1,8 @@
-from matplotlib.ticker import AutoLocator, MultipleLocator
-from pandas import DateOffset
+import matplotlib.dates as mdates
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
-from charting.transformer.lead import Lead
-from charting.transformer.pct import Pct
 from charting.transformer.resample import Resample
-import matplotlib.dates as mdates
-
 
 if __name__ == '__main__':
     blp = BloombergSource()
@@ -34,8 +29,6 @@ if __name__ == '__main__':
         major_formatter = mdates.AutoDateFormatter(major_locator)
         chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
-        chart.configure_x_ticks(which='minor', length=1, width=1)
-        chart.configure_x_ticks(which='major', length=1, width=1, pad=5)
 
         # chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0, transformer=[Resample(rule='W'), Pct(periods=1)])
         # chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=0, transformer=[Resample(rule='W'), Pct(periods=1)])

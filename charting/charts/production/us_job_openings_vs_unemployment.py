@@ -1,7 +1,5 @@
-from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
-
 import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart

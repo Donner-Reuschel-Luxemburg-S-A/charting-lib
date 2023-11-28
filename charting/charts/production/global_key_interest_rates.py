@@ -1,9 +1,9 @@
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-import matplotlib.dates as mdates
 
 
 def main():

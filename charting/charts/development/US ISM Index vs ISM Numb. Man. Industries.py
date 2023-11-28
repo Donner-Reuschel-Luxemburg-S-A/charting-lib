@@ -7,7 +7,6 @@ from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.lead import Lead
 
-
 if __name__ == '__main__':
     title = "US ISM Index vs. IS"
     blp = BloombergSource()

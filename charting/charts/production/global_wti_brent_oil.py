@@ -1,9 +1,9 @@
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-import matplotlib.dates as mdates
 
 
 def main():

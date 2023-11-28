@@ -1,11 +1,9 @@
-import pandas as pd
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.sdmx_source import Bbk
 
 from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
-import matplotlib.dates as mdates
-
 from charting.transformer.pct import Pct
 
 

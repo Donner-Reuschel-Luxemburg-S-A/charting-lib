@@ -1,5 +1,4 @@
 import matplotlib.dates as mdates
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 

@@ -1,7 +1,5 @@
-from matplotlib.ticker import MultipleLocator
-
 import matplotlib.dates as mdates
-from source_engine.bloomberg_source import BloombergSource
+from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
