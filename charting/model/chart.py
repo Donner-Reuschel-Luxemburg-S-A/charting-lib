@@ -457,10 +457,10 @@ def upload(chart: Chart) -> None:
     chart_model = ChartModel(
         id=chart.id(),
         title=chart.title,
-        last_update=datetime.today(),
+        last_update=datetime.now(),
         path=os.path.join(chart.rel_path, chart.filename),
-        start=min(chart.x_min_label),
-        end=max(chart.x_max_label),
+        start=min(chart.x_min_label).date(),
+        end=max(chart.x_max_label).date(),
         region=','.join(country.value for country in chart.metadata.region),
         category=','.join(category.value for category in chart.metadata.category),
         base64=as_base64(path=chart.filepath)
