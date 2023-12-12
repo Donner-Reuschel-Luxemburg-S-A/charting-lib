@@ -52,5 +52,7 @@ class Resample(Transformer):
             return f'monthly {self.resampler}'
         if self.rule == 'Y':
             return f'yearly {self.resampler}'
+        if self.rule == 'Q':
+            return f'quarterly {self.resampler}'
 
         return 'unknown'
