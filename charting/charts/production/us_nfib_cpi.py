@@ -28,7 +28,7 @@ def main():
 
     chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0, fill=True,
                      fill_threshold=-35, transformer=[Resample('M'), Lead(offset=DateOffset(months=10))])
-    chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1,  transformer=Resample('M'))
+    chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1, transformer=Resample('M'))
 
     chart.legend()
     chart.plot()
@@ -36,5 +36,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-

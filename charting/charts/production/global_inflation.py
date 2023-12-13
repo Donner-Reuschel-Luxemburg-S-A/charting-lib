@@ -1,4 +1,3 @@
-
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
@@ -23,7 +22,8 @@ def main():
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="global_inflation.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
+                           y_lim=(-2.5, 10))
 
     major_locator = mdates.YearLocator(base=3)
     minor_locator = mdates.YearLocator(base=1)
@@ -44,4 +44,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

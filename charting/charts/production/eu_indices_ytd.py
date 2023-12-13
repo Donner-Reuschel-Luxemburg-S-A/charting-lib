@@ -1,13 +1,9 @@
-import datetime
-
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting.transformer.pct import Pct
-from charting.transformer.resample import Resample
 from charting.transformer.ytd import Ytd
 
 
@@ -19,11 +15,13 @@ def main():
     df3, t3 = blp.get_series(series_id='mcxp Index', observation_start="20230101", field="px_close_1d")
     df4, t4 = blp.get_series(series_id='scxp Index', observation_start="20230101", field="px_close_1d")
 
-    title = "European Indizes YTD"
+    title = "European Indices Yield to Date"
 
-    chart = Chart(title=title, filename="european_indizes_YTD.png")
+    metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
+    chart = Chart(title=title, metadata=metadata, filename="eu_indices_ytd.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%",minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
+    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
+                           major_locator=MultipleLocator(5))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=2)

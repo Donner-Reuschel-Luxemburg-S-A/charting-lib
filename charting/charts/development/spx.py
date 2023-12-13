@@ -16,7 +16,7 @@ if __name__ == '__main__':
     for sector in list_sector:
         df2, t2 = blp.get_series(series_id=sector, observation_start='20220331')
 
-        df2['relative'] = df2['y'] / df1['y']/df2['y'].iloc[0]*df1['y'].iloc[0]
+        df2['relative'] = df2['y'] / df1['y'] / df2['y'].iloc[0] * df1['y'].iloc[0]
 
         chart = Chart(title=f"{sector} vs S&P 500 ", filename=f"spx_{sector}_relative.png")
 
@@ -27,8 +27,8 @@ if __name__ == '__main__':
         major_locator = mdates.YearLocator(base=5)
         minor_locator = mdates.YearLocator(base=1)
         major_formatter = mdates.AutoDateFormatter(major_locator)
-        chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
-
+        chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator,
+                               major_locator=major_locator)
 
         # chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0, transformer=[Resample(rule='W'), Pct(periods=1)])
         # chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=0, transformer=[Resample(rule='W'), Pct(periods=1)])
@@ -43,4 +43,3 @@ if __name__ == '__main__':
 
         chart.legend()
         chart.plot()
-

@@ -17,7 +17,8 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="us_treasury_spread_30y_10y.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
+    chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(5),
+                           major_locator=MultipleLocator(10))
 
     minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.MonthLocator(interval=12)
@@ -25,7 +26,7 @@ def main():
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_horizontal_line()
-    chart.add_series(x=df.index, y=df['y']*100, label=title)
+    chart.add_series(x=df.index, y=df['y'] * 100, label=title)
 
     chart.legend()
     chart.plot()

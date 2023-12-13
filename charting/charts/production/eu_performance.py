@@ -1,4 +1,3 @@
-
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
@@ -44,4 +43,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -14,7 +14,8 @@ def main():
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="de_gov_spread_30y_10y.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
+    chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(5),
+                           major_locator=MultipleLocator(10))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=6)

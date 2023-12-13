@@ -1,4 +1,3 @@
-
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
@@ -14,7 +13,7 @@ def main():
     ecb, _ = blp.get_series(series_id='EBBSTOTA Index', observation_start='20000101')
     boj, _ = blp.get_series(series_id='BJACTOTL Index', observation_start='20000101')
 
-    fed['y'] = (fed['y']/fed['y'].iloc[0]) * 100
+    fed['y'] = (fed['y'] / fed['y'].iloc[0]) * 100
     ecb['y'] = (ecb['y'] / ecb['y'].iloc[0]) * 100
     boj['y'] = (boj['y'] / boj['y'].iloc[0]) * 100
 
@@ -41,4 +40,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

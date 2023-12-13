@@ -1,4 +1,3 @@
-
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DataFrame
@@ -48,7 +47,8 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="us_cpi_by_component.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
+                           y_lim=(-2.5, 10))
 
     major_locator = mdates.YearLocator(base=1)
     minor_locator = mdates.MonthLocator(interval=2)
@@ -57,7 +57,8 @@ def main():
 
     chart.add_horizontal_line(y_axis_index=0)
 
-    chart.add_series(x=headline_df.index, y=headline_df['y'], label="Headline YoY", transformer=Pct(periods=12), linewidth=2)
+    chart.add_series(x=headline_df.index, y=headline_df['y'], label="Headline YoY", transformer=Pct(periods=12),
+                     linewidth=2)
     chart.add_series(x=core_df.index, y=core_df['y'], label="Core YoY", transformer=Pct(periods=12), linewidth=2)
 
     chart.add_series(x=services_df.index, y=services_df['weighted'], chart_type='bar', stacked=True,
@@ -76,4 +77,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
