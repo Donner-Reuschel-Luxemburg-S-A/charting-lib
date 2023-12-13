@@ -38,7 +38,7 @@ def main():
     chart.add_series(x=df1.index, y=df1['y'], transformer=Resample('M'), label=t1)
     chart.add_horizontal_line(y_axis_index=1)
 
-    chart.legend()
+    chart.legend(ncol=2)
     chart.plot()
 
 

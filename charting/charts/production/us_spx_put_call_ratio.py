@@ -1,4 +1,5 @@
 import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
@@ -16,8 +17,10 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
     chart = Chart(title=title, filename="us_spx_put_call_ratio.py.png", metadata=metadata, num_rows=2)
 
-    chart.configure_y_axis(row_index=0, y_axis_index=0, label="USD $")
-    chart.configure_y_axis(row_index=1, y_axis_index=0, label="Ratio")
+    chart.configure_y_axis(row_index=0, y_axis_index=0, label="USD $", minor_locator=MultipleLocator(250),
+                           major_locator=MultipleLocator(500))
+    chart.configure_y_axis(row_index=1, y_axis_index=0, label="Ratio", minor_locator=MultipleLocator(0.1),
+                           major_locator=MultipleLocator(0.5))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=12)
@@ -27,7 +30,7 @@ def main():
     chart.add_series(x=df1.index, y=df1['y'], label=t1, row_index=0, y_axis_index=0)
     chart.add_series(x=df2.index, y=df2['y'], label=t2, row_index=1, y_axis_index=0)
 
-    chart.legend()
+    chart.legend(ncol=2)
     chart.plot()
 
 
