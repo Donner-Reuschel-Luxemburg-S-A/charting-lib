@@ -38,7 +38,7 @@ jobs:
 
       - run: pdoc --html charting/ --output-dir docs/ --template-dir docs/templates --force
 
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/
 
