@@ -20,8 +20,10 @@ def main():
     metadata = Metadata(title=title, region=Region.DE, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="de_dax_profits_quarterly.png", num_y_axis=2)
 
-    chart.configure_y_axis(y_axis_index=0, label="EUR €", minor_locator=MultipleLocator(25), major_locator=MultipleLocator(100))
-    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
+    chart.configure_y_axis(y_axis_index=0, label="EUR €", minor_locator=MultipleLocator(25),
+                           major_locator=MultipleLocator(100))
+    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(5),
+                           major_locator=MultipleLocator(10))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=12)

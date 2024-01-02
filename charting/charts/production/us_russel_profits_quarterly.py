@@ -20,15 +20,18 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
     chart = Chart(title=title, filename="us_russel_profits_quarterly.png", metadata=metadata, num_y_axis=2)
 
-    chart.configure_y_axis(y_axis_index=0, label="USD $", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
-    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(10), major_locator=MultipleLocator(20))
+    chart.configure_y_axis(y_axis_index=0, label="USD $", minor_locator=MultipleLocator(5),
+                           major_locator=MultipleLocator(10))
+    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(10),
+                           major_locator=MultipleLocator(20))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=12)
     major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
-    chart.add_series(x=df1.index, y=df1['y'], chart_type='bar', transformer=[Resample('Q'), Pct(periods=4)], label=t1, y_axis_index=1)
+    chart.add_series(x=df1.index, y=df1['y'], chart_type='bar', transformer=[Resample('Q'), Pct(periods=4)], label=t1,
+                     y_axis_index=1)
 
     df1 = df1[df1.index >= datetime.datetime(2018, 1, 1)]
 

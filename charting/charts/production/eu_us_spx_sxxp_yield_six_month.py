@@ -3,14 +3,10 @@ import datetime
 import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting.transformer.avg import Avg
-from charting.transformer.pct import Pct
-from charting.transformer.resample import Resample
 from charting.transformer.ytd import Ytd
 
 
@@ -22,12 +18,13 @@ def main():
     df1, t1 = blp.get_series(series_id='SXXP Index', field="px_close_1d", observation_start=start.strftime("%Y%m%d"))
     df2, t2 = blp.get_series(series_id='SPX Index', field="px_close_1d", observation_start=start.strftime("%Y%m%d"))
 
-    title = "Stoxx Euro 600 & S&P 500 Yield"
+    title = "Stoxx Euro 600 & S&P 500 - 6 Month Performance"
 
     metadata = Metadata(title=title, region=[Region.EU, Region.US], category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_us_spx_sxxp_yield_six_month.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2))
+    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
+                           major_locator=MultipleLocator(2))
 
     major_locator = mdates.MonthLocator(interval=1)
     major_formatter = mdates.DateFormatter("%b %y")

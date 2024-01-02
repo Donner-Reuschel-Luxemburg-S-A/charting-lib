@@ -9,8 +9,6 @@ from source_engine.bloomberg_source import BloombergSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
-from charting.transformer.pct import Pct
-from charting.transformer.resample import Resample
 
 
 def main():
@@ -25,7 +23,8 @@ def main():
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_sx5e_profit_margin_fifty_year.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(0.5), major_locator=MultipleLocator(1))
+    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(0.5),
+                           major_locator=MultipleLocator(1))
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=3)

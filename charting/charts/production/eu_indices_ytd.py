@@ -1,5 +1,3 @@
-import datetime
-
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
@@ -21,7 +19,8 @@ def main():
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.EU)
     chart = Chart(title=title, filename="eu_indices_ytd.png", metadata=metadata)
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
+    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
+                           major_locator=MultipleLocator(5))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=2)

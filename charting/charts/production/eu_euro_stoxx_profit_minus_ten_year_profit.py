@@ -7,8 +7,6 @@ from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting.transformer.pct import Pct
-from charting.transformer.resample import Resample
 
 
 def main():
@@ -24,7 +22,8 @@ def main():
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_euro_stoxx_profit_minus_ten_year_profit.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2))
+    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
+                           major_locator=MultipleLocator(2))
 
     minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.YearLocator(base=2)
