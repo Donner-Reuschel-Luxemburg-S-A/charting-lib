@@ -45,6 +45,7 @@ class Chart:
             figsize (tuple): The figure size of the chart (default: (12, 8)).
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
+        self.filename_original = filename
         self.filename = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
         self.title = title
         self.num_rows = num_rows
@@ -77,7 +78,7 @@ class Chart:
         self.x_max_label = []
 
     def id(self) -> str:
-        return hashlib.sha1(self.title.encode('utf-8')).hexdigest()
+        return hashlib.sha1(self.filename_original.encode('utf-8')).hexdigest()
 
     def __remove_top_spines(self) -> None:
         """

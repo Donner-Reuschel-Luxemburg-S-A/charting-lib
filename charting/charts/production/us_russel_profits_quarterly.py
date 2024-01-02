@@ -13,17 +13,17 @@ from charting.transformer.resample import Resample
 def main():
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='DAX Index', field="RR906", observation_start="20170101")
+    df1, t1 = blp.get_series(series_id='RTY Index', field="RR906", observation_start="20170101")
 
-    title = "Quarterly DAX 40 Earnings Per Share"
+    title = "Quarterly Russel 2000 Earnings Per Share"
 
-    metadata = Metadata(title=title, region=Region.DE, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="de_dax_profits_quarterly.png", num_y_axis=2)
+    metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
+    chart = Chart(title=title, filename="us_russel_profits_quarterly.png", metadata=metadata, num_y_axis=2)
 
-    chart.configure_y_axis(y_axis_index=0, label="EUR €", minor_locator=MultipleLocator(25),
-                           major_locator=MultipleLocator(100))
-    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(5),
+    chart.configure_y_axis(y_axis_index=0, label="USD $", minor_locator=MultipleLocator(5),
                            major_locator=MultipleLocator(10))
+    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(10),
+                           major_locator=MultipleLocator(20))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=12)
@@ -39,7 +39,7 @@ def main():
 
     chart.add_horizontal_line(y_axis_index=1)
 
-    chart.legend(ncol=2)
+    chart.legend()
     chart.plot()
 
 
