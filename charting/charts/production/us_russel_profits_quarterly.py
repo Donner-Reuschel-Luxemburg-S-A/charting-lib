@@ -15,13 +15,13 @@ def main():
 
     df1, t1 = blp.get_series(series_id='RTY Index', field="RR906", observation_start="20170101")
 
-    title = "Russel 2000 Earnings Quarter"
+    title = "Quarterly Russel 2000 Earnings Per Share"
 
+    metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
+    chart = Chart(title=title, filename="us_russel_profits_quarterly.png", metadata=metadata, num_y_axis=2)
 
-    chart = Chart(title=title, filename="Russel2000_Earnings_Quarter.png",  num_y_axis=2)
-
-    chart.configure_y_axis(y_axis_index=0, label="EUR €")
-    chart.configure_y_axis(y_axis_index=1, label="%")
+    chart.configure_y_axis(y_axis_index=0, label="USD $", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
+    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(10), major_locator=MultipleLocator(20))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=12)
@@ -38,6 +38,7 @@ def main():
 
     chart.legend()
     chart.plot()
+
 
 if __name__ == '__main__':
     main()

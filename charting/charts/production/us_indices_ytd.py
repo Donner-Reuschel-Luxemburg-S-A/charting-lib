@@ -6,8 +6,6 @@ from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting.transformer.pct import Pct
-from charting.transformer.resample import Resample
 from charting.transformer.ytd import Ytd
 
 
@@ -19,11 +17,12 @@ def main():
     df3, t3 = blp.get_series(series_id='indu Index', observation_start="20230101", field="px_close_1d")
     df4, t4 = blp.get_series(series_id='rty Index', observation_start="20230101", field="px_close_1d")
 
-    title = "USA Indizes YTD"
+    title = "US Indices YTD"
 
-    chart = Chart(title=title, filename="USA_indizes_YTD.png")
+    metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
+    chart = Chart(title=title, filename="us_indices_ytd.png", metadata=metadata)
 
-    chart.configure_y_axis(y_axis_index=0, label="%",minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
+    chart.configure_y_axis(y_axis_index=0, label="%",minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=2)

@@ -15,13 +15,13 @@ def main():
 
     df1, t1 = blp.get_series(series_id='SX5E Index', field="RR906", observation_start="20170101")
 
-    title = "Euro Stoxx 50 Earnings Quarter"
+    title = "Quarterly Euro Stoxx 50 Earnings Per Share"
 
+    metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
+    chart = Chart(title=title, filename="eu_sx5e_profits_quarterly.png", metadata=metadata, num_y_axis=2)
 
-    chart = Chart(title=title, filename="Euro_Stoxx_50_Earnings_Quarter.png",  num_y_axis=2)
-
-    chart.configure_y_axis(y_axis_index=0, label="EUR €")
-    chart.configure_y_axis(y_axis_index=1, label="%")
+    chart.configure_y_axis(y_axis_index=0, label="EUR €", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(25))
+    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10))
 
     minor_locator = mdates.MonthLocator(interval=1)
     major_locator = mdates.MonthLocator(interval=12)
@@ -38,6 +38,7 @@ def main():
 
     chart.legend()
     chart.plot()
+
 
 if __name__ == '__main__':
     main()
