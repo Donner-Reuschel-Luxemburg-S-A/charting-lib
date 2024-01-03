@@ -20,7 +20,7 @@ from source_engine.chart_source import ChartSource, ChartModel
 from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
-from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style
+from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style, colors
 from charting.model.transformer import Transformer
 
 
@@ -126,7 +126,8 @@ class Chart:
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,
-                         major_locator: Locator = None):
+                         major_locator: Locator = None,
+                         rotation: int = None):
         """
         Configures the x-axis with label, formatter and locator.
 
@@ -140,6 +141,9 @@ class Chart:
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
         ax.set_xlabel(label)
+
+        if rotation is not None:
+            ax.tick_params(axis='x', labelrotation=rotation)
 
         if minor_formatter is not None:
             ax.xaxis.set_minor_formatter(minor_formatter)
@@ -240,9 +244,6 @@ class Chart:
         except IndexError:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
 
-        self.x_min_label.append(min(x))
-        self.x_max_label.append(max(x))
-
         if invert:
             y = -y
             ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)', loc="top")
@@ -265,6 +266,25 @@ class Chart:
                     fill_threshold = ax.get_ylim()[0]
                 ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
 
+            self.x_min_label.append(min(x))
+            self.x_max_label.append(max(x))
+        elif chart_type == 'boxplot':
+            median_props = dict(color=colors[1], linewidth=1)
+            mean_props = dict(color=colors[2], linewidth=1, linestyle='--')
+
+            handle = ax.boxplot(y, showfliers=False, labels=x, vert=False, patch_artist=True, meanline=True,
+                                showmeans=True, meanprops=mean_props, medianprops=median_props)
+
+            for patch in handle['boxes']:
+                patch.set_facecolor(color)
+
+            self.x_min_label.append(min([len(ele) for ele in x]))
+            self.x_max_label.append(max([len(ele) for ele in x]))
+        elif chart_type == 'bar' and all(isinstance(p, str) for p in x):
+            handle = ax.barh(x, y, align='center', label=label, color=color, left=bar_bottom, alpha=alpha)
+
+            self.x_min_label.append(min([len(ele) for ele in x]))
+            self.x_max_label.append(max([len(ele) for ele in x]))
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
@@ -300,19 +320,21 @@ class Chart:
 
             handle = ax.bar(x, y, align='center', width=mean_bar_width, bottom=bar_bottom,
                             label=label, color=color, alpha=alpha)
+            x_min = min(x)
+            x_max = max(x)
+
+            if chart_type == 'bar':
+                x_min = x_min - timedelta(days=mean_bar_width / 2)
+                x_max = x_max + timedelta(days=mean_bar_width / 2)
+
+            self.x_min_label.append(min(x))
+            self.x_max_label.append(max(x))
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
-        x_min = min(x)
-        x_max = max(x)
-
-        if chart_type == 'bar':
-            x_min = x_min - timedelta(days=mean_bar_width / 2)
-            x_max = x_max + timedelta(days=mean_bar_width / 2)
-
         self.handles.append(handle)
-        self.x_min_axes.append(x_min)
-        self.x_max_axes.append(x_max)
 
     def add_horizontal_line(self, row_index: int = 0, y_axis_index: int = 0, y: float = 0) -> None:
         """
@@ -368,16 +390,23 @@ class Chart:
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
+        label_x_position = -0.05
+
+        if len(self.x_min_axes) != 0 and len(self.x_max_axes) != 0:
+            ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
+
         bloomberg_label = 'Bloomberg' if bloomberg_source_override is None else f'Bloomberg ({bloomberg_source_override})'
 
-        label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+        if len(self.x_max_label) == 1:
+            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%d.%m.%Y")}.'
+            label_x_position = self.x_max_label[0] * -0.012
+        else:
+            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
+                    f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
 
-        txt = offsetbox.TextArea(label, textprops=source_text_style)
-
-        label_y_position = -0.1
+        label_y_position = -0.125
 
         if ax.get_legend() is not None:
             box = ax.get_legend()._legend_box
@@ -385,7 +414,8 @@ class Chart:
             extent = ax.transAxes.inverted().transform(extent)
             label_y_position = extent[0][1] - 0.05
 
-        ax.text(-0.05, label_y_position, label, transform=ax.transAxes, va='top', ha='left', **source_text_style)
+        ax.text(label_x_position, label_y_position, label, transform=ax.transAxes, va='top', ha='left',
+                **source_text_style)
 
     def legend(self, ncol: int = 1):
         """
