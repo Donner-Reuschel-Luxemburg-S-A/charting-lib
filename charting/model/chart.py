@@ -270,13 +270,21 @@ class Chart:
             self.x_max_label.append(max(x))
         elif chart_type == 'boxplot':
             median_props = dict(color=colors[1], linewidth=1)
-            mean_props = dict(color=colors[2], linewidth=1, linestyle='--')
+            mean_props = dict(color=colors[1], linewidth=1, linestyle='--')
 
             handle = ax.boxplot(y, showfliers=False, labels=x, vert=False, patch_artist=True, meanline=True,
-                                showmeans=True, meanprops=mean_props, medianprops=median_props)
+                                showmeans=False, meanprops=mean_props, medianprops=median_props)
 
             for patch in handle['boxes']:
                 patch.set_facecolor(color)
+
+            for index, category_data in enumerate(y):
+                latest_value = category_data[-1]
+                y_pos = index + 1
+                ax.scatter(latest_value, y_pos, color=colors[1], zorder=3, s=15)
+                ax.text(latest_value, y_pos + 0.05, f'{round(latest_value, 2)}', verticalalignment='bottom',
+                        horizontalalignment="center",
+                        color=colors[1], fontdict={"fontsize": 6})
 
             self.x_min_label.append(min([len(ele) for ele in x]))
             self.x_max_label.append(max([len(ele) for ele in x]))

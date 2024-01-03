@@ -1,28 +1,29 @@
 import datetime
 
-import numpy as np
+import matplotlib.dates as mdates
+from dateutil.relativedelta import relativedelta
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
-from scipy import stats
+
 from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Region, Category
 
 
 def main():
     blp = BloombergSource()
 
-    indices = ["UKX Index", "DAX Index", "FTSEMIB Index", "PSI20 Index", "CAC Index", "AEX Index",
-               "SMI Index", "IBEX Index"]
+    indices = ["SX7P Index", "SXEP Index", "SXAP Index", "SXPP Index", "SX8P Index", "SX86P Index", "SXNP Index",
+               "SX6P Index", "SXDP Index", "SXKP Index", "SXIP Index", "SX4P Index", "SXRP Index", "SX3P Index",
+               "SXTP Index", "SXOP Index", "S600CPP index"]
 
     dfs = [blp.get_series(series_id=idx, field="RR900", observation_start="20000101") for idx in indices]
 
     y = [df["y"].values for df, _ in dfs]
+    names = [title for _, title in dfs]
 
-    names = ["FTSE 100 Index", "DAX Index", "FTSE MIB Index", "PSI 20 Index", "CAC 40 Index", "AEX-Index",
-             "Swiss Market Index", "IBEX 35 Index"]
+    title = f"Stoxx Euro 600 Sector P/E Overview"
 
-    title = f"European Indices P/E Overview"
-
-    chart = Chart(title=title, filename="eu_indices_per_overview.png")
+    chart = Chart(title=title, filename="eu_sxxp_sector_per_overview.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
     chart.configure_x_axis(label="P/E", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
