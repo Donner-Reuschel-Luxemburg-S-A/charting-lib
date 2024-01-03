@@ -12,21 +12,17 @@ from charting.model.metadata import Metadata, Region, Category
 def main():
     blp = BloombergSource()
 
-    indices = ["SX7P Index", "SXEP Index", "SXAP Index", "SXPP Index", "SX8P Index", "SX86P Index", "SXNP Index",
-               "SX6P Index", "SXDP Index", "SXKP Index", "SXIP Index", "SX4P Index", "SXRP Index", "SX3P Index",
-               "SXTP Index", "SXOP Index", "S600CPP index"]
-
-    names = ["Banks", "Oil & Gas", "Autos & Parts", "Basic Resources", "Technology", "Real Estate", "Industrials",
-             "Utilities", "Health Care", "Telecom", "Insurance", "Chemicals", "Retail", "Food & Beverage",
-             "Travel", "Construction & Materials", "Consumer Products & Services"]
+    indices = ["DAX Index", "SXXP Index", "SX5E Index", "SPX Index", "NDX Index", "INDU Index", "NKY Index",
+               "MXEF Index"]
 
     dfs = [blp.get_series(series_id=idx, field="RR900", observation_start="20000101") for idx in indices]
 
+    names = [title for _, title in dfs]
     y = [df["y"].values for df, _ in dfs]
 
-    title = f"Stoxx Euro 600 Sector P/E Overview"
+    title = f"Global Indices P/E Overview"
 
-    chart = Chart(title=title, filename="eu_sxxp_sector_per_overview.png")
+    chart = Chart(title=title, filename="global_indices_per_overview.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
     chart.configure_x_axis(label="P/E", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
