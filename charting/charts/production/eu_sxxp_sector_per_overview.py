@@ -32,7 +32,8 @@ def main():
     chart.configure_y_axis(y_axis_index=0, label="")
     chart.configure_x_axis(label="P/E", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
 
-    chart.add_series(names, y, label="", chart_type="boxplot")
+    chart.add_series(names, y, label="", chart_type="boxplot",
+                     t_min=min(df.index.min() for df, _ in dfs), t_max=max(df.index.max() for df, _ in dfs))
 
     chart.plot()
 

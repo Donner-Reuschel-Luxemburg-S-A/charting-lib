@@ -34,7 +34,8 @@ def main():
     chart.configure_y_axis(y_axis_index=0, label="")
     chart.configure_x_axis(label="Percentage Points", minor_locator=MultipleLocator(0.25), major_locator=MultipleLocator(1))
 
-    chart.add_series(data[0], data[1], label="", chart_type="bar")
+    chart.add_series(data[0], data[1], label="", chart_type="bar",
+                     t_min=min(df.index.min() for df, _ in dfs), t_max=max(df.index.max() for df, _ in dfs))
 
     chart.plot()
 

@@ -52,6 +52,7 @@ class Chart:
         self.num_y_axis = num_y_axis
         self.figsize = figsize
         self.metadata = metadata
+        self.max_label_length = 0
 
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
@@ -210,7 +211,8 @@ class Chart:
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
-                   transformer: Union[Transformer, List[Transformer]] = None):
+                   transformer: Union[Transformer, List[Transformer]] = None, t_min: datetime = None,
+                   t_max: datetime = None):
         """
         Adds a series to the chart.
 
@@ -235,6 +237,8 @@ class Chart:
                 If a list of transformers is provided, they will be applied sequentially to the series.
                 Each transformer should implement the `transform` method to modify the series.
                 The label of the series will be updated to reflect the applied transformers.
+            t_min (datetime): Optional time series minimum for boxplot and bar charts with categorical x axis.
+            t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
         """
         color = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
@@ -266,8 +270,15 @@ class Chart:
                     fill_threshold = ax.get_ylim()[0]
                 ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
 
-            self.x_min_label.append(min(x))
-            self.x_max_label.append(max(x))
+            x_min = min(x)
+            x_max = max(x)
+
+            self.x_min_label.append(x_min)
+            self.x_max_label.append(x_max)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
+
         elif chart_type == 'boxplot':
             median_props = dict(color=colors[1], linewidth=1)
             mean_props = dict(color=colors[1], linewidth=1, linestyle='--')
@@ -286,13 +297,23 @@ class Chart:
                         horizontalalignment="center",
                         color=colors[1], fontdict={"fontsize": 6})
 
-            self.x_min_label.append(min([len(ele) for ele in x]))
-            self.x_max_label.append(max([len(ele) for ele in x]))
+            self.max_label_length = max([len(ele) for ele in x])
+
+            if not t_min or not t_max:
+                raise Exception("Please specify t_min/t_max if using boxplot or bar plot with categorical x axis.")
+
+            self.x_min_label.append(t_min)
+            self.x_max_label.append(t_max)
         elif chart_type == 'bar' and all(isinstance(p, str) for p in x):
             handle = ax.barh(x, y, align='center', label=label, color=color, left=bar_bottom, alpha=alpha)
 
-            self.x_min_label.append(min([len(ele) for ele in x]))
-            self.x_max_label.append(max([len(ele) for ele in x]))
+            self.max_label_length = max([len(ele) for ele in x])
+
+            if not t_min or not t_max:
+                raise Exception("Please specify t_min/t_max if using boxplot or bar plot with categorical x axis.")
+
+            self.x_min_label.append(t_min)
+            self.x_max_label.append(t_max)
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
@@ -328,17 +349,20 @@ class Chart:
 
             handle = ax.bar(x, y, align='center', width=mean_bar_width, bottom=bar_bottom,
                             label=label, color=color, alpha=alpha)
+
             x_min = min(x)
             x_max = max(x)
+
+            self.x_min_label.append(x_min)
+            self.x_max_label.append(x_max)
 
             if chart_type == 'bar':
                 x_min = x_min - timedelta(days=mean_bar_width / 2)
                 x_max = x_max + timedelta(days=mean_bar_width / 2)
 
-            self.x_min_label.append(min(x))
-            self.x_max_label.append(max(x))
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
+
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
@@ -405,14 +429,12 @@ class Chart:
 
         bloomberg_label = 'Bloomberg' if bloomberg_source_override is None else f'Bloomberg ({bloomberg_source_override})'
 
-        if len(self.x_max_label) == 1:
-            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                    f'{datetime.today().strftime("%d.%m.%Y")}.'
-            label_x_position = self.x_max_label[0] * -0.012
-        else:
-            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                    f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+        if self.max_label_length != 0:
+            label_x_position = self.max_label_length * -0.012
+
+        label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
+                f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
+                f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
 
         label_y_position = -0.125
 
