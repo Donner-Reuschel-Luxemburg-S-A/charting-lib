@@ -22,7 +22,7 @@ def main():
     metadata = Metadata(title=title, region=Region.DE, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="de_dax_yield_six_month.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
                            major_locator=MultipleLocator(2))
 
     major_locator = mdates.MonthLocator(interval=1)
