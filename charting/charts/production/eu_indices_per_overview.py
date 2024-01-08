@@ -5,6 +5,7 @@ from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 from scipy import stats
 from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Category, Region
 
 
 def main():
@@ -22,7 +23,8 @@ def main():
 
     title = f"European Indices P/E Overview"
 
-    chart = Chart(title=title, filename="eu_indices_per_overview.png")
+    metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
+    chart = Chart(title=title, metadata=metadata, filename="eu_indices_per_overview.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
     chart.configure_x_axis(label="P/E", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))

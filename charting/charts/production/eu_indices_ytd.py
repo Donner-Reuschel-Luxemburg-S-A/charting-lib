@@ -19,7 +19,7 @@ def main():
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.EU)
     chart = Chart(title=title, filename="eu_indices_ytd.png", metadata=metadata)
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
                            major_locator=MultipleLocator(5))
 
     minor_locator = mdates.MonthLocator(interval=1)

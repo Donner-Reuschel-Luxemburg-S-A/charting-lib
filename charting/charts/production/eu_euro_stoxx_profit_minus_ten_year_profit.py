@@ -22,7 +22,7 @@ def main():
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_euro_stoxx_profit_minus_ten_year_profit.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1),
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
                            major_locator=MultipleLocator(2))
 
     minor_locator = mdates.MonthLocator(interval=3)

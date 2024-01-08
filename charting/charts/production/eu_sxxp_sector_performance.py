@@ -30,10 +30,11 @@ def main():
 
     title = f"Stoxx Euro 600 Sector Performance - 1 Month ({start.strftime('%d.%m.%Y')} - {today.strftime('%d.%m.%Y')})"
 
-    chart = Chart(title=title, filename="eu_sxxp_sector_performance.png")
+    metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
+    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_sector_performance.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
-    chart.configure_x_axis(label="%", minor_locator=MultipleLocator(0.25), major_locator=MultipleLocator(1))
+    chart.configure_x_axis(label="Percentage Points", minor_locator=MultipleLocator(0.25), major_locator=MultipleLocator(1))
 
     chart.add_series(data[0], data[1], label="", chart_type="bar")
 

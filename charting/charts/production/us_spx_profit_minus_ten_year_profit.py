@@ -22,7 +22,7 @@ def main():
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="us_spx_profit_minus_ten_year_profit.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(0.5),
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(0.5),
                            major_locator=MultipleLocator(1))
 
     minor_locator = mdates.MonthLocator(interval=3)

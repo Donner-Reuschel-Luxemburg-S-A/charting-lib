@@ -5,6 +5,7 @@ from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Region, Category
 
 
 def main():
@@ -27,10 +28,11 @@ def main():
 
     title = f"S&P 500 Sector Performance - 1 Month ({start.strftime('%d.%m.%Y')} - {today.strftime('%d.%m.%Y')})"
 
-    chart = Chart(title=title, filename="us_spx_sector_performance.png")
+    metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
+    chart = Chart(title=title, metadata=metadata, filename="us_spx_sector_performance.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
-    chart.configure_x_axis(label="%", minor_locator=MultipleLocator(0.25), major_locator=MultipleLocator(1))
+    chart.configure_x_axis(label="Percentage Points", minor_locator=MultipleLocator(0.25), major_locator=MultipleLocator(1))
 
     chart.add_series(data[0], data[1], label="", chart_type="bar")
 

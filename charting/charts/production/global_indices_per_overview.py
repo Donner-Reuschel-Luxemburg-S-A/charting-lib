@@ -22,7 +22,8 @@ def main():
 
     title = f"Global Indices P/E Overview"
 
-    chart = Chart(title=title, filename="global_indices_per_overview.png")
+    metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.EQUITY)
+    chart = Chart(title=title, metadata=metadata, filename="global_indices_per_overview.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
     chart.configure_x_axis(label="P/E", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))

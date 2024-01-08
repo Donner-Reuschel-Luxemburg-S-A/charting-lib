@@ -22,7 +22,7 @@ def main():
 
     chart.configure_y_axis(y_axis_index=0, label="EUR €", minor_locator=MultipleLocator(25),
                            major_locator=MultipleLocator(100))
-    chart.configure_y_axis(y_axis_index=1, label="%", minor_locator=MultipleLocator(5),
+    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", minor_locator=MultipleLocator(5),
                            major_locator=MultipleLocator(10))
 
     minor_locator = mdates.MonthLocator(interval=1)
