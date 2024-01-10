@@ -25,8 +25,12 @@ class Ppt:
         self.prs = Presentation(pptx=f'{self.parent_dir}/templates/{template}')
         self.db: ChartSource = ChartSource()
 
-    def create(self, data: List[dict], title: str = "Charts", subtitle: str = None,
+    def create(self, data: List[dict], title: str = None, subtitle: str = None,
                suptitle: str = datetime.datetime.today().strftime("%d.%m.%Y")) -> str:
+
+        title = title if title != "" else "Charts"
+        subtitle = subtitle if subtitle != "" else None
+
         self.__add_title_slide(title=title, subtitle=subtitle, suptitle=suptitle)
         self.__add_slides(data=data)
         self.__add_disclaimer()
