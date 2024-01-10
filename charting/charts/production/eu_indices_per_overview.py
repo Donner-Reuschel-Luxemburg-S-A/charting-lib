@@ -1,9 +1,6 @@
-import datetime
-
-import numpy as np
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
-from scipy import stats
+
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 

@@ -1,7 +1,3 @@
-import datetime
-
-import matplotlib.dates as mdates
-from dateutil.relativedelta import relativedelta
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 

@@ -25,23 +25,11 @@ class Ppt:
         self.prs = Presentation(pptx=f'{self.parent_dir}/templates/{template}')
         self.db: ChartSource = ChartSource()
 
-    def create(self, chart_ids: List[str], title: str = "Charts", subtitle: str = None,
+    def create(self, data: List[dict], title: str = "Charts", subtitle: str = None,
                suptitle: str = datetime.datetime.today().strftime("%d.%m.%Y")) -> str:
         self.__add_title_slide(title=title, subtitle=subtitle, suptitle=suptitle)
-        self.__add_slides(chart_ids=chart_ids)
+        self.__add_slides(data=data)
         self.__add_disclaimer()
-        return self.__save()
-
-    def create_monatsmappe(self) -> str:
-        f = open(f'{self.parent_dir}/templates/monatsmappe-zinsen.json', encoding='utf-8')
-        data = json.load(f)
-        f.close()
-
-        self.__add_title_slide(title=data.get('title'), subtitle=data.get('subtitle'),
-                               suptitle=datetime.datetime.today().strftime("%b %Y"))
-        self.__add_chapter(data=data)
-        self.__add_disclaimer()
-
         return self.__save()
 
     def __add_title_slide(self, title: str, subtitle: str, suptitle: str):
@@ -64,47 +52,22 @@ class Ppt:
             sp = subtitle_obj.element
             sp.getparent().remove(sp)
 
-    def __add_chapter(self, data):
-        for chapter in data.get('chapter'):
-            title = chapter.get('title')
-            slides = chapter.get('slides')
-
-            with Session(bind=self.db.engine) as session:
-                for slide in slides:
-                    _id = slide.get('chart')
-
-                    slide_title = slide.get('title')
-
-                    slide_layout = self.prs.slide_layouts[3]
-                    slide = self.prs.slides.add_slide(slide_layout)
-
-                    slide.placeholders[0].text = title
-                    slide.placeholders[13].text = slide_title
-
-                    if _id != "":
-                        chart = session.query(ChartModel).get(_id)
-                        image_data = base64.b64decode(chart.base64)
-                        image_stream = io.BytesIO(image_data)
-
-                        slide.placeholders[19].insert_picture(image_stream)
-
-    def __add_slides(self, chart_ids: List[str]):
+    def __add_slides(self, data: List[dict]):
         with Session(bind=self.db.engine) as session:
-            charts = session.query(ChartModel).filter(ChartModel.id.in_(chart_ids)).all()
+            for item in data:
+                chart = session.query(ChartModel).get(item['id'])
 
-        for chart in charts:
-            slide_title = chart.title
+                slide_layout = self.prs.slide_layouts[3]
+                slide = self.prs.slides.add_slide(slide_layout)
 
-            slide_layout = self.prs.slide_layouts[3]
-            slide = self.prs.slides.add_slide(slide_layout)
+                title = item['heading'] if item['heading'] != '' else ', '.join(chart.category.split(','))
+                subtitle = item['subtitle'] if item['subtitle'] != '' else ', '.join(chart.region.split(','))
+                slide.placeholders[0].text = title
+                slide.placeholders[13].text = subtitle
 
-            slide.placeholders[0].text = ', '.join(chart.category.split(','))
-            slide.placeholders[13].text = ', '.join(chart.region.split(','))
-
-            image_data = base64.b64decode(chart.base64)
-            image_stream = io.BytesIO(image_data)
-
-            slide.placeholders[19].insert_picture(image_stream)
+                image_data = base64.b64decode(chart.base64)
+                image_stream = io.BytesIO(image_data)
+                slide.placeholders[19].insert_picture(image_stream)
 
     def __add_disclaimer(self):
         slide_layout = self.prs.slide_layouts[17]
