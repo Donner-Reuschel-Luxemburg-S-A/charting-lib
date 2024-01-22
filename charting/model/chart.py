@@ -437,6 +437,8 @@ class Chart:
                 f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
 
         label_y_position = -0.125
+        if self.num_rows > 1:
+            label_y_position = -0.35
 
         if ax.get_legend() is not None:
             box = ax.get_legend()._legend_box
