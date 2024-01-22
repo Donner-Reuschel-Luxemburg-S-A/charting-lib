@@ -18,7 +18,7 @@ def main():
     stock_data = sorted(zip(stock_names, stock_yields), key=lambda x: x[1])
     stock_data = list(zip(*stock_data))
 
-    cmdty_indices = ["XBTUSD Curncy", "XBT Curncy", "XAU Curncy", "CL1 Comdty", "EURUSD Curncy", "USDJPY Curncy", "EURCHF Curncy", "EURGBP Curncy"]
+    cmdty_indices = ["XBTUSD Curncy", "XAG Curncy", "XAU Curncy", "CL1 Comdty", "EURUSD Curncy", "USDJPY Curncy", "EURCHF Curncy", "EURGBP Curncy"]
     cmdty_dfs = [blp.get_series(series_id=idx, observation_start="20230101", observation_end="20231231") for idx in
                  cmdty_indices]
     cmdty_names = ["Bitcoin USD", "Silver USD", "Gold USD", "Crude Oil WTI", "EUR/USD", "USD/JPY", "EUR/CHF", "EUR/GBP"]
