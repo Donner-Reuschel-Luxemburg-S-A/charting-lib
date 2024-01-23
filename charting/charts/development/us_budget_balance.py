@@ -20,7 +20,7 @@ def main():
     title = "US Budget Balance MoM"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_budget_balance_mom.png")
+    chart = Chart(title=title, filename="us_budget_balance_mom.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(100), label="USD (bn.)")
 
@@ -36,7 +36,7 @@ def main():
 
     chart = Chart(title=title, filename="us_budget_balance_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200), label="Percentage Points")
 
     tb_df['z'] = tb_df['y'].rolling(12).sum()
 

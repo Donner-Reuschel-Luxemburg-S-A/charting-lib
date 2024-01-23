@@ -22,9 +22,9 @@ def main():
     title = "US Building Permits 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_building_permits_mom_6.png")
+    chart = Chart(title=title, filename="us_building_permits_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
 
     chart.add_series(bp_df.index, bp_df['y'] * 12, label=bp_title, transformer=[Avg(offset=DateOffset(months=6))])
 
@@ -38,7 +38,7 @@ def main():
 
     chart = Chart(title=title, filename="us_building_permits_12.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
 
     chart.add_series(bp_df.index, bp_df['y'] * 12, label=bp_title, transformer=[Avg(offset=DateOffset(months=12))])
 
@@ -52,7 +52,7 @@ def main():
 
     chart = Chart(title=title, filename="us_building_permits_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
 
     bp_df['z'] = bp_df['y'].rolling(12).sum()
 

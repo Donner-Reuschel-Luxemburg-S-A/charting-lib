@@ -25,7 +25,7 @@ def main():
 
     chart = Chart(title=title, filename="us_ahe_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
 
     chart.add_series(ahe_y_df.index, ahe_y_df['y'], label=ahe_y_title)
 
@@ -37,9 +37,9 @@ def main():
     title = "US Average Hourly Earnings MoM 3M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_ahe_mom_3.png")
+    chart = Chart(title=title, filename="us_ahe_mom_3.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
 
     chart.add_series(ahe_m_df.index, ahe_m_df['y'] * 12, label=ahe_m_title,
                      transformer=[Avg(offset=DateOffset(months=3))])
@@ -54,7 +54,7 @@ def main():
 
     chart = Chart(title=title, filename="us_ahe_mom_6.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
 
     chart.add_series(ahe_m_df.index, ahe_m_df['y'] * 12, label=ahe_m_title,
                      transformer=[Avg(offset=DateOffset(months=6))])
