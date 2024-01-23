@@ -94,7 +94,7 @@ def main():
 
     chart = Chart(title=title, filename="us_pmi_chicago.png", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
     chart.add_series(pmi_chicago_df.index, pmi_chicago_df['y'], label=pmi_chicago_title)
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
@@ -108,7 +108,7 @@ def main():
 
     chart = Chart(title=title, filename="us_leading_indicator.png", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
     chart.add_series(lei_df.index, lei_df['y'], label=lei_title)
     chart.add_series(lei6m_df.index, lei6m_df['y'], label=lei6m_title)
@@ -124,7 +124,7 @@ def main():
 
     chart = Chart(title=title, filename="us_consumer_confidence.png", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
     chart.add_series(confidence_df.index, confidence_df['y'], label=confidence_title)
 
@@ -133,20 +133,6 @@ def main():
     chart.add_horizontal_line(y=100)
     chart.legend(ncol=2)
     chart.plot()
-
-    # title = "US ISM Prices Paid vs. CPI"
-    #
-    # chart = Chart(title=title, filename="us_ism_cpi.png", num_rows=1,num_y_axis=2)
-    # chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    # chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
-    #
-    # chart.add_series(ism_manu_p_df.index, ism_manu_p_df['y'], label="ISM Manufacturing Prices")
-    # chart.add_series(ism_serv_p_df.index, ism_serv_p_df['y'], label="ISM Services Prices")
-    # chart.add_series(cpi_df.index, cpi_df['y'], label="US CPI",y_axis_index=1,transformer=Lag(offset=DateOffset(months=12)))
-    #
-    # chart.add_horizontal_line(y=2)
-    # chart.legend(ncol=2)
-    # chart.plot()
 
 
 if __name__ == '__main__':
