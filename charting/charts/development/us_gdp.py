@@ -25,7 +25,7 @@ def main():
 
     chart = Chart(title=title, filename="us_gdp.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     chart.add_series(gdp_df.index, gdp_df['y'], label=gdp_title, transformer=[Avg(offset=DateOffset(months=6))])
 
@@ -39,7 +39,7 @@ def main():
 
     chart = Chart(title=title, filename="us_gdp_personal_consumption.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     chart.add_series(gdp_consumption_df.index, gdp_consumption_df['y'], label=gdp_consumption_title,
                      transformer=[Avg(offset=DateOffset(months=6))])

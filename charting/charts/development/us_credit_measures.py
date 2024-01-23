@@ -23,7 +23,7 @@ def main():
 
     chart = Chart(title=title, filename="us_credit_measures.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(50), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(50), label="Percentage Points")
 
     chart.add_series(bankcredit_df.index, bankcredit_df['y'], label=bankcredit_title, transformer=[Pct(12)])
     chart.add_series(ci_loans_df.index, ci_loans_df['y'], label=ci_loans_title, transformer=[Pct(12)])

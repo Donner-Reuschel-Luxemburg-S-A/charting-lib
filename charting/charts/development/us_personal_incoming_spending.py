@@ -25,7 +25,7 @@ def main():
 
     chart = Chart(title=title, filename="us_personal_income_mom_6.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     chart.add_series(pi_df.index, pi_df['y'] * 12, label=pi_title, transformer=[Avg(offset=DateOffset(months=6))])
 
@@ -39,7 +39,7 @@ def main():
 
     chart = Chart(title=title, filename="us_personal_income_mom_12.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     chart.add_series(pi_df.index, pi_df['y'] * 12, label=pi_title,
                      transformer=[Avg(offset=DateOffset(months=12))])
@@ -54,7 +54,7 @@ def main():
 
     chart = Chart(title=title, filename="us_personal_income_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     pi_df['z'] = pi_df['y'].rolling(12).sum()
 
@@ -70,7 +70,7 @@ def main():
 
     chart = Chart(title=title, filename="us_personal_spending_mom_6.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     chart.add_series(ps_df.index, ps_df['y'] * 12, label=ps_title, transformer=[Avg(offset=DateOffset(months=6))])
 
@@ -84,7 +84,7 @@ def main():
 
     chart = Chart(title=title, filename="us_personal_spending_mom_12.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     chart.add_series(ps_df.index, ps_df['y'] * 12, label=ps_title,
                      transformer=[Avg(offset=DateOffset(months=12))])
@@ -99,7 +99,7 @@ def main():
 
     chart = Chart(title=title, filename="us_personal_spending_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     ps_df['z'] = ps_df['y'].rolling(12).sum()
 

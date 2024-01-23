@@ -24,7 +24,7 @@ def main():
 
     chart = Chart(title=title, filename="us_wholesale_inventories_mom_6.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     df = wholesale_inv_df = wholesale_inv_df.iloc[6:, ]
     chart.add_series(df.index, df['y'] * 12, label=wholesale_inv_title, transformer=[Avg(offset=DateOffset(months=6))])
@@ -39,7 +39,7 @@ def main():
 
     chart = Chart(title=title, filename="us_wholesale_inventories_mom.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="Percentage Points")
 
     chart.add_series(wholesale_inv_df.index, wholesale_inv_df['y'], label=wholesale_inv_title)
 
@@ -53,7 +53,7 @@ def main():
 
     chart = Chart(title=title, filename="us_wholesale_inventories_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     wholesale_inv_df['z'] = wholesale_inv_df['y'].rolling(12).sum()
     wholesale_inv_df = wholesale_inv_df.iloc[12:, ]

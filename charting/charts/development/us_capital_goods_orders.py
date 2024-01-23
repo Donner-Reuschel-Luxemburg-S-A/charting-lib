@@ -22,9 +22,9 @@ def main():
     title = "US Capital Goods Orders 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_capital_goods_orders_mom_6.png")
+    chart = Chart(title=title, filename="us_capital_goods_orders_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
     chart.add_series(co_df.index, co_df['y'] * 12, label=co_title, transformer=[Avg(offset=DateOffset(months=6))])
 
@@ -38,7 +38,7 @@ def main():
 
     chart = Chart(title=title, filename="us_capital_goods_orders_mom_12.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
     chart.add_series(co_df.index, co_df['y'] * 12, label=co_title,
                      transformer=[Avg(offset=DateOffset(months=12))])
@@ -53,7 +53,7 @@ def main():
 
     chart = Chart(title=title, filename="us_capital_goods_orders_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
     co_df['z'] = co_df['y'].rolling(12).sum()
 

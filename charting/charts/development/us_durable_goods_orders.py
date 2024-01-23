@@ -24,7 +24,7 @@ def main():
 
     chart = Chart(title=title, filename="us_durable_goods_orders_mom_6.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
     chart.add_series(do_df.index, do_df['y'] * 12, label=do_title, transformer=[Avg(offset=DateOffset(months=6))])
 
@@ -38,7 +38,7 @@ def main():
 
     chart = Chart(title=title, filename="us_durable_goods_orders_mom_12.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
     chart.add_series(do_df.index, do_df['y'] * 12, label=do_title,
                      transformer=[Avg(offset=DateOffset(months=12))])
@@ -53,7 +53,7 @@ def main():
 
     chart = Chart(title=title, filename="us_durable_goods_orders_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
     do_df['z'] = do_df['y'].rolling(12).sum()
 

@@ -24,7 +24,7 @@ def main():
 
     chart = Chart(title=title, filename="us_mba.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     mba_df = mba_df.iloc[12:, ]
     chart.add_series(mba_df.index, mba_df['y'], label=mba_title, transformer=[Avg(offset=DateOffset(months=12))])
@@ -38,7 +38,7 @@ def main():
     #
     # chart = Chart(title=title, filename="us_inflation_measures_yoy_delta.png")
     # chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    # chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    # chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
     #
     # cpi_df['z'] = np.diff(cpi_df['y'],prepend=0)
     # cpix_df['z'] = np.diff(cpix_df['y'],prepend=0)

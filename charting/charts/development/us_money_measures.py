@@ -21,7 +21,7 @@ def main():
 
     chart = Chart(title=title, filename="us_money_measures_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
     chart.add_series(m2_df.index, m2_df['y'], label=m2_title)
 
