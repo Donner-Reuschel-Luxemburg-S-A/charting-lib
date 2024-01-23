@@ -22,7 +22,7 @@ def main():
     title = "US MBA Mortgage Applications"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_mba.png")
+    chart = Chart(title=title, filename="us_mba.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
@@ -33,25 +33,6 @@ def main():
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
-
-    # title = "US Inflation Measures YoY: Change"
-    #
-    # chart = Chart(title=title, filename="us_inflation_measures_yoy_delta.png")
-    # chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    # chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
-    #
-    # cpi_df['z'] = np.diff(cpi_df['y'],prepend=0)
-    # cpix_df['z'] = np.diff(cpix_df['y'],prepend=0)
-    # pce_df['z'] = np.diff(pce_df['y'],prepend=0)
-    #
-    # chart.add_series(cpi_df.index, cpi_df['z'] * 12, label=cpi_title, transformer=[Avg(offset=DateOffset(months=3))])
-    # chart.add_series(cpix_df.index, cpix_df['z'] * 12, label=cpix_title,
-    #                  transformer=[Avg(offset=DateOffset(months=3))])
-    # chart.add_series(pce_df.index, pce_df['z'] * 12, label=pce_title, transformer=[Avg(offset=DateOffset(months=3))])
-    #
-    # chart.add_horizontal_line()
-    # chart.legend(ncol=2)
-    # chart.plot()
 
 
 if __name__ == '__main__':

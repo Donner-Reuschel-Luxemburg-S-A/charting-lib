@@ -33,11 +33,11 @@ def main():
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
     title = "US Philadelphia Fed Indicators"
-    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_philly.png", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
     chart.add_series(philly_business_outlook_df.index, philly_business_outlook_df['y'],
                      label=philly_business_outlook_title)

@@ -1,50 +1,46 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.avg import Avg
 
 
 def main():
     blp = BloombergSource()
     fred = FredSource()
 
-    start_time = "19700101"
+    start_time = "19900101"
 
-    sp_df, sp_title = blp.get_series(series_id="SPCS20SM Index", observation_start=start_time)
+    tb_df, tb_title = blp.get_series(series_id="FDDSSD   Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US S&P Core Logic CS 20-City 6M Ann."
+    title = "US Budget Balance MoM"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_sp_houseprices_mom_6.png")
+    chart = Chart(title=title, filename="us_budget_balance_mom.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(100), label="USD (bn.)")
 
-    df = sp_df.iloc[6:, ]
-    chart.add_series(df.index, df['y'] * 12, label=sp_title, transformer=[Avg(offset=DateOffset(months=6))])
+    chart.add_series(tb_df.index, tb_df['y'], label=tb_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US S&P Core Logic CS 20-City YoY"
-    metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
+    title = "US Budget Balance YoY"
+    metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_sp_houseprices_yoy.png")
+    chart = Chart(title=title, filename="us_budget_balance_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200), label="Percentage Points")
 
-    sp_df['z'] = sp_df['y'].rolling(12).sum()
-    sp_df = sp_df.iloc[12:, ]
+    tb_df['z'] = tb_df['y'].rolling(12).sum()
 
-    chart.add_series(sp_df.index, sp_df['z'], label=sp_title)
+    chart.add_series(tb_df.index, tb_df['z'], label=tb_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

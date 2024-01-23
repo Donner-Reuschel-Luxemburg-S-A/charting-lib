@@ -15,50 +15,50 @@ def main():
 
     start_time = "19700101"
 
-    nfp_df, nfp_title = blp.get_series(series_id="NFP TCH Index", observation_start=start_time)
+    adp_df, adp_title = blp.get_series(series_id="ADP CHNG Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US NFP Employment Change 6M Ann."
+    title = "US ADP Employment Change 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_nfp_mom_6.png")
+    chart = Chart(title=title, filename="us_adp_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(5000), label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(500), major_locator=MultipleLocator(1000), label="")
 
-    df = nfp_df.iloc[6:, ]
-    chart.add_series(df.index, df['y'] * 12, label=nfp_title, transformer=[Avg(offset=DateOffset(months=6))])
+    df = adp_df.iloc[6:, ]
+    chart.add_series(df.index, df['y'] * 12, label=adp_title, transformer=[Avg(offset=DateOffset(months=6))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US NFP Employment Change MoM"
+    title = "US ADP Employment Change MoM"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_nfp_mom.png")
+    chart = Chart(title=title, filename="us_adp_mom.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(5000), label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(500), major_locator=MultipleLocator(1000), label="")
 
-    chart.add_series(nfp_df.index, nfp_df['y'], label=nfp_title)
+    chart.add_series(adp_df.index, adp_df['y'], label=adp_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US NFP Employment Change YoY"
+    title = "US ADP Employment Change YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_nfp_yoy.png")
+    chart = Chart(title=title, filename="us_adp_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(5000), label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(500), major_locator=MultipleLocator(1000), label="")
 
-    nfp_df['z'] = nfp_df['y'].rolling(12).sum()
-    nfp_df = nfp_df.iloc[12:, ]
+    adp_df['z'] = adp_df['y'].rolling(12).sum()
+    adp_df = adp_df.iloc[12:, ]
 
-    chart.add_series(nfp_df.index, nfp_df['z'], label=nfp_title)
+    chart.add_series(adp_df.index, adp_df['z'], label=adp_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

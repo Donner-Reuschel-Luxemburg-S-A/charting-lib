@@ -15,48 +15,58 @@ def main():
 
     start_time = "19980101"
 
-    bp_df, bp_title = blp.get_series(series_id="NHCHATCH Index", observation_start=start_time)
+    ehs_df, ehs_title = blp.get_series(series_id="ETSLMOM Index", observation_start=start_time)
+    nhs_df, nhs_title = blp.get_series(series_id="NHSLCHNG Index", observation_start=start_time)
+    phs_df, phs_title = blp.get_series(series_id="USPHTMOM Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US Building Permits 6M Ann."
+    title = "US Home Sales 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_building_permits_mom_6.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_home_sales_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
 
-    chart.add_series(bp_df.index, bp_df['y'] * 12, label=bp_title, transformer=[Avg(offset=DateOffset(months=6))])
+    chart.add_series(ehs_df.index, ehs_df['y'] * 12, label=ehs_title, transformer=[Avg(offset=DateOffset(months=6))])
+    chart.add_series(nhs_df.index, nhs_df['y'] * 12, label=nhs_title, transformer=[Avg(offset=DateOffset(months=6))])
+    chart.add_series(phs_df.index, phs_df['y'] * 12, label=phs_title, transformer=[Avg(offset=DateOffset(months=6))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US Building Permits 12M Ann."
+    title = "US Home Sales 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_building_permits_12.png")
+    chart = Chart(title=title, filename="us_home_sales_12.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
 
-    chart.add_series(bp_df.index, bp_df['y'] * 12, label=bp_title, transformer=[Avg(offset=DateOffset(months=12))])
+    chart.add_series(ehs_df.index, ehs_df['y'] * 12, label=ehs_title, transformer=[Avg(offset=DateOffset(months=12))])
+    chart.add_series(nhs_df.index, nhs_df['y'] * 12, label=nhs_title, transformer=[Avg(offset=DateOffset(months=12))])
+    chart.add_series(phs_df.index, phs_df['y'] * 12, label=phs_title, transformer=[Avg(offset=DateOffset(months=12))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US Builing Permits YoY"
+    title = "US Home Sales YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_building_permits_yoy.png")
+    chart = Chart(title=title, filename="us_home_sales_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
 
-    bp_df['z'] = bp_df['y'].rolling(12).sum()
+    ehs_df['z'] = ehs_df['y'].rolling(12).sum()
+    nhs_df['z'] = nhs_df['y'].rolling(12).sum()
+    phs_df['z'] = phs_df['y'].rolling(12).sum()
 
-    chart.add_series(bp_df.index, bp_df['z'], label=bp_title)
+    chart.add_series(ehs_df.index, ehs_df['z'], label=ehs_title)
+    chart.add_series(nhs_df.index, nhs_df['z'], label=nhs_title)
+    chart.add_series(phs_df.index, phs_df['z'], label=phs_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

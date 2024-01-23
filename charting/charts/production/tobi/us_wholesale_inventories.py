@@ -15,51 +15,50 @@ def main():
 
     start_time = "19700101"
 
-    wholesale_sales_df, wholesale_sales_title = blp.get_series(series_id="MWSLCHNG Index", observation_start=start_time)
+    wholesale_inv_df, wholesale_inv_title = blp.get_series(series_id="MWINCHNG Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US Wholesale Trades Sales 6M Ann."
+    title = "US Wholesale Inventories 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_wholesale_sales_mom_6.png")
+    chart = Chart(title=title, filename="us_wholesale_inventories_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
-    df = wholesale_sales_df = wholesale_sales_df.iloc[6:, ]
-    chart.add_series(df.index, df['y'] * 12, label=wholesale_sales_title,
-                     transformer=[Avg(offset=DateOffset(months=6))])
+    df = wholesale_inv_df = wholesale_inv_df.iloc[6:, ]
+    chart.add_series(df.index, df['y'] * 12, label=wholesale_inv_title, transformer=[Avg(offset=DateOffset(months=6))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US Wholesale Trades Sales MoM"
+    title = "US Wholesale Inventories MoM"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_wholesale_sales_mom.png")
+    chart = Chart(title=title, filename="us_wholesale_inventories_mom.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="Percentage Points")
 
-    chart.add_series(wholesale_sales_df.index, wholesale_sales_df['y'], label=wholesale_sales_title)
+    chart.add_series(wholesale_inv_df.index, wholesale_inv_df['y'], label=wholesale_inv_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US Wholesale Trades Sales YoY"
+    title = "US Wholesale Inventories YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_wholesale_sales_yoy.png")
+    chart = Chart(title=title, filename="us_wholesale_inventories_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
-    wholesale_sales_df['z'] = wholesale_sales_df['y'].rolling(12).sum()
-    wholesale_sales_df = wholesale_sales_df.iloc[12:, ]
+    wholesale_inv_df['z'] = wholesale_inv_df['y'].rolling(12).sum()
+    wholesale_inv_df = wholesale_inv_df.iloc[12:, ]
 
-    chart.add_series(wholesale_sales_df.index, wholesale_sales_df['z'], label=wholesale_sales_title)
+    chart.add_series(wholesale_inv_df.index, wholesale_inv_df['z'], label=wholesale_inv_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

@@ -15,32 +15,32 @@ def main():
 
     start_time = "19980101"
 
-    fo_df, fo_title = blp.get_series(series_id="TMNOCHNG Index", observation_start=start_time)
+    co_df, co_title = blp.get_series(series_id="CGNOXAI% Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US Factory Orders 6M Ann."
+    title = "US Capital Goods Orders 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_factory_orders_mom_6.png")
+    chart = Chart(title=title, filename="us_capital_goods_orders_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
-    chart.add_series(fo_df.index, fo_df['y'] * 12, label=fo_title, transformer=[Avg(offset=DateOffset(months=6))])
+    chart.add_series(co_df.index, co_df['y'] * 12, label=co_title, transformer=[Avg(offset=DateOffset(months=6))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US Factory Orders 12M Ann."
+    title = "US Capital Goods 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_factory_orders_mom_12.png")
+    chart = Chart(title=title, filename="us_capital_goods_orders_mom_12.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
-    chart.add_series(fo_df.index, fo_df['y'] * 12, label=fo_title,
+    chart.add_series(co_df.index, co_df['y'] * 12, label=co_title,
                      transformer=[Avg(offset=DateOffset(months=12))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
@@ -48,16 +48,16 @@ def main():
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US Factory Orders YoY"
+    title = "US Capital Goods Orders YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_factory_orders_yoy.png")
+    chart = Chart(title=title, filename="us_capital_goods_orders_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
-    fo_df['z'] = fo_df['y'].rolling(12).sum()
+    co_df['z'] = co_df['y'].rolling(12).sum()
 
-    chart.add_series(fo_df.index, fo_df['z'], label=fo_title)
+    chart.add_series(co_df.index, co_df['z'], label=co_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

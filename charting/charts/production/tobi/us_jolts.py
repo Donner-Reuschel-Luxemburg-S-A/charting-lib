@@ -20,7 +20,7 @@ def main():
     title = "US JOLTS Job Openings"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_jolts.png")
+    chart = Chart(title=title, filename="us_jolts.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(100), major_locator=MultipleLocator(500), label="")
 

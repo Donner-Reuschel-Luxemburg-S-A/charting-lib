@@ -1,46 +1,50 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
+from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
+from charting.transformer.avg import Avg
 
 
 def main():
     blp = BloombergSource()
     fred = FredSource()
 
-    start_time = "19900101"
+    start_time = "19700101"
 
-    tb_df, tb_title = blp.get_series(series_id="FDDSSD   Index", observation_start=start_time)
+    cs_df, cs_title = blp.get_series(series_id="CNSTTMOM Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US Budget Balance MoM"
+    title = "US Construction Spending 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_budget_balance_mom.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_construction_spending_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(100), label="USD (bn.)")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
-    chart.add_series(tb_df.index, tb_df['y'], label=tb_title)
+    df = cs_df.iloc[6:, ]
+    chart.add_series(df.index, df['y'] * 12, label=cs_title, transformer=[Avg(offset=DateOffset(months=6))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US Budget Balance YoY"
-    metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
+    title = "US Construction Spending YoY"
+    metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_budget_balance_yoy.png")
+    chart = Chart(title=title, filename="us_construction_spending_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
-    tb_df['z'] = tb_df['y'].rolling(12).sum()
+    cs_df['z'] = cs_df['y'].rolling(12).sum()
+    cs_df = cs_df.iloc[12:, ]
 
-    chart.add_series(tb_df.index, tb_df['z'], label=tb_title)
+    chart.add_series(cs_df.index, cs_df['z'], label=cs_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

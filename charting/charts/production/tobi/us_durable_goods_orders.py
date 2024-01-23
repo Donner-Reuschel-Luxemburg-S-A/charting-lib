@@ -22,7 +22,7 @@ def main():
     title = "US Durable Goods Orders 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_durable_goods_orders_mom_6.png")
+    chart = Chart(title=title, filename="us_durable_goods_orders_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
@@ -36,7 +36,7 @@ def main():
     title = "US Durable Goods 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_durable_goods_orders_mom_12.png")
+    chart = Chart(title=title, filename="us_durable_goods_orders_mom_12.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 
@@ -51,7 +51,7 @@ def main():
     title = "US Durable Goods Orders YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_durable_goods_orders_yoy.png")
+    chart = Chart(title=title, filename="us_durable_goods_orders_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
 

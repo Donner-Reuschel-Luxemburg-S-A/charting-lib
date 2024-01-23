@@ -15,34 +15,36 @@ def main():
 
     start_time = "19700101"
 
-    gdp_df, gdp_title = blp.get_series(series_id="GDP CQOQ Index", observation_start=start_time)
-    gdp_consumption_df, gdp_consumption_title = blp.get_series(series_id="GDPCTOT% Index", observation_start=start_time)
+    sp_df, sp_title = blp.get_series(series_id="SPCS20SM Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US GDP"
+    title = "US S&P Core Logic CS 20-City 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_gdp.png")
+    chart = Chart(title=title, filename="us_sp_houseprices_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
-    chart.add_series(gdp_df.index, gdp_df['y'], label=gdp_title, transformer=[Avg(offset=DateOffset(months=6))])
+    df = sp_df.iloc[6:, ]
+    chart.add_series(df.index, df['y'] * 12, label=sp_title, transformer=[Avg(offset=DateOffset(months=6))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "US GDP Personal Consumption"
+    title = "US S&P Core Logic CS 20-City YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_gdp_personal_consumption.png")
+    chart = Chart(title=title, filename="us_sp_houseprices_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
-    chart.add_series(gdp_consumption_df.index, gdp_consumption_df['y'], label=gdp_consumption_title,
-                     transformer=[Avg(offset=DateOffset(months=6))])
+    sp_df['z'] = sp_df['y'].rolling(12).sum()
+    sp_df = sp_df.iloc[12:, ]
+
+    chart.add_series(sp_df.index, sp_df['z'], label=sp_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

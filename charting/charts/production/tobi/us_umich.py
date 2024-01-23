@@ -19,9 +19,9 @@ def main():
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
     title = "US University Michigan Surveys"
-    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_umich_surveys.png")
+    chart = Chart(title=title, filename="us_umich_surveys.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
