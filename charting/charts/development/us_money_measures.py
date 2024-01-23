@@ -17,7 +17,7 @@ def main():
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
     title = "US Money Supply M2 YoY"
-    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_money_measures_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))

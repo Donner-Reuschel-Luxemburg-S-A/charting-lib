@@ -17,7 +17,7 @@ def main():
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
     title = "US Capacity Utilization"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_capacity_utilization.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))

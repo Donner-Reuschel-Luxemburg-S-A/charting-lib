@@ -120,7 +120,7 @@ def main():
     chart.plot()
 
     title = "US Consumer Confidence"
-    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_consumer_confidence.png", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
