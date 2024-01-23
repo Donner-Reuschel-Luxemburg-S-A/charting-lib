@@ -28,7 +28,7 @@ def main():
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=4)
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(df.index, df['count'], label='Number of bankruptcies',
@@ -45,4 +45,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

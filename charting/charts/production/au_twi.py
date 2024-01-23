@@ -1,9 +1,9 @@
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-import matplotlib.dates as mdates
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
 
     minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.MonthLocator(interval=12)
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=df.index, y=df['y'], label=t)

@@ -1,9 +1,9 @@
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-import matplotlib.dates as mdates
 
 
 def main():
@@ -23,12 +23,12 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(0.25),
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(0.25),
                            major_locator=MultipleLocator(1))
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=2)
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=d1.index, y=d1["y"], label="United Kingdom")

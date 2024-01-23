@@ -1,13 +1,14 @@
 pip~=23.3
 pdoc3~=0.10.0
-flake8~=6.1.0
-matplotlib~=3.8.0
-pandas~=2.1.1
+flake8~=7.0.0
+matplotlib~=3.8.2
+pandas~=2.1.4
 python-dateutil~=2.8.2
 fredapi~=0.5.1
-source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.14.0
-python-pptx~=0.6.21
+source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.15.1
+python-pptx~=0.6.23
 pypiwin32
-numpy~=1.26.1
-Pillow~=10.1.0
-SQLAlchemy~=2.0.22
+numpy~=1.26.3
+Pillow~=10.2.0
+SQLAlchemy~=2.0.25
+scipy~=1.11.4

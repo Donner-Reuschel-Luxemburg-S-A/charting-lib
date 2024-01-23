@@ -1,4 +1,3 @@
-
 import matplotlib.dates as mdates
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
@@ -20,11 +19,11 @@ def main():
     chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening.png")
 
     chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))
-    chart.configure_y_axis(y_axis_index=1, label="%", reverse_axis=True)
+    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", reverse_axis=True)
 
     minor_locator = mdates.YearLocator(base=1)
     major_locator = mdates.YearLocator(base=4)
-    major_formatter = mdates.AutoDateFormatter(major_locator)
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(x=d1.index, y=d1['y'], label="Tightening standards for C&I loans", y_axis_index=1)
@@ -39,4 +38,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

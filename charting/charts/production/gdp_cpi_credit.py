@@ -1,11 +1,10 @@
+import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
-
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
 
@@ -29,7 +28,8 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="cpi_gdp.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     chart.add_series(final_df.index, final_df['y'], label="Credit/GDP Diff")
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title, transformer=Lag(offset=pd.DateOffset(months=24)))

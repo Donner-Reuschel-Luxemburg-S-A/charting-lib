@@ -15,9 +15,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.10'
 
       - name: Set up Git SSH
         run: |
@@ -38,7 +38,7 @@ jobs:
 
       - run: pdoc --html charting/ --output-dir docs/ --template-dir docs/templates --force
 
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/
 
@@ -53,4 +53,4 @@ jobs:
       url: "${{ steps.deployment.outputs.page_url }}/charting"
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4

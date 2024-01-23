@@ -20,13 +20,12 @@ def main():
 
     chart = Chart(title=title, filename="global_indeed_job_postings.png", metadata=metadata)
 
-    chart.configure_y_axis(y_axis_index=0, minor_locator=MultipleLocator(10), major_locator=MultipleLocator(20))
+    chart.configure_y_axis(y_axis_index=0, minor_locator=MultipleLocator(10), major_locator=MultipleLocator(20),
+                           label="Percentage Points")
 
-    chart.add_sup_y_label(label="%")
-
-    major_locator = mdates.MonthLocator(interval=6)
-    minor_locator = mdates.MonthLocator(interval=3)
-    major_formatter = mdates.DateFormatter("%b-%Y")
+    major_locator = mdates.MonthLocator(interval=4)
+    minor_locator = mdates.MonthLocator(interval=1)
+    major_formatter = mdates.DateFormatter("%b %y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator,
                            major_locator=major_locator)
@@ -40,7 +39,7 @@ def main():
 
     chart.add_horizontal_line(y=100)
 
-    chart.legend(ncol=4)
+    chart.legend(ncol=3)
     chart.plot()
 
 

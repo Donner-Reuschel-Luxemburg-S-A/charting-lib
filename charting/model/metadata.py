@@ -8,6 +8,7 @@ from typing import List, Union
 class Region(Enum):
     GLOBAL = "Global"
     EU = "Europe"
+    EM = "Emerging Markets"
     CN = "CN"
     DE = "DE"
     CH = "CH"

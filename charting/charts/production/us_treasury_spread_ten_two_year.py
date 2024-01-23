@@ -1,7 +1,5 @@
-from matplotlib.ticker import MultipleLocator
-
 import matplotlib.dates as mdates
-from source_engine.bloomberg_source import BloombergSource
+from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
@@ -22,9 +20,9 @@ def main():
     chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(10),
                            major_locator=MultipleLocator(20))
 
-    minor_locator = mdates.MonthLocator(interval=1)
+    minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.MonthLocator(interval=12)
-    major_formatter = mdates.DateFormatter("%Y")
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_horizontal_line()
@@ -36,4 +34,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

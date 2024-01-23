@@ -1,5 +1,5 @@
-import os
 import importlib
+import os
 from typing import List
 
 
@@ -36,4 +36,7 @@ def update(module: str):
 
 
 if __name__ == "__main__":
-    execute_main_methods()
+    errors = execute_main_methods()
+
+    for error in errors:
+        print(error)

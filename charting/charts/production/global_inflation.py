@@ -1,12 +1,9 @@
-
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DataFrame
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
-from charting.transformer.pct import Pct
 
 
 def main():
@@ -25,11 +22,12 @@ def main():
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="global_inflation.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
+                           y_lim=(-2.5, 10))
 
-    major_locator = mdates.YearLocator(base=2)
+    major_locator = mdates.YearLocator(base=3)
     minor_locator = mdates.YearLocator(base=1)
-    major_formatter = mdates.AutoDateFormatter(major_locator)
+    major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_horizontal_line(y_axis_index=0)
@@ -46,4 +44,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

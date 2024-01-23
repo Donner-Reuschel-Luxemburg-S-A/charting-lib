@@ -1,10 +1,8 @@
 import base64
 import getpass
 import hashlib
-import inspect
 import io
 import os
-import sys
 from datetime import datetime, timedelta
 from functools import reduce
 from typing import Tuple, Union, List, Dict
@@ -13,6 +11,7 @@ import matplotlib.offsetbox as offsetbox
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
+
 plt.switch_backend('agg')
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter, Locator
@@ -21,7 +20,7 @@ from source_engine.chart_source import ChartSource, ChartModel
 from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
-from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style
+from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style, colors
 from charting.model.transformer import Transformer
 
 
@@ -46,12 +45,14 @@ class Chart:
             figsize (tuple): The figure size of the chart (default: (12, 8)).
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
+        self.filename_original = filename
         self.filename = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
         self.title = title
         self.num_rows = num_rows
         self.num_y_axis = num_y_axis
         self.figsize = figsize
         self.metadata = metadata
+        self.max_label_length = 0
 
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
@@ -78,7 +79,7 @@ class Chart:
         self.x_max_label = []
 
     def id(self) -> str:
-        return hashlib.sha1(self.title.encode('utf-8')).hexdigest()
+        return hashlib.sha1(self.filename_original.encode('utf-8')).hexdigest()
 
     def __remove_top_spines(self) -> None:
         """
@@ -126,7 +127,8 @@ class Chart:
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
                          minor_locator: Locator = None,
-                         major_locator: Locator = None):
+                         major_locator: Locator = None,
+                         rotation: int = None):
         """
         Configures the x-axis with label, formatter and locator.
 
@@ -141,6 +143,9 @@ class Chart:
 
         ax.set_xlabel(label)
 
+        if rotation is not None:
+            ax.tick_params(axis='x', labelrotation=rotation)
+
         if minor_formatter is not None:
             ax.xaxis.set_minor_formatter(minor_formatter)
 
@@ -153,23 +158,7 @@ class Chart:
         if major_locator is not None:
             ax.xaxis.set_major_locator(major_locator)
 
-    def configure_x_ticks(self, which: str = 'both', length: float = 1, width: float = 0.5,
-                          rotation: float = 0, pad: float = 0):
-        """
-        Configures the x-axis ticks.
-
-        Args:
-            which (str): The ticks to configure. Possible values: 'major', 'minor', or 'both' (default: 'both').
-            length (float): The length of the ticks in points (default: 1).
-            width (float): The width of the ticks in points (default: 0.5).
-            rotation (float): The rotation angle of the tick labels in degrees (default: 0).
-            pad (float): The padding between the ticks and the tick labels in points (default: 0).
-            pad (float): The padding between the ticks and the tick labels in points (default: 0).
-        """
-        ax = self.axis_dict[next(reversed(self.axis_dict))][0]
-        ax.tick_params(axis='x', which=which, length=length, width=width, rotation=rotation, pad=pad)
-
-    def configure_y_axis(self, row_index: int = 0, y_axis_index: int = 0, label: str = None,
+    def configure_y_axis(self, label: str, row_index: int = 0, y_axis_index: int = 0,
                          y_lim: Tuple[float, float] = None,
                          minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
@@ -195,14 +184,14 @@ class Chart:
 
         try:
             ax = self.axis_dict[row_index][y_axis_index]
-            ax.set_ylabel(label)
+            ax.set_ylabel(label, loc="top", rotation=90)
 
             if y_lim is not None:
                 ax.set_ylim(*y_lim)
 
             if reverse_axis:
                 ax.invert_yaxis()
-                ax.set_ylabel(f'{label} (reversed axis)')
+                ax.set_ylabel(f'{label} (reversed axis)', loc="top", rotation=90)
 
             if minor_formatter is not None:
                 ax.yaxis.set_minor_formatter(minor_formatter)
@@ -222,7 +211,8 @@ class Chart:
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
-                   transformer: Union[Transformer, List[Transformer]] = None):
+                   transformer: Union[Transformer, List[Transformer]] = None, t_min: datetime = None,
+                   t_max: datetime = None):
         """
         Adds a series to the chart.
 
@@ -247,6 +237,8 @@ class Chart:
                 If a list of transformers is provided, they will be applied sequentially to the series.
                 Each transformer should implement the `transform` method to modify the series.
                 The label of the series will be updated to reflect the applied transformers.
+            t_min (datetime): Optional time series minimum for boxplot and bar charts with categorical x axis.
+            t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
         """
         color = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
@@ -256,12 +248,9 @@ class Chart:
         except IndexError:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
 
-        self.x_min_label.append(min(x))
-        self.x_max_label.append(max(x))
-
         if invert:
             y = -y
-            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)')
+            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)', loc="top")
 
         if transformer is not None:
             if isinstance(transformer, list):
@@ -281,6 +270,50 @@ class Chart:
                     fill_threshold = ax.get_ylim()[0]
                 ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
 
+            x_min = min(x)
+            x_max = max(x)
+
+            self.x_min_label.append(x_min)
+            self.x_max_label.append(x_max)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
+
+        elif chart_type == 'boxplot':
+            median_props = dict(color=colors[1], linewidth=1)
+            mean_props = dict(color=colors[1], linewidth=1, linestyle='--')
+
+            handle = ax.boxplot(y, showfliers=False, labels=x, vert=False, patch_artist=True, meanline=True,
+                                showmeans=False, meanprops=mean_props, medianprops=median_props)
+
+            for patch in handle['boxes']:
+                patch.set_facecolor(color)
+
+            for index, category_data in enumerate(y):
+                latest_value = category_data[-1]
+                y_pos = index + 1
+                ax.scatter(latest_value, y_pos, color=colors[1], zorder=3, s=15)
+                ax.text(latest_value, y_pos + 0.05, f'{round(latest_value, 2)}', verticalalignment='bottom',
+                        horizontalalignment="center",
+                        color=colors[1], fontdict={"fontsize": 6})
+
+            self.max_label_length = max([len(ele) for ele in x])
+
+            if not t_min or not t_max:
+                raise Exception("Please specify t_min/t_max if using boxplot or bar plot with categorical x axis.")
+
+            self.x_min_label.append(t_min)
+            self.x_max_label.append(t_max)
+        elif chart_type == 'bar' and all(isinstance(p, str) for p in x):
+            handle = ax.barh(x, y, align='center', label=label, color=color, left=bar_bottom, alpha=alpha)
+
+            self.max_label_length = max([len(ele) for ele in x])
+
+            if not t_min or not t_max:
+                raise Exception("Please specify t_min/t_max if using boxplot or bar plot with categorical x axis.")
+
+            self.x_min_label.append(t_min)
+            self.x_max_label.append(t_max)
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
@@ -304,9 +337,9 @@ class Chart:
 
                     for idx, patches in enumerate(zip(*all_patches)):
                         bottom = 0
-                        if y[idx] > 0:
+                        if y.iloc[idx] > 0:
                             bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == 1])
-                        if y[idx] < 0:
+                        if y.iloc[idx] < 0:
                             bottom = sum([patch.get_height() for patch in patches if np.sign(patch.get_height()) == -1])
 
                         bar_bottom.append(bottom)
@@ -316,19 +349,24 @@ class Chart:
 
             handle = ax.bar(x, y, align='center', width=mean_bar_width, bottom=bar_bottom,
                             label=label, color=color, alpha=alpha)
+
+            x_min = min(x)
+            x_max = max(x)
+
+            self.x_min_label.append(x_min)
+            self.x_max_label.append(x_max)
+
+            if chart_type == 'bar':
+                x_min = x_min - timedelta(days=mean_bar_width / 2)
+                x_max = x_max + timedelta(days=mean_bar_width / 2)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
+
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
-        x_min = min(x)
-        x_max = max(x)
-
-        if chart_type == 'bar':
-            x_min = x_min - timedelta(days=mean_bar_width / 2)
-            x_max = x_max + timedelta(days=mean_bar_width / 2)
-
         self.handles.append(handle)
-        self.x_min_axes.append(x_min)
-        self.x_max_axes.append(x_max)
 
     def add_horizontal_line(self, row_index: int = 0, y_axis_index: int = 0, y: float = 0) -> None:
         """
@@ -384,21 +422,32 @@ class Chart:
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
+        label_x_position = -0.05
+
+        if len(self.x_min_axes) != 0 and len(self.x_max_axes) != 0:
+            ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
+
         bloomberg_label = 'Bloomberg' if bloomberg_source_override is None else f'Bloomberg ({bloomberg_source_override})'
+
+        if self.max_label_length != 0:
+            label_x_position = self.max_label_length * -0.012
 
         label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
                 f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
                 f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
 
-        txt = offsetbox.TextArea(label, textprops=source_text_style)
+        label_y_position = -0.125
+        if self.num_rows > 1:
+            label_y_position = -0.35
 
         if ax.get_legend() is not None:
             box = ax.get_legend()._legend_box
-            box.get_children().append(txt)
-            box.set_figure(box.figure)
-        else:
-            ax.annotate(label, xy=(0.5, -0.7), xycoords='axes fraction', ha='center', va='center', **source_text_style)
+            extent = box.get_window_extent(self.fig.canvas.get_renderer())
+            extent = ax.transAxes.inverted().transform(extent)
+            label_y_position = extent[0][1] - 0.05
+
+        ax.text(label_x_position, label_y_position, label, transform=ax.transAxes, va='top', ha='left',
+                **source_text_style)
 
     def legend(self, ncol: int = 1):
         """
@@ -471,10 +520,10 @@ def upload(chart: Chart) -> None:
     chart_model = ChartModel(
         id=chart.id(),
         title=chart.title,
-        last_update=datetime.today(),
+        last_update=datetime.now(),
         path=os.path.join(chart.rel_path, chart.filename),
-        start=min(chart.x_min_label),
-        end=max(chart.x_max_label),
+        start=min(chart.x_min_label).date(),
+        end=max(chart.x_max_label).date(),
         region=','.join(country.value for country in chart.metadata.region),
         category=','.join(category.value for category in chart.metadata.category),
         base64=as_base64(path=chart.filepath)
