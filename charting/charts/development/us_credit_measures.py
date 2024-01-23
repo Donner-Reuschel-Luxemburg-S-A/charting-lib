@@ -1,24 +1,17 @@
-import pandas as pd
-import numpy as np
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
-
-from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.lag import Lag
-from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
 
 
 def main():
     blp = BloombergSource()
-    fred=FredSource()
+    fred = FredSource()
 
-    start_time="19700101"
+    start_time = "19700101"
     bankcredit_df, bankcredit_title = fred.get_series(series_id="LOANINV", observation_start=start_time)
     ci_loans_df, ci_loans_title = fred.get_series(series_id="BUSLOANS", observation_start=start_time)
     consumer_loans_df, consumer_loans_title = fred.get_series(series_id="CONSUMER", observation_start=start_time)
@@ -26,13 +19,13 @@ def main():
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
     title = "US Credit Measures"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_credit_measures.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(50), label="%")
 
-    chart.add_series(bankcredit_df.index, bankcredit_df['y'], label=bankcredit_title,transformer=[Pct(12)])
+    chart.add_series(bankcredit_df.index, bankcredit_df['y'], label=bankcredit_title, transformer=[Pct(12)])
     chart.add_series(ci_loans_df.index, ci_loans_df['y'], label=ci_loans_title, transformer=[Pct(12)])
     chart.add_series(consumer_loans_df.index, consumer_loans_df['y'], label=consumer_loans_title, transformer=[Pct(12)])
 
@@ -41,7 +34,6 @@ def main():
     chart.add_horizontal_line()
     chart.legend(ncol=1)
     chart.plot()
-
 
 
 if __name__ == '__main__':

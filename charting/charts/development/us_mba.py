@@ -1,15 +1,11 @@
-import pandas as pd
-import numpy as np
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
-
 from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.lag import Lag
 from charting.transformer.avg import Avg
 
 
@@ -23,10 +19,6 @@ def main():
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-
-
-
-
     title = "US MBA Mortgage Applications"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
@@ -34,7 +26,7 @@ def main():
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 
-    mba_df = mba_df.iloc[12:,]
+    mba_df = mba_df.iloc[12:, ]
     chart.add_series(mba_df.index, mba_df['y'], label=mba_title, transformer=[Avg(offset=DateOffset(months=12))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)

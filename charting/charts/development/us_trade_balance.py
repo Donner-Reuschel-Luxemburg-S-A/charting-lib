@@ -1,16 +1,10 @@
-import pandas as pd
-import numpy as np
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
-
 from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.lag import Lag
-from charting.transformer.avg import Avg
 
 
 def main():
@@ -21,9 +15,7 @@ def main():
 
     tb_df, tb_title = blp.get_series(series_id="USTBTOT  Index", observation_start=start_time)
 
-
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
-
 
     title = "US Trade Balance"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
