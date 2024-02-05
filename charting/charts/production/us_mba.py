@@ -1,30 +1,33 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
+from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
+from charting.transformer.avg import Avg
 
 
 def main():
     blp = BloombergSource()
     fred = FredSource()
 
-    start_time = "19700101"
+    start_time = "19980101"
 
-    jolts_df, jolts_title = blp.get_series(series_id="JOLTTOTL Index", observation_start=start_time)
+    mba_df, mba_title = blp.get_series(series_id="MBAVCHNG Index", observation_start=start_time)
 
     us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=start_time)
 
-    title = "US JOLTS Job Openings"
-    metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
+    title = "US MBA Mortgage Applications"
+    metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_jolts.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_mba.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(100), major_locator=MultipleLocator(500), label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
-    chart.add_series(jolts_df.index, jolts_df['y'], label=jolts_title)
+    mba_df = mba_df.iloc[12:, ]
+    chart.add_series(mba_df.index, mba_df['y'], label=mba_title, transformer=[Avg(offset=DateOffset(months=12))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)

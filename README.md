@@ -121,7 +121,7 @@ chart = Chart(title="As industrial loan standards tighten, manufacturing contrac
               filename="loan.png")
 
 chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))
-chart.configure_y_axis(y_axis_index=1, label="%", y_lim=(80, -40), invert_axis=True)
+chart.configure_y_axis(y_axis_index=1, label="Percentage Points", y_lim=(80, -40), invert_axis=True)
 
 minor_locator = mdates.YearLocator(base=1)
 major_locator = mdates.YearLocator(base=4)
@@ -157,7 +157,7 @@ major_formatter = mdates.DateFormatter(fmt="%m/%Y")
 
 chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
-chart.configure_y_axis(y_axis_index=0, label="%", y_lim=(0, 35))
+chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(0, 35))
 
 chart.add_series(x=d1.index, y=d1['y'], label=t1, chart_type='bar', bar_bottom=0,
                  transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
@@ -232,7 +232,7 @@ services_df.index = services_df.index.to_period('M').to_timestamp(how='start')
 
 chart = Chart(title="U.S. CPI by Component", filename="inflation.png")
 
-chart.configure_y_axis(y_axis_index=0, label="%", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
+chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1), y_lim=(-2.5, 10))
 
 major_locator = mdates.YearLocator(base=1)
 minor_locator = mdates.MonthLocator(interval=2)
