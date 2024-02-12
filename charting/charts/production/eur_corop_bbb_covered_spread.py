@@ -8,8 +8,8 @@ import pandas as pd
 
 def main():
     blp = BloombergSource()
-    df, t = blp.get_series(series_id='QX3A Index', observation_start='20200101', field='SP039')
-    df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start='20200101', field='BX219')
+    df, t = blp.get_series(series_id='QX3A Index', observation_start='20140101', field='SP039')
+    df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start='20140101', field='BX219')
     title = 'EUR Corporate BBB -German Covered Bonds'
     t = 'iBoxx Euro Germany Covered Total Return Index'
     t2 = 'Bloomberg Pan-European Aggregate: Corporate Baa Total Return'

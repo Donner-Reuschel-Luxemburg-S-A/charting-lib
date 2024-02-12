@@ -7,8 +7,8 @@ import matplotlib.dates as mdates
 
 def main():
     blp = BloombergSource()
-    df, t = blp.get_series(series_id='I05446EU Index', observation_start='20200101', field='BX219')
-    df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start='20200101', field='BX219')
+    df, t = blp.get_series(series_id='I05446EU Index', observation_start='20140101', field='BX219')
+    df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start='20140101', field='BX219')
     title = 'EUR Corporate BBB - BB Spread'
     t = 'Bloomberg Pan-Euro HY BB Rating Only Total Return Index Unhedged'
     t2 = 'Bloomberg Pan-European Aggregate: Corporate Baa Total Return'
