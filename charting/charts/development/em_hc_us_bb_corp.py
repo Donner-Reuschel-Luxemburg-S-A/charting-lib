@@ -9,10 +9,10 @@ import pandas as pd
 def main():
     blp = BloombergSource()
     df, t = blp.get_series(series_id='LG20STAT Index', observation_start='20140101', field='BX218')
-    df2, t2 = blp.get_series(series_id='LCB1TRUU Index', observation_start='20140101', field='BX218')
-    title = 'EM HC USD vs US Corporate BBB'
+    df2, t2 = blp.get_series(series_id='I00182US Index', observation_start='20140101', field='BX218')
+    title = 'EM HC USD vs US HY BB'
     t = 'Bloomberg EM Hard Currency Aggregate TR Index Value Unhedged USD'
-    t2 = 'Bloomberg Baa Corporate Total Return Index Value Unhedged USD'
+    t2 = 'Bloomberg Ba US High Yield  TR Index Value Unhedged USD'
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
     common_index = pd.DatetimeIndex(set(df.index).intersection(set(df2.index))).sort_values()
     chart = Chart(title=title, num_rows=2, filename=__name__ + ".png", metadata=metadata)
@@ -28,6 +28,7 @@ def main():
     chart.add_series(x=common_index, y=df.loc[common_index]['y'], label=t)
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2)
     chart.add_series(x=common_index, y=(df.loc[common_index] - df2.loc[common_index])['y'], row_index=1, label=title)
+    chart.add_horizontal_line(row_index=1, y_axis_index=0, y=0)
     chart.legend()
     chart.plot()
 
