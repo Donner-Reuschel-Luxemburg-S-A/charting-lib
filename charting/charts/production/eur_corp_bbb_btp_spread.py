@@ -13,10 +13,9 @@ def main():
     title = 'EUR Corporate BBB - BTP/Bund Spread'
     t = 'BTPS - Bund 10Y Spread'
     t2 = 'Bloomberg Pan-European Aggregate: Corporate Baa Total Return'
-    metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
+    metadata = Metadata(title=title, region=Region.EU, category=[Category.CREDIT, Category.RATES])
     common_index = pd.DatetimeIndex(set(df.index).intersection(set(df2.index))).sort_values()
-#, metadata=metadata
-    chart = Chart(title=title, num_rows=2, filename=__name__ + ".png")
+    chart = Chart(title=title, num_rows=2, filename=__name__ + ".png", metadata=metadata)
     minor_locator = mdates.MonthLocator(interval=3)
     major_locator = mdates.MonthLocator(interval=12)
     major_formatter = mdates.DateFormatter("%b %y")
