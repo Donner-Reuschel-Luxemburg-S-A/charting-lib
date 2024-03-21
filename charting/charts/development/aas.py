@@ -23,12 +23,12 @@ def main():
     df5, t5 = blp.get_series(series_id='SPX Index', field="px_close_1d", observation_start=start.strftime("%Y%m%d"))
     df6, t6 = blp.get_series(series_id='MXEF Index', field="px_close_1d", observation_start=start.strftime("%Y%m%d"))
 
-    title = "Euro Stoxx 50, Stoxx Euro 600, Stoxx Euro 200 Small & Mid Caps, S&P 500, Emerging Markets - Performance"
+    title = "Euro Stoxx 50, Stoxx Euro 600, Stoxx Euro 200 Small & Mid Caps,\nS&P 500, Emerging Markets - Performance"
 
     chart = Chart(title=title, filename="aas.png")
 
     chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
-                           major_locator=MultipleLocator(2))
+                           major_locator=MultipleLocator(5))
 
     major_locator = mdates.MonthLocator(interval=1)
     major_formatter = mdates.DateFormatter("%b %y")
