@@ -1,12 +1,21 @@
 import time
+from copy import deepcopy
 from datetime import datetime
 
+from matplotlib.ticker import MultipleLocator
 from source_engine.estat_statistics import EstatStatisticsSource
 from source_engine.imf_source import ImfSource
 from source_engine.sdmx_source import Ecb
+from xbbg import blp
 import pandas as pd
+import matplotlib.transforms
+import matplotlib.pyplot as plt
+import numpy as np
 
-countries = ['DE', 'IT', 'FR', 'FI', 'NL', 'BE', 'AT', 'ES', 'PT']
+from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Region, Category
+
+countries = ['DE', 'IT', 'FR', 'FI', 'NL', 'BE', 'AT', 'ES', 'PT', 'IE', 'SI', 'SK']
 period = 'A'
 imf_queries = {'primary_balance': ('FM', 'GGXONLB_G01_GDP_PT'), 'overall_balance': ('FM', 'GGXCNL_G01_GDP_PT'),
                'international_reserves': ('IFS', 'RAFA_USD')}
@@ -69,7 +78,8 @@ for key, (dataset, s) in imf_queries.items():
     imf_result[key] = {}
     for c in countries:
         imf_result[key][c] = src.fetch_data(series=dataset, params=f'{period}.{c}.{s}')
-        time.sleep(1)
+        print(c)
+        time.sleep(2)
     columns = list(imf_result[key].keys())
     dfs = [value[0]['OBS_VALUE'] for key, value in imf_result[key].items()]
     dfs = pd.concat(dfs, axis=1)
@@ -94,9 +104,65 @@ for sector, data in weights.items():
     sector_weights = []
     for key, (weight, direction) in data[1].items():
         if key in ['primary_balance', 'overall_balance']:
-            data_table.loc[key] = zscores[key][countries].loc[zscores[key][countries].index.year == datetime.datetime.now().year].squeeze()
+            data_table.loc[key] = zscores[key][countries].loc[zscores[key][countries].index.year == datetime.now().year].squeeze()
         else:
             data_table.loc[key] = zscores[key][countries].iloc[-1, :] * direction
         sector_weights.append(weight)
     sector_table.loc[sector] = data_table.loc[list(data[1].keys())].multiply(sector_weights, axis=0).sum(axis=0)
 total_score.loc['Score'] = sector_table.multiply([data[0] for _, data in weights.items()], axis=0).sum(axis=0)
+total_df = pd.concat([total_score, sector_table, data_table], axis=0)
+total_df = total_df.loc[['Score', 'initial_conditions', 'government_debt', 'primary_balance', 'unemployment_rate', 'international_reserves',
+              'momentum', 'eco_sentiment', 'industrial_sentiment',
+              'competitivness', 'current_account', 'financial_account', 'labour_cost',
+              'leverage', 'housing_loans', 'loan_to_deposit', 'savings_rate']]
+total_df.index = [x.replace('_', ' ').upper() for x in total_df.index]
+
+tickers = {'DE': {5: 'GTDEM5Y Corp', 10: 'GTDEM10Y Corp'},
+           'IT': {5: 'GTITL5Y Corp', 10: 'GTITL10Y Corp'},
+           'FR': {5: 'GTFRF5Y Corp', 10: 'GTFRF10Y Corp'},
+           'FI': {5: 'GTFIM5Y Corp', 10: 'GTFIM10Y Corp'},
+           'NL': {5: 'GTNLG5Y Corp', 10: 'GTNLG10Y Corp'},
+           'BE': {5: 'GTBEF5Y Corp', 10: 'GTBEF10Y Corp'},
+           'AT': {5: 'GTATS5Y Corp', 10: 'GTATS10Y Corp'},
+           'ES': {5: 'GTESP5Y Corp', 10: 'GTESP10Y Corp'},
+           'PT': {5: 'GTPTE5Y Corp', 10: 'GTPTE10Y Corp'},
+           'IE': {5: 'GTIEP5Y Corp', 10: 'GTIEP10Y Corp'},
+           'SK': {5: 'GTSKK5Y Corp', 10: 'GTSKK10Y Corp'},
+           'SI': {5: 'GTSIT5Y Corp', 10: 'GTSIT10Y Corp'}
+           }
+ticker_result = deepcopy(tickers)
+spreads = deepcopy(tickers)
+for country, tenors in tickers.items():
+    for tenor, ticker in tenors.items():
+        ticker_result[country][tenor] = blp.bdp(ticker, flds='YLD_YTM_MID').iloc[0, 0]
+
+for country, tenors in tickers.items():
+    for tenor, ticker in tenors.items():
+        if country == 'DE':
+            spreads[country][tenor] = 0
+        else:
+            spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor])*100
+fig, ax = plt.subplots(1, 1)
+trans_offset = matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=-.2, units='inches')
+ax.spines['left'].set_position('zero')
+ax.spines['bottom'].set_position('zero')
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+ax.xaxis.set_ticks_position('bottom')
+ax.yaxis.set_ticks_position('left')
+ax.set_xlabel('Score')
+ax.set_ylabel('Spread vs. Bund', loc='top', labelpad=-50)
+ax.set_ylim(top=spreads['IT'][10]*1.2)
+xs = total_score.loc['Score']
+ys = [spreads[country][10] for country in total_score.columns]
+ax.scatter(xs, ys)
+for x, y, c in zip(xs, ys, total_score.columns):
+    if c == 'DE':
+        plt.text(x, y, c, transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=.1, units='inches'))
+    else:
+        plt.text(x, y, c, transform=trans_offset)
+m, b = np.polyfit(xs, ys, 1)
+xs_aux = np.linspace(xs.min()*1.1, xs.max()*1.1, 200)
+ax.plot(xs_aux, m*xs_aux+b, color='red')
+plt.suptitle('10-jähriger Spread vs. Fundamental Score')
+plt.savefig('test_stars.png')
