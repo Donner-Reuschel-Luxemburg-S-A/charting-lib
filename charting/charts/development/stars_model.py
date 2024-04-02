@@ -1,8 +1,6 @@
 import time
 from copy import deepcopy
 from datetime import datetime
-
-from matplotlib.ticker import MultipleLocator
 from source_engine.estat_statistics import EstatStatisticsSource
 from source_engine.imf_source import ImfSource
 from source_engine.sdmx_source import Ecb
@@ -11,6 +9,7 @@ import pandas as pd
 import matplotlib.transforms
 import matplotlib.pyplot as plt
 import numpy as np
+import dataframe_image as dfi
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
@@ -23,7 +22,7 @@ imf_queries = {'primary_balance': ('FM', 'GGXONLB_G01_GDP_PT'), 'overall_balance
 names = ['loan_to_deposit', 'housing_loans', 'unemployment_rate', 'government_debt', 'eco_sentiment',
          'industrial_sentiment', 'current_account', 'financial_account', 'labour_cost', 'savings_rate',
          'primary_balance', 'overall_balance', 'international_reserves']
-src = ImfSource()
+
 ecb_source = Ecb()
 estat_source = EstatStatisticsSource()
 
@@ -77,9 +76,11 @@ i = 0
 for key, (dataset, s) in imf_queries.items():
     imf_result[key] = {}
     for c in countries:
+        src = ImfSource()
         imf_result[key][c] = src.fetch_data(series=dataset, params=f'{period}.{c}.{s}')
+        del src
         print(c)
-        time.sleep(2)
+        time.sleep(1)
     columns = list(imf_result[key].keys())
     dfs = [value[0]['OBS_VALUE'] for key, value in imf_result[key].items()]
     dfs = pd.concat(dfs, axis=1)
@@ -111,11 +112,11 @@ for sector, data in weights.items():
     sector_table.loc[sector] = data_table.loc[list(data[1].keys())].multiply(sector_weights, axis=0).sum(axis=0)
 total_score.loc['Score'] = sector_table.multiply([data[0] for _, data in weights.items()], axis=0).sum(axis=0)
 total_df = pd.concat([total_score, sector_table, data_table], axis=0)
-total_df = total_df.loc[['Score', 'initial_conditions', 'government_debt', 'primary_balance', 'unemployment_rate', 'international_reserves',
+total_df = total_df.loc[['Score', 'initial_conditions', 'government_debt', 'primary_balance','overall_balance', 'unemployment_rate', 'international_reserves',
               'momentum', 'eco_sentiment', 'industrial_sentiment',
               'competitivness', 'current_account', 'financial_account', 'labour_cost',
               'leverage', 'housing_loans', 'loan_to_deposit', 'savings_rate']]
-total_df.index = [x.replace('_', ' ').upper() for x in total_df.index]
+# total_df.index = [x.replace('_', ' ').upper() for x in total_df.index]
 
 tickers = {'DE': {5: 'GTDEM5Y Corp', 10: 'GTDEM10Y Corp'},
            'IT': {5: 'GTITL5Y Corp', 10: 'GTITL10Y Corp'},
@@ -166,3 +167,23 @@ xs_aux = np.linspace(xs.min()*1.1, xs.max()*1.1, 200)
 ax.plot(xs_aux, m*xs_aux+b, color='red')
 plt.suptitle('10-jähriger Spread vs. Fundamental Score')
 plt.savefig('test_stars.png')
+index = sector_table.index.to_list()
+index.append('Score')
+sl = pd.IndexSlice[index]
+
+styled = total_df.style\
+    .format(precision=2, decimal=',')\
+    .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,))\
+    .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[data_table.index.to_list()],))\
+    .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
+    .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)
+dfi.export(styled, 'all_data.png', table_conversion='playwright')
+styled = total_df.style\
+    .format(precision=2, decimal=',')\
+    .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,))\
+    .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)\
+    .hide(data_table.index.to_list(), axis=0) \
+    .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[sector_table.index.to_list(),])) \
+    .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
+    .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
+dfi.export(styled, 'consolidated.png', table_conversion='playwright')
