@@ -84,12 +84,21 @@ def main():
         i += 1
 
     normalized_score = {}
+    adj_value = {}
     for key, value in results.items():
         if 'sent' in key:
+            normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all')
+            adj_value[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all')
+            for c in countries:
+                last_key = value[c].dropna().index[-1]
+                if list(value[countries].index).index(last_key) != value[c].shape[0]-1:
+                    est = value['EU27_2020'].loc[last_key:].apply(lambda x: x - value['EU27_2020'].loc[last_key])
+                    normalized_score[key].loc[last_key:, c] = normalized_score[key].loc[last_key:, c] + est
+                    adj_value[key].loc[last_key:, c] = adj_value[key].loc[last_key:, c] + est
 
-            last_key = value[countries].dropna().index[-1]
-            est = value[countries].loc[last_key:].apply(lambda x: x-value[countries].loc[last_key], axis=1).mean(axis=1)
-        normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').apply(lambda x: 2*(x-x.min())/(x.max()-x.min()) - 1, axis=1)
+            normalized_score[key] = normalized_score[key].apply(lambda x: 2 * (x - x.min()) / (x.max() - x.min()) - 1, axis=1)
+        else:
+            normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').apply(lambda x: 2*(x-x.min())/(x.max()-x.min()) - 1, axis=1)
 
     weights = {'initial_conditions': (0.4, {'government_debt': (.4, -1), 'primary_balance': (.3, 1), 'overall_balance': (.2, 1), 'unemployment_rate': (.05, -1), 'international_reserves': (.05, 1)}),
                'momentum': (.3, {'eco_sentiment': (.5, 1), 'industrial_sentiment': (.5, 1)}),
@@ -157,6 +166,9 @@ def main():
     for x, y, c in zip(xs, ys, total_score.columns):
         if c == 'DE':
             plt.text(x, y, c, transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=.1, units='inches'))
+        elif -0.1 < x < 0.1:
+            plt.text(x, y, c,
+                     transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.3, y=-.2, units='inches'))
         else:
             plt.text(x, y, c, transform=trans_offset)
     m, b = np.polyfit(xs, ys, 1)
