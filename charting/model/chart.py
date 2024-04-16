@@ -490,20 +490,34 @@ class Chart:
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
-    def plot(self, bloomberg_source_override: str = None) -> None:
+    def plot(self, bloomberg_source_override: str = None, save: bool = True) -> str:
         """
         Plots the chart and saves it as png.
 
         Args:
             bloomberg_source_override (str): An override for bloomberg source (default: None).
+            save (bool): if True, the chart will be saved.
+
+        Return:
+            str
         """
         plt.suptitle(self.title, fontdict=title_style)
         self.__add_bottom_label(bloomberg_source_override)
-        plt.savefig(self.filepath, dpi=500)
+
+        if save:
+            plt.savefig(self.filepath, dpi=500)
+
+        b = io.BytesIO()
+        plt.savefig(b, format='png')
+        b.seek(0)
+        img_data = base64.b64encode(b.read()).decode("utf-8")
+
         plt.close()
 
-        if self.metadata is not None:
+        if self.metadata is not None and save:
             upload(chart=self)
+
+        return img_data
 
 
 def as_base64(path: str) -> str:
