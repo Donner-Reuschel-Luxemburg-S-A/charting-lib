@@ -519,6 +519,7 @@ class Chart:
 
         plt.close()
 
+        # Check self.caller starts with production and metadata is not None
         if self.metadata is not None and save:
             upload(chart=self)
 
@@ -545,6 +546,6 @@ def upload(chart: Chart) -> None:
         end=max(chart.x_max_label).date(),
         region=','.join(country.value for country in chart.metadata.region),
         category=','.join(category.value for category in chart.metadata.category),
-        base64=as_base64(path=chart.filepath)
+        base64=open(chart.filepath, 'rb').read()
     )
     db.upload(chart=chart_model)
