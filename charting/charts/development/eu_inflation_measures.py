@@ -37,6 +37,7 @@ def main():
     chart.plot()
 
     title = "EU Inflation and Money Supply (M3) YoY"
+    #title = "EU: Inflation und Geldmenge (M3)"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="eu_inflation_m3_yoy.png")
@@ -45,7 +46,7 @@ def main():
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(cpix_df.index, cpix_df['y'], label=cpix_title)
-    chart.add_series(m3_df.index, m3_df['y'], label=m3_title)
+    chart.add_series(m3_df.index, m3_df['y'], label=m3_title, transformer=[Lag(DateOffset(months=0))])
 
     chart.add_horizontal_line()
     chart.legend(ncol=2)

@@ -20,6 +20,7 @@ def main():
 
 
     title = "Germany: Producer, Wholesale and Consumer Inflation"
+    #title = "Deutschland: Produzenten-, Grosshandels- und Konsumenteninflation"
     #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="de_cpi_ppi.png")

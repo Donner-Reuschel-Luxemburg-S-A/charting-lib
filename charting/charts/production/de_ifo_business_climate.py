@@ -8,9 +8,12 @@ from charting.model.metadata import Region, Category, Metadata
 
 def main():
     blp = BloombergSource()
-    df1, t1 = blp.get_series(series_id='GRIFPEX Index', observation_start='20190101')
-    df2, t2 = blp.get_series(series_id='GRIFPCA Index', observation_start='20190101')
-    df3, t3 = blp.get_series(series_id='GRIFPBUS Index', observation_start='20190101')
+
+    start_date = "20050101"
+
+    df1, t1 = blp.get_series(series_id='GRIFPEX Index', observation_start=start_date)
+    df2, t2 = blp.get_series(series_id='GRIFPCA Index', observation_start=start_date)
+    df3, t3 = blp.get_series(series_id='GRIFPBUS Index', observation_start=start_date)
 
     title = "IFO Business Climate"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
@@ -20,8 +23,8 @@ def main():
     chart.configure_y_axis(y_axis_index=0, label="Index", minor_locator=MultipleLocator(1),
                            major_locator=MultipleLocator(5))
 
-    major_locator = mdates.MonthLocator(interval=6)
-    minor_locator = mdates.MonthLocator(interval=1)
+    major_locator = mdates.MonthLocator(interval=24)
+    minor_locator = mdates.MonthLocator(interval=12)
     major_formatter = mdates.DateFormatter("%b %y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)

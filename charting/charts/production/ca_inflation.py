@@ -1,0 +1,31 @@
+import matplotlib.dates as mdates
+from matplotlib.ticker import MultipleLocator
+from source_engine.bloomberg_source import BloombergSource
+
+from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Category, Region
+
+
+def main():
+    blp = BloombergSource()
+
+    start_time = "19700101"
+
+    nfp_df, nfp_title = blp.get_series(series_id="CACPIYOY Index", observation_start=start_time)
+
+    title = "Canada Inflation YoY"
+    metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
+
+    chart = Chart(title=title, filename="ca_inflation_yoy.png", metadata=metadata)
+    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(5000), label="")
+
+    chart.add_series(nfp_df.index, nfp_df['y'], label=nfp_title)
+
+    chart.add_horizontal_line()
+    chart.legend(ncol=2)
+    chart.plot()
+
+
+if __name__ == '__main__':
+    main()
