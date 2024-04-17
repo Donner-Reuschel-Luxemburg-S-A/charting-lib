@@ -1,13 +1,13 @@
 import base64
 import getpass
 import hashlib
+import inspect
 import io
 import os
 from datetime import datetime, timedelta
 from functools import reduce
 from typing import Tuple, Union, List, Dict
 
-import matplotlib.offsetbox as offsetbox
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -51,6 +51,7 @@ class Chart:
         self.num_rows = num_rows
         self.num_y_axis = num_y_axis
         self.figsize = figsize
+        self.module = self._caller()
         self.metadata = metadata
         self.max_label_length = 0
 
@@ -80,6 +81,11 @@ class Chart:
 
     def id(self) -> str:
         return hashlib.sha1(self.filename_original.encode('utf-8')).hexdigest()
+
+    def _caller(self):
+        _, filename, line, function, _, _ = inspect.stack()[2]
+        module = '\\'.join(filename.split('\\')[-2:])
+        return module
 
     def __remove_top_spines(self) -> None:
         """
@@ -490,43 +496,32 @@ class Chart:
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
-    def plot(self, bloomberg_source_override: str = None, save: bool = True) -> str:
+    def plot(self, bloomberg_source_override: str = None) -> str:
         """
         Plots the chart and saves it as png.
 
         Args:
             bloomberg_source_override (str): An override for bloomberg source (default: None).
-            save (bool): if True, the chart will be saved.
 
         Return:
-            str
+            str, the image as base64
         """
         plt.suptitle(self.title, fontdict=title_style)
         self.__add_bottom_label(bloomberg_source_override)
 
-        if save:
-            plt.savefig(self.filepath, dpi=500)
+        plt.savefig(self.filepath, dpi=500)
 
         b = io.BytesIO()
         plt.savefig(b, format='png')
         b.seek(0)
         img_data = base64.b64encode(b.read()).decode("utf-8")
 
-        plt.close()
-
-        if self.metadata is not None and save:
+        if self.module.startswith('production') and self.metadata is not None:
             upload(chart=self)
 
+        plt.close()
+
         return img_data
-
-
-def as_base64(path: str) -> str:
-    image = Image.open(path)
-    byte_stream = io.BytesIO()
-    image.save(byte_stream, format="PNG")
-    byte_stream.seek(0)
-    byte_stream_value = byte_stream.getvalue()
-    return base64.b64encode(byte_stream_value).decode("utf-8")
 
 
 def upload(chart: Chart) -> None:
@@ -536,10 +531,11 @@ def upload(chart: Chart) -> None:
         title=chart.title,
         last_update=datetime.now(),
         path=os.path.join(chart.rel_path, chart.filename),
+        module=chart.module,
         start=min(chart.x_min_label).date(),
         end=max(chart.x_max_label).date(),
         region=','.join(country.value for country in chart.metadata.region),
         category=','.join(category.value for category in chart.metadata.category),
-        base64=as_base64(path=chart.filepath)
+        image=open(chart.filepath, 'rb').read()
     )
     db.upload(chart=chart_model)
