@@ -10,13 +10,13 @@ def get_files():
     return path, file_list
 
 
-def execute_main_methods(names: Union[List[str], List] = []) -> List[str]:
+def update_charts(module_names: Union[List[str], List] = []) -> List[str]:
     path, file_list = get_files()
     errors = []
     charts_to_update = []
     incorrect_names = []
-    if len(names) > 0:
-        for chart in names:
+    if len(module_names) > 0:
+        for chart in module_names:
             if not chart.endswith('py'):
                 chart = chart + '.py'
             try:
@@ -38,18 +38,3 @@ def execute_main_methods(names: Union[List[str], List] = []) -> List[str]:
                     errors.append(module_name)
 
     return errors
-
-
-def update(module: str):
-    module = importlib.import_module(module)
-
-    if hasattr(module, 'main') and callable(getattr(module, 'main')):
-        module.main()
-
-
-if __name__ == "__main__":
-    l = ['eu_sxfivee_sxxp_mcxp_scxp_yield_six_month', 'eu_sxxp_yield_six_month', 'eu_sxxp_sector_per_overview', 'eu_indices_per_overview']
-    errors = execute_main_methods(l)
-
-    for error in errors:
-        print(error)

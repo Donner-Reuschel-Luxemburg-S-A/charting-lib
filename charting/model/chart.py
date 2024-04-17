@@ -1,13 +1,13 @@
 import base64
 import getpass
 import hashlib
+import inspect
 import io
 import os
 from datetime import datetime, timedelta
 from functools import reduce
 from typing import Tuple, Union, List, Dict
 
-import matplotlib.offsetbox as offsetbox
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -80,6 +80,11 @@ class Chart:
 
     def id(self) -> str:
         return hashlib.sha1(self.filename_original.encode('utf-8')).hexdigest()
+
+    def get_caller(self):
+        _, filename, line, function, _, _ = inspect.stack()[2]
+        module = '\\'.join(filename.split('\\')[-2:])
+        return module
 
     def __remove_top_spines(self) -> None:
         """
@@ -535,7 +540,7 @@ def upload(chart: Chart) -> None:
         id=chart.id(),
         title=chart.title,
         last_update=datetime.now(),
-        path=os.path.join(chart.rel_path, chart.filename),
+        path=chart.get_caller(),
         start=min(chart.x_min_label).date(),
         end=max(chart.x_max_label).date(),
         region=','.join(country.value for country in chart.metadata.region),
