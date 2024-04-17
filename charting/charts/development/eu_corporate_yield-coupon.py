@@ -23,6 +23,7 @@ def main():
     hy_cpn_df, hy_cpn_title = blp.get_series(series_id="LP01TREU Index", field="CPN", observation_start="19900101")
 
     title = "Euro IG Corporates Refinancing Costs"
+    #title = "Euro Unternehmensanleihen: Refinanzierungskosten"
     #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="eu_corporate_yield-coupon.png")

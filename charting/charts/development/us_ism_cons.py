@@ -54,7 +54,7 @@ def main():
     nfp_df[nfp_df < -1000 ]=-1000
 
 
-    title = "US ISM Manufacturing: Consecutive Months in Contraction vs. US NFPs (3m Avg)"
+    title = "US ISM Manufacturing: Consecutive Months in Contraction vs. Recessions"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_ism_cons_rec.png", num_rows=1, num_y_axis=2)
@@ -62,7 +62,7 @@ def main():
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),label="")
 
     chart.add_series(ind.index, ind['s'], label="Consecutive Months in Contraction")
-    chart.add_series(nfp_df.index, nfp_df['s'], label="Cumulative NFPs",y_axis_index=1)
+    #chart.add_series(nfp_df.index, nfp_df['s'], label="Cumulative NFPs",y_axis_index=1)
     #chart.add_series(df_macro_ind.index, df_macro_ind['y'], label="Indicator")
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"])
 
