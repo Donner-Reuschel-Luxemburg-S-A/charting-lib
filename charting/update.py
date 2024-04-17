@@ -29,12 +29,13 @@ def update_charts(module_names: Union[List[str], List] = []) -> List[str]:
     for file_name in charts_to_update:
         if (file_name.endswith('.py') or file_name.endswith('.pyc')) and file_name != "__init__.py":
             module_name = os.path.splitext(file_name)[0]
-            module = importlib.import_module(f'charting.charts.production.{module_name}')
 
-            if hasattr(module, 'main') and callable(getattr(module, 'main')):
-                try:
+            try:
+                module = importlib.import_module(f'charting.charts.production.{module_name}')
+
+                if hasattr(module, 'main') and callable(getattr(module, 'main')):
                     module.main()
-                except Exception as e:
-                    errors.append(module_name)
+            except Exception as e:
+                errors.append(module_name)
 
     return errors
