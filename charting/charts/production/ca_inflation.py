@@ -1,17 +1,13 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
-from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.avg import Avg
 
 
 def main():
     blp = BloombergSource()
-    fred = FredSource()
 
     start_time = "19700101"
 
@@ -26,8 +22,7 @@ def main():
 
     chart.add_series(nfp_df.index, nfp_df['y'], label=nfp_title)
 
-
-    chart.add_horizontal_line(y=0)
+    chart.add_horizontal_line()
     chart.legend(ncol=2)
     chart.plot()
 
