@@ -39,3 +39,8 @@ def update_charts(module_names: Union[List[str], List] = []) -> List[str]:
                 errors.append(module_name)
 
     return errors
+
+if __name__ == '__main__':
+    errors = update_charts()
+    for err in errors:
+        print(err)
