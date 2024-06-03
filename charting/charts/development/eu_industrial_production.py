@@ -25,7 +25,7 @@ def main():
 
     chart = Chart(title=title, filename="eu_industrial_production.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(5), major_locator=MultipleLocator(10),label="%")
 
     #chart.add_series(indprod_df.index, indprod_df['y'], label=indprod_title)
     chart.add_series(indprodcap_df.index, indprodcap_df['y'], label=indprodcap_title)

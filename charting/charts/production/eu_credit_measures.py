@@ -23,9 +23,9 @@ def main():
     credit_impulse_ps_df, credit_impulse_ps_title = blp.get_series(series_id="BCMPCIPD Index", observation_start="19990101")
 
     title = "EU Credit Measures YoY"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="eu_credit_measures_yoy.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_credit_measures_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 
@@ -37,9 +37,9 @@ def main():
     chart.plot()
 
     title = "EU Credit Impulse"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="eu_credit_impulse_measures_yoy.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_credit_impulse_measures_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 

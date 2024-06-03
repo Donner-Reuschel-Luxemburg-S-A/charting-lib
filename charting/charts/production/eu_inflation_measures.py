@@ -23,9 +23,9 @@ def main():
     m3_df, m3_title = blp.get_series(series_id="ECMAM3YY Index", observation_start="19990101")
 
     title = "EU Inflation Measures YoY"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="eu_inflation_measures_yoy.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -37,10 +37,9 @@ def main():
     chart.plot()
 
     title = "EU Inflation and Money Supply (M3) YoY"
-    #title = "EU: Inflation und Geldmenge (M3)"
-    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="eu_inflation_m3_yoy.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_m3_yoy.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -54,8 +53,9 @@ def main():
 
 
     title = "EU Inflation Measures 6M Ann."
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="eu_inflation_measures_mom_6.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_mom_6.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -68,8 +68,9 @@ def main():
     chart.plot()
 
     title = "EU Inflation Measures 3M Ann."
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="eu_inflation_measures_mom_3.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_mom_3.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -82,8 +83,9 @@ def main():
     chart.plot()
 
     title = "EU Inflation Measures YoY: Change"
+    metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="eu_inflation_measures_yoy_delta.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_yoy_delta.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 

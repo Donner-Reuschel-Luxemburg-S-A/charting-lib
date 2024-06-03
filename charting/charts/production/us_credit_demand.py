@@ -22,7 +22,7 @@ def main():
     title = "US Credit Demand"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
 
-    chart = Chart(title=title, filename="us_credit_demand.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_credit_demand.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
 
