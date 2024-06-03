@@ -176,8 +176,7 @@ if __name__ == '__main__':
 
     chart.legend(ncol=2)
     chart.plot()
-    """
-    start = datetime.datetime.today().date() - relativedelta(years=10)
+    
     # Quarterly Earnings SXXP
     df1, t1 = blp.get_series(series_id='SXXP Index', field="RR906", observation_start=start.strftime("%Y%m%d"))
 
@@ -192,7 +191,7 @@ if __name__ == '__main__':
                            major_locator=MultipleLocator(20))
 
     minor_locator = mdates.MonthLocator(interval=3)
-    major_locator = mdates.MonthLocator(interval=24)
+    major_locator = mdates.MonthLocator(interval=12)
     major_formatter = mdates.DateFormatter("%b %y")
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
@@ -203,8 +202,54 @@ if __name__ == '__main__':
 
     chart.add_series(x=df1.index, y=df1['y'], transformer=Resample('Q'), label=t1, y_axis_index=1)
     chart.add_horizontal_line(y_axis_index=0)
+    chart.add_last_value_badge()
 
     chart.legend(ncol=2)
     chart.plot()
 
+
+    # SXXP Profit MArgin
+    df1, t1 = blp.get_series(series_id='SXXP Index', field="RR836", observation_start=start.strftime("%Y%m%d"))
+
+    title = "Stoxx Euro 600 Profit Margin"
+
+    chart = Chart(title=title, filename="eu_sxxp_profit_margin.png")
+
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(0.25),
+                           major_locator=MultipleLocator(1))
+
+    minor_locator = mdates.MonthLocator(interval=3)
+    major_locator = mdates.MonthLocator(interval=12)
+    major_formatter = mdates.DateFormatter("%b %y")
+    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
+
+    chart.add_series(x=df1.index, y=df1['y'], label=t1, transformer=Avg(offset=DateOffset(months=1)))
+    chart.add_last_value_badge()
+
+    chart.legend(ncol=2)
+    chart.plot()
+    """
+
+    start = datetime.datetime.today().date() - relativedelta(years=10)
+
+    df1, t1 = blp.get_series(series_id='GDBR10 Index', observation_start=start.strftime("%Y%m%d"))
+    df2, t2 = blp.get_series(series_id='SX5E Index', field="RR907", observation_start=start.strftime("%Y%m%d"))
+    df = df2 - df1
+
+    title = "Euro Stoxx 50 Earning Yields minus Germany Government Bonds 10-Year "
+
+    chart = Chart(title=title, filename="eu_euro_stoxx_profit_minus_ten_year_profit.png")
+
+    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(0.5),
+                           major_locator=MultipleLocator(1))
+
+    minor_locator = mdates.MonthLocator(interval=3)
+    major_locator = mdates.MonthLocator(interval=12)
+    major_formatter = mdates.DateFormatter("%b %y")
+    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
+
+    chart.add_series(x=df.index, y=df['y'], label="SX5E Index Earning Yields - GDBR10 Index")
+
+    chart.legend(ncol=2)
+    chart.plot()
 
