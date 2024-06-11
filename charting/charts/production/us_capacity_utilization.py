@@ -7,7 +7,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -22,14 +22,15 @@ def main():
 
     chart = Chart(title=title, filename="us_capacity_utilization.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     chart.add_series(cap_df.index, cap_df['y'], label=cap_title)
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
 
     chart.legend(ncol=1)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

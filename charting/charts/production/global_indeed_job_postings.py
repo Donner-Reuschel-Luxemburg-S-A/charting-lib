@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     indeed = IndeedSource()
     au, au_t = indeed.get_series(series_id="AU")
     ca, ca_t = indeed.get_series(series_id="CA")
@@ -40,7 +40,7 @@ def main():
     chart.add_horizontal_line(y=100)
 
     chart.legend(ncol=3)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

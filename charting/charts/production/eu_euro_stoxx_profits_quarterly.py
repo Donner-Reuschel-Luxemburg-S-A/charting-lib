@@ -10,7 +10,7 @@ from charting.transformer.pct import Pct
 from charting.transformer.resample import Resample
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     df1, t1 = blp.get_series(series_id='SX5E Index', field="RR906", observation_start="20170101")
@@ -40,7 +40,7 @@ def main():
     chart.add_horizontal_line(y_axis_index=1)
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

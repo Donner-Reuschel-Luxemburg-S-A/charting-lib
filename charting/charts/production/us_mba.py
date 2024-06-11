@@ -9,7 +9,7 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -24,7 +24,8 @@ def main():
 
     chart = Chart(title=title, filename="us_mba.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     mba_df = mba_df.iloc[12:, ]
     chart.add_series(mba_df.index, mba_df['y'], label=mba_title, transformer=[Avg(offset=DateOffset(months=12))])
@@ -32,7 +33,7 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

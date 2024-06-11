@@ -1,14 +1,12 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-from charting.transformer.lead import Lead
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     d1, t1 = blp.get_series(series_id='GRZEWI Index', observation_start='20180101')
     d2, t2 = blp.get_series(series_id='GRIFPEX Index', observation_start='20180101')
@@ -35,7 +33,7 @@ def main():
     # chart.add_horizontal_line()
     # chart.add_last_value_badge()
     chart.legend(ncol=1)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

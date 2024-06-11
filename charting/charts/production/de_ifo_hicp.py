@@ -8,7 +8,7 @@ from charting.model.metadata import Region, Category, Metadata
 from charting.transformer.lag import Lag
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     df1, t1 = blp.get_series(series_id='GEIFSGPE Index', observation_start='20180701')
@@ -34,7 +34,7 @@ def main():
     chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1, transformer=Lag(offset=DateOffset(months=6)))
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

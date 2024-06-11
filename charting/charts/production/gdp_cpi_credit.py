@@ -9,7 +9,7 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
     credit_df, credit_title = fred.get_series(series_id="TOTBKCR", observation_start="1976-01-01")
@@ -36,7 +36,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

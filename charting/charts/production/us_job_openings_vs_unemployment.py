@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     fred = FredSource()
     d1, t1 = fred.get_series(series_id='JTSJOL', observation_start="2000-12-01")
     d2, t2 = fred.get_series(series_id='UNRATE', observation_start="2000-12-01")
@@ -32,7 +32,7 @@ def main():
     chart.add_vertical_line(x=d3.index, y=d3["y"], label="US Recession")
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

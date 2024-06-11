@@ -1,12 +1,13 @@
-from matplotlib.ticker import MultipleLocator
-from source_engine.bloomberg_source import BloombergSource
-from charting.model.chart import Chart
-from charting.model.metadata import Metadata, Region, Category
 import matplotlib.dates as mdates
 import pandas as pd
+from matplotlib.ticker import MultipleLocator
+from source_engine.bloomberg_source import BloombergSource
+
+from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     df, t = blp.get_series(series_id='LG20STAT Index', observation_start='20140101', field='BX218')
     df2, t2 = blp.get_series(series_id='LCB1TRUU Index', observation_start='20140101', field='BX218')
@@ -29,7 +30,7 @@ def main():
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2)
     chart.add_series(x=common_index, y=(df.loc[common_index] - df2.loc[common_index])['y'], row_index=1, label=title)
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

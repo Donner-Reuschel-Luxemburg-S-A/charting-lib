@@ -11,7 +11,7 @@ from charting.transformer.avg import Avg
 from charting.transformer.resample import Resample
 
 
-def main():
+def main(**kwargs):
     fred = FredSource()
     excel_path = os.path.join(os.path.dirname(__file__), "data", "bankruptcy_data.xlsx")
     df = pd.read_excel(excel_path, parse_dates=True, index_col="Date")
@@ -40,7 +40,7 @@ def main():
 
     chart.legend(ncol=2)
 
-    chart.plot(bloomberg_source_override='BCY')
+    return chart.plot(bloomberg_source_override='BCY')
 
 
 if __name__ == '__main__':

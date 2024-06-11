@@ -1,27 +1,21 @@
-import pandas as pd
+import matplotlib.dates as mdates
 import numpy as np
 from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
-from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
-
-from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.lag import Lag
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     cpi_df, cpi_title = blp.get_series(series_id="GRCP20YY Index", observation_start="19920101")
     ppi_df, ppi_title = blp.get_series(series_id="GRPFIYOY Index", observation_start="19920101")
     wpi_df, wpi_title = blp.get_series(series_id="GRWPYOYI Index", observation_start="19920101")
 
-
     title = "Germany: Producer, Wholesale and Consumer Inflation"
-    #title = "Deutschland: Produzenten-, Grosshandels- und Konsumenteninflation"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    # title = "Deutschland: Produzenten-, Grosshandels- und Konsumenteninflation"
+    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="de_cpi_ppi.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
@@ -33,10 +27,10 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "Germany: Producer, Wholesale and Consumer Inflation: Changes"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="de_cpi_ppi_adj.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
@@ -53,7 +47,8 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
+
 
 if __name__ == '__main__':
     main()

@@ -8,7 +8,7 @@ from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.lead import Lead
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     title = "German food inflation and price expectations of food manufacturers"
 
@@ -37,7 +37,7 @@ def main():
     chart.add_last_value_badge()
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

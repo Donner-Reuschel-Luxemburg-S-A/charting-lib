@@ -1,14 +1,12 @@
 import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
-from charting.transformer.lag import Lag
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     df1, t1 = blp.get_series(series_id='ECMAM2YY Index', observation_start='20200901')
@@ -35,7 +33,7 @@ def main():
 
     chart.legend(ncol=2)
     chart.add_horizontal_line(y_axis_index=0)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     start_time = "19700101"
@@ -24,7 +24,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

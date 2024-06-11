@@ -4,11 +4,11 @@ from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-from charting.transformer.pct import Pct
 from charting.model.metadata import Category, Region, Metadata
+from charting.transformer.pct import Pct
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -24,7 +24,8 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="us_credit_measures.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(50), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(50),
+                           label="Percentage Points")
 
     chart.add_series(bankcredit_df.index, bankcredit_df['y'], label=bankcredit_title, transformer=[Pct(12)])
     chart.add_series(ci_loans_df.index, ci_loans_df['y'], label=ci_loans_title, transformer=[Pct(12)])
@@ -34,7 +35,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend(ncol=1)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

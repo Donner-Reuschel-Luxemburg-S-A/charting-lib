@@ -7,7 +7,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -53,7 +53,7 @@ def main():
 
     chart.add_horizontal_line(y=50)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US PMIs"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
@@ -69,7 +69,7 @@ def main():
 
     chart.add_horizontal_line(y=50)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Small Business Optimism"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
@@ -83,7 +83,7 @@ def main():
 
     chart.add_horizontal_line(y=100)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "Chicago PMI"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
@@ -97,7 +97,7 @@ def main():
 
     chart.add_horizontal_line(y=50)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "Conference Board Leading Indicator"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
@@ -113,7 +113,7 @@ def main():
 
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Consumer Confidence"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
@@ -128,7 +128,7 @@ def main():
 
     chart.add_horizontal_line(y=100)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

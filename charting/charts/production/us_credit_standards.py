@@ -7,7 +7,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -23,7 +23,8 @@ def main():
 
     chart = Chart(title=title, metadata=metadata, filename="us_credit_standards.png")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     chart.add_series(credit_small_df.index, credit_small_df['y'], label=credit_small_title)
     chart.add_series(credit_large_df.index, credit_large_df['y'], label=credit_large_title)
@@ -33,7 +34,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend(ncol=1)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

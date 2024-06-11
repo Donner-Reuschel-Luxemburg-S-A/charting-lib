@@ -8,7 +8,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     today = datetime.datetime.today().date()
@@ -32,12 +32,13 @@ def main():
     chart = Chart(title=title, metadata=metadata, filename="us_spx_sector_performance.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
-    chart.configure_x_axis(label="Percentage Points", minor_locator=MultipleLocator(0.25), major_locator=MultipleLocator(1))
+    chart.configure_x_axis(label="Percentage Points", minor_locator=MultipleLocator(0.25),
+                           major_locator=MultipleLocator(1))
 
     chart.add_series(data[0], data[1], label="", chart_type="bar",
                      t_min=min(df.index.min() for df, _ in dfs), t_max=max(df.index.max() for df, _ in dfs))
 
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

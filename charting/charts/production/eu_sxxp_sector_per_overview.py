@@ -5,7 +5,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     indices = ["SX7P Index", "SXEP Index", "SXAP Index", "SXPP Index", "SX8P Index", "SX86P Index", "SXNP Index",
@@ -16,7 +16,7 @@ def main():
              "Utilities", "Health Care", "Telecom", "Insurance", "Chemicals", "Retail", "Food & Beverage",
              "Travel", "Construction & Materials", "Consumer Products & Services"]
 
-    dfs = [blp.get_series(series_id=idx, field="RR900", observation_start="20000101") for idx in indices]
+    dfs = [blp.get_series(series_id=idx, field="RR900", observation_start="20120101") for idx in indices]
 
     y = [df["y"].values for df, _ in dfs]
 
@@ -31,7 +31,7 @@ def main():
     chart.add_series(names, y, label="", chart_type="boxplot",
                      t_min=min(df.index.min() for df, _ in dfs), t_max=max(df.index.max() for df, _ in dfs))
 
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

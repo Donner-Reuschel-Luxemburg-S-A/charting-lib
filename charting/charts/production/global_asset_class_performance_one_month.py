@@ -8,20 +8,23 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     today = datetime.datetime.today().date()
     start = today - relativedelta(months=1)
 
-    stock_indices = ["SPX Index", "NDX Index", "RTY Index", "SXXP Index", "SX5E Index", "DAX Index", "NKY Index", "HSI Index"]
+    stock_indices = ["SPX Index", "NDX Index", "RTY Index", "SXXP Index", "SX5E Index", "DAX Index", "NKY Index",
+                     "HSI Index"]
     stock_dfs = [blp.get_series(series_id=idx, observation_start=start.strftime("%Y%m%d")) for idx in stock_indices]
-    stock_names = ["S&P 500", "NASDAQ 100", "Russell 2000", "Stoxx Europe 600", "Euro Stoxx 50", "DAX 40", "Nikkei 225", "Hang Seng"]
+    stock_names = ["S&P 500", "NASDAQ 100", "Russell 2000", "Stoxx Europe 600", "Euro Stoxx 50", "DAX 40", "Nikkei 225",
+                   "Hang Seng"]
     stock_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in stock_dfs]
     stock_data = sorted(zip(stock_names, stock_yields), key=lambda x: x[1])
     stock_data = list(zip(*stock_data))
 
-    cmdty_indices = ["XBTUSD Curncy", "XAG Curncy", "XAU Curncy", "CL1 Comdty", "EURUSD Curncy", "USDJPY Curncy", "EURCHF Curncy", "EURGBP Curncy"]
+    cmdty_indices = ["XBTUSD Curncy", "XAG Curncy", "XAU Curncy", "CL1 Comdty", "EURUSD Curncy", "USDJPY Curncy",
+                     "EURCHF Curncy", "EURGBP Curncy"]
     cmdty_dfs = [blp.get_series(series_id=idx, observation_start=start.strftime("%Y%m%d")) for idx in
                  cmdty_indices]
     cmdty_names = ["Bitcoin USD", "Silver USD", "Gold USD", "Crude Oil WTI", "EUR/USD", "USD/JPY", "EUR/CHF", "EUR/GBP"]
@@ -31,8 +34,9 @@ def main():
 
     fi_indices = ["ER00 Index", "LEATTREU Index", "IBXXDECT Index", "IBOXXMJA Index", "JPEIHDEU Index"]
     fi_dfs = [blp.get_series(series_id=idx, observation_start=start.strftime("%Y%m%d")) for idx in
-                 fi_indices]
-    fi_names = ["Euro Corporate", "Euro-Aggregate: Treasury", "Covered Bonds", "EUR Liquid High Yield", "EMBI Global Core"]
+              fi_indices]
+    fi_names = ["Euro Corporate", "Euro-Aggregate: Treasury", "Covered Bonds", "EUR Liquid High Yield",
+                "EMBI Global Core"]
     fi_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in fi_dfs]
     fi_data = sorted(zip(fi_names, fi_yields), key=lambda x: x[1])
     fi_data = list(zip(*fi_data))
@@ -62,7 +66,7 @@ def main():
     chart.add_series(cmdty_data[0], cmdty_data[1], label="", chart_type="bar",
                      t_min=min(df.index.min() for df, _ in cmdty_dfs), t_max=max(df.index.max() for df, _ in cmdty_dfs),
                      row_index=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

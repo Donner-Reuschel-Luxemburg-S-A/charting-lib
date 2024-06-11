@@ -1,12 +1,13 @@
-from matplotlib.ticker import MultipleLocator, NullLocator
-from source_engine.bloomberg_source import BloombergSource
-from charting.model.chart import Chart
-from charting.model.metadata import Metadata, Region, Category
 import matplotlib.dates as mdates
 import pandas as pd
+from matplotlib.ticker import MultipleLocator, NullLocator
+from source_engine.bloomberg_source import BloombergSource
+
+from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     df, t = blp.get_series(series_id='QX3A Index', observation_start='20140101', field='SP039')
     df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start='20140101', field='BX219')
@@ -35,7 +36,7 @@ def main():
                      label=title)
     chart.configure_y_axis(label='', row_index=1, y_axis_index=1, major_locator=NullLocator())
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.ytd import Ytd
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     df1, t1 = blp.get_series(series_id='spx Index', observation_start="20230101", field="px_close_1d")
@@ -36,7 +36,7 @@ def main():
     chart.add_last_value_badge()
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -29,7 +29,7 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

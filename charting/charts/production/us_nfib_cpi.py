@@ -9,7 +9,7 @@ from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     df1, t1 = blp.get_series(series_id='SBOIPRIC Index', observation_start='19950131')
     df2, t2 = blp.get_series(series_id='CLEVCPIA Index', observation_start='19950131')
@@ -31,7 +31,7 @@ def main():
     chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1, transformer=Resample('M'))
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

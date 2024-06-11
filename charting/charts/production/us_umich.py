@@ -7,7 +7,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -24,7 +24,8 @@ def main():
 
     chart = Chart(title=title, filename="us_umich_surveys.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     chart.add_series(sentiment_df.index, sentiment_df['y'], label=sentiment_title)
     chart.add_series(expectations_df.index, expectations_df['y'], label=expectations_title)
@@ -34,7 +35,7 @@ def main():
 
     chart.add_horizontal_line(y=100)
     chart.legend(ncol=1)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

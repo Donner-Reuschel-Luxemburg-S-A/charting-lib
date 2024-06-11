@@ -11,7 +11,7 @@ from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     start = datetime.datetime.today().date() - relativedelta(years=15)
@@ -34,7 +34,7 @@ def main():
     chart.add_series(x=df2.index, y=df2['y'], label=t2, transformer=Avg(offset=DateOffset(months=1)))
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

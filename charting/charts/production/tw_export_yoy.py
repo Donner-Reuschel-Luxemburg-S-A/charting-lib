@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     d1, t1 = blp.get_series(series_id='TWTREXPY Index', observation_start="19900101")
 
@@ -27,7 +27,7 @@ def main():
     chart.add_last_value_badge()
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

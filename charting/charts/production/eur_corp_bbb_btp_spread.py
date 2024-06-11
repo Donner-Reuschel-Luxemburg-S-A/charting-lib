@@ -1,12 +1,13 @@
-from matplotlib.ticker import MultipleLocator
-from source_engine.bloomberg_source import BloombergSource
-from charting.model.chart import Chart
-from charting.model.metadata import Metadata, Region, Category
 import matplotlib.dates as mdates
 import pandas as pd
+from matplotlib.ticker import MultipleLocator
+from source_engine.bloomberg_source import BloombergSource
+
+from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     df, t = blp.get_series(series_id='.ITGER10 G Index', observation_start='20140101')
     df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start='20140101', field='BX218')
@@ -25,12 +26,13 @@ def main():
     chart.configure_y_axis(y_axis_index=0, row_index=1, label='Spread Difference BPS',
                            minor_locator=MultipleLocator(25),
                            major_locator=MultipleLocator(50))
-    chart.add_series(x=common_index, y=df.loc[common_index]['y']*100, label=t)
+    chart.add_series(x=common_index, y=df.loc[common_index]['y'] * 100, label=t)
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2)
-    chart.add_series(x=common_index, y=(df.loc[common_index] *100 - df2.loc[common_index])['y'], row_index=1, label=title)
-    chart.add_horizontal_line(row_index=1,y_axis_index=0,y=0)
+    chart.add_series(x=common_index, y=(df.loc[common_index] * 100 - df2.loc[common_index])['y'], row_index=1,
+                     label=title)
+    chart.add_horizontal_line(row_index=1, y_axis_index=0, y=0)
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

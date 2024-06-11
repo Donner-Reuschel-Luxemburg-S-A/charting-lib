@@ -8,7 +8,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     today = datetime.datetime.today().date()
@@ -22,7 +22,7 @@ def main():
     names = ["Oil & Gas", "Food & Beverage", "Health Care", "Travel", "Basic Resources", "Insurance", "Media",
              "Product & Households", "Telecom", "Chemicals", "Banks", "Utilities", "Autos & Parts", "Industrials",
              "Construction & Materials", "Financial Services", "Retail", "Technology", "Real Estate"]
-    yields = [((df['y'].iloc[-1]/df['y'].iloc[0])-1)*100 for df, _ in dfs]
+    yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in dfs]
 
     data = sorted(zip(names, yields), key=lambda x: x[1])
     data = list(zip(*data))
@@ -33,12 +33,13 @@ def main():
     chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_sector_performance.png")
 
     chart.configure_y_axis(y_axis_index=0, label="")
-    chart.configure_x_axis(label="Percentage Points", minor_locator=MultipleLocator(0.25), major_locator=MultipleLocator(1))
+    chart.configure_x_axis(label="Percentage Points", minor_locator=MultipleLocator(0.25),
+                           major_locator=MultipleLocator(1))
 
     chart.add_series(data[0], data[1], label="", chart_type="bar",
                      t_min=min(df.index.min() for df, _ in dfs), t_max=max(df.index.max() for df, _ in dfs))
 
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -24,21 +24,23 @@ def main():
 
     chart = Chart(title=title, filename="us_durable_goods_orders_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10),
+                           label="Percentage Points")
 
     chart.add_series(do_df.index, do_df['y'] * 12, label=do_title, transformer=[Avg(offset=DateOffset(months=6))])
 
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Durable Goods 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_durable_goods_orders_mom_12.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10),
+                           label="Percentage Points")
 
     chart.add_series(do_df.index, do_df['y'] * 12, label=do_title,
                      transformer=[Avg(offset=DateOffset(months=12))])
@@ -46,14 +48,15 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Durable Goods Orders YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_durable_goods_orders_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10),
+                           label="Percentage Points")
 
     do_df['z'] = do_df['y'].rolling(12).sum()
 
@@ -62,7 +65,7 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

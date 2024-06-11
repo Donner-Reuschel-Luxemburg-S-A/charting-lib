@@ -9,7 +9,7 @@ from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
     df1, t1 = blp.get_series(series_id='INJCJC Index', observation_start='19800101')
@@ -35,7 +35,7 @@ def main():
     chart.add_vertical_line(x=df3.index, y=df3["y"], label="US Recession")
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

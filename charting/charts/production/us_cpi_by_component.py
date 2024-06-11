@@ -9,7 +9,7 @@ from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.pct import Pct
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
     headline_df, headline_title = fred.get_series(series_id='CPIAUCSL', observation_start='2019-01-01')
@@ -72,7 +72,7 @@ def main():
     chart.add_series(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy")
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

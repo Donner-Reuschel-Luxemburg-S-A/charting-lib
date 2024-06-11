@@ -14,7 +14,7 @@ from matplotlib import pyplot as plt
 
 plt.switch_backend('agg')
 from matplotlib.axes import Axes
-from matplotlib.ticker import Formatter, Locator
+from matplotlib.ticker import Formatter, Locator, AutoMinorLocator, AutoLocator
 from source_engine.chart_source import ChartSource, ChartModel
 
 from charting import chart_base_path
@@ -22,6 +22,7 @@ from charting.exception import InvalidAxisConfigurationException, YAxisIndexExce
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style, colors
 from charting.model.transformer import Transformer
+import matplotlib.dates as mdates
 
 
 class Chart:
@@ -496,12 +497,13 @@ class Chart:
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
-    def plot(self, bloomberg_source_override: str = None) -> str:
+    def plot(self, bloomberg_source_override: str = None, upload_chart: bool = True) -> str:
         """
         Plots the chart and saves it as png.
 
         Args:
             bloomberg_source_override (str): An override for bloomberg source (default: None).
+            upload_chart (bool): True if chart should be uploaded to database, False else (default: True).
 
         Return:
             str, the image as base64
@@ -516,7 +518,7 @@ class Chart:
         b.seek(0)
         img_data = base64.b64encode(b.read()).decode("utf-8")
 
-        if self.module.startswith('production') and self.metadata is not None:
+        if self.module.startswith('production') and self.metadata is not None and upload_chart:
             upload(chart=self)
 
         plt.close()

@@ -9,7 +9,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     start = datetime.datetime.today().date() - relativedelta(years=10)
@@ -33,7 +33,7 @@ def main():
     chart.add_series(x=df1.index, y=mean_val, label="10Y Avg", linestyle="--")
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

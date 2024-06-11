@@ -1,33 +1,23 @@
-import pandas as pd
-import numpy as np
+import matplotlib.dates as mdates
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
-from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
-import matplotlib.dates as mdates
 
-from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.lag import Lag
-from charting.transformer.avg import Avg
-from charting.transformer.invert import Invert
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     start_time = "20200201"
 
     rr_df, rr_title = blp.get_series(series_id="RRPQTOON Index", observation_start=start_time)
     tga_df, tga_title = blp.get_series(series_id="CERBTGAN Index", observation_start=start_time)
-    fed_df,fed_title = blp.get_series(series_id="CERBTTAL Index", observation_start=start_time)
+    fed_df, fed_title = blp.get_series(series_id="CERBTTAL Index", observation_start=start_time)
 
     spx_df, spx_title = blp.get_series(series_id="SPX Index", observation_start=start_time)
 
-
-
     df = fed_df
-    df['y'] = df['y']-rr_df['y']-tga_df['y']
+    df['y'] = df['y'] - rr_df['y'] - tga_df['y']
 
     title = "Net Liquidity vs. SPX"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
@@ -40,9 +30,7 @@ def main():
     chart.add_series(df.index, df['y'], label="Net Liquidity", y_axis_index=1)
 
     chart.legend(ncol=1)
-    chart.plot()
-
-
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

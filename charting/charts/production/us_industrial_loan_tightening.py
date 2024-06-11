@@ -7,7 +7,7 @@ from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.center import Center
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
     d1, t1 = fred.get_series(series_id='DRTSCILM')
@@ -33,7 +33,7 @@ def main():
     chart.add_horizontal_line(y_axis_index=1)
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

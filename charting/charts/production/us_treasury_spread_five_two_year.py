@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     fred = FredSource()
     df1, t1 = fred.get_series(series_id='DGS2', observation_start="2017-01-01")
     df2, t2 = fred.get_series(series_id='DGS5', observation_start="2017-01-01")
@@ -29,7 +29,7 @@ def main():
     chart.add_series(x=df.index, y=df['y'] * 100, label=title)
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

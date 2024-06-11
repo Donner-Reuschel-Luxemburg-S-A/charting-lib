@@ -9,7 +9,7 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -26,7 +26,8 @@ def main():
 
     chart = Chart(title=title, filename="us_home_sales_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
+                           label="Percentage Points")
 
     chart.add_series(ehs_df.index, ehs_df['y'] * 12, label=ehs_title, transformer=[Avg(offset=DateOffset(months=6))])
     chart.add_series(nhs_df.index, nhs_df['y'] * 12, label=nhs_title, transformer=[Avg(offset=DateOffset(months=6))])
@@ -35,14 +36,15 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Home Sales 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_home_sales_12.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
+                           label="Percentage Points")
 
     chart.add_series(ehs_df.index, ehs_df['y'] * 12, label=ehs_title, transformer=[Avg(offset=DateOffset(months=12))])
     chart.add_series(nhs_df.index, nhs_df['y'] * 12, label=nhs_title, transformer=[Avg(offset=DateOffset(months=12))])
@@ -51,14 +53,15 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Home Sales YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_home_sales_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
+                           label="Percentage Points")
 
     ehs_df['z'] = ehs_df['y'].rolling(12).sum()
     nhs_df['z'] = nhs_df['y'].rolling(12).sum()
@@ -71,7 +74,7 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

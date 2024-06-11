@@ -8,7 +8,7 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     start_date = "20050101"
@@ -27,7 +27,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     # IFO
     df1, t1 = blp.get_series(series_id='GRIFPEX Index', observation_start=start_date)
@@ -53,7 +53,7 @@ def main():
     chart.add_series(x=df3.index, y=df3['y'], label=t3)
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     # ZEW
     df4, t4 = blp.get_series(series_id='GRZECURR Index', observation_start=start_date)
@@ -77,7 +77,7 @@ def main():
     chart.add_series(x=df5.index, y=df5['y'], label=t5)
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     # Eurozone
 
@@ -102,7 +102,7 @@ def main():
     chart.add_series(x=df8.index, y=df8['y'], label=t8)
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     # Citi
     df9, t9 = blp.get_series(series_id='CESIEUR Index', observation_start=start_date)
@@ -124,7 +124,7 @@ def main():
     chart.add_series(x=df9.index, y=df9['y'], label=t9)
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     # PMIs
     df10, t10 = blp.get_series(series_id='MPMIEZCA Index', observation_start=start_date)
@@ -152,7 +152,7 @@ def main():
     chart.add_series(x=df13.index, y=df13['y'], label=t13)
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     # Stock Market Inside
     df14, t14 = blp.get_series(series_id='SXAP Index', observation_start=start_date)
@@ -181,7 +181,7 @@ def main():
     chart.add_series(x=df16.index, y=s3, label="Industrials / Utilities")
 
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "STOXX 600: Real Estate vs. Utes"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
@@ -201,7 +201,7 @@ def main():
 
     chart.add_series(x=df15.index, y=s2, label="Real Estate / Utilities")
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

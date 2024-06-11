@@ -8,7 +8,7 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     start_time = "19700101"
@@ -27,7 +27,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "Canada Employment Change MoM"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
@@ -40,7 +40,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "Canada Employment Change YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
@@ -56,7 +56,7 @@ def main():
 
     chart.add_horizontal_line()
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
 
 
-def main():
+def main(**kwargs):
     fred = FredSource()
     title = "US retail sales: YoY change"
 
@@ -29,7 +29,7 @@ def main():
                      transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

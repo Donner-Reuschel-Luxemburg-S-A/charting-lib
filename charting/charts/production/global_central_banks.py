@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     fed, _ = blp.get_series(series_id='CERBTTAL Index', observation_start='20000101')
@@ -35,7 +35,7 @@ def main():
     chart.add_series(x=boj.index, y=boj['y'], label="BOJ")
 
     chart.legend(ncol=3)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

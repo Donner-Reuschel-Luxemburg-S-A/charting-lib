@@ -9,7 +9,7 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -29,7 +29,8 @@ def main():
 
     chart = Chart(title=title, filename="us_retail_sales_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     chart.add_series(retailsales_df.index, retailsales_df['y'] * 12, label=retailsales_title,
                      transformer=[Avg(offset=DateOffset(months=6))])
@@ -41,14 +42,15 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Retail Sales 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_retail_sales_mom_12.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     chart.add_series(retailsales_df.index, retailsales_df['y'] * 12, label=retailsales_title,
                      transformer=[Avg(offset=DateOffset(months=12))])
@@ -60,14 +62,15 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Retail Sales YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_retail_sales_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     retailsales_df['z'] = retailsales_df['y'].rolling(12).sum()
     retailsales_ex_auto_df['z'] = retailsales_ex_auto_df['y'].rolling(12).sum()
@@ -81,20 +84,22 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Johnson Redbook Same Store Sales"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_redbook.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
+                           label="Percentage Points")
 
     chart.add_series(redbook_df.index, redbook_df['y'], label=redbook_title)
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
+
 
 if __name__ == '__main__':
     main()

@@ -8,7 +8,7 @@ from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     d1, t1 = blp.get_series(series_id='CCOSNREV Index', observation_start="20070101")
     d1["mom_change"] = d1["y"].diff()
@@ -30,7 +30,7 @@ def main():
 
     chart.add_last_value_badge()
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
 
-def main():
+def main(**kwargs):
     source = Ecb()
     df1, t1 = source.get_data(flow_ref="EXR", key='D.USD.EUR.SP00.A', parameters={'startPeriod': '2017-01-01'})
 
@@ -26,7 +26,7 @@ def main():
     chart.add_last_value_badge(decimals=2)
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
@@ -29,14 +29,15 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Budget Balance YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_budget_balance_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200),
+                           label="Percentage Points")
 
     tb_df['z'] = tb_df['y'].rolling(12).sum()
 
@@ -45,7 +46,7 @@ def main():
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

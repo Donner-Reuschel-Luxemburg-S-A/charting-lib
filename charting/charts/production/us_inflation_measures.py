@@ -9,7 +9,7 @@ from charting.transformer.avg import Avg
 from charting.transformer.lag import Lag
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
 
     start_time = "19980101"
@@ -42,7 +42,8 @@ def main():
 
     chart = Chart(title=title, filename="us_inflation_measures_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(cpix_df.index, cpix_df['y'], label=cpix_title)
@@ -50,14 +51,15 @@ def main():
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Inflation Measures 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_inflation_measures_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(cpim_df.index, cpim_df['y'] * 12, label=cpim_title, transformer=[Avg(offset=DateOffset(months=6))])
     chart.add_series(cpixm_df.index, cpixm_df['y'] * 12, label=cpixm_title,
@@ -66,14 +68,15 @@ def main():
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Inflation Measures 3M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_inflation_measures_mom_3.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(cpim_df.index, cpim_df['y'] * 12, label=cpim_title, transformer=[Avg(offset=DateOffset(months=3))])
     chart.add_series(cpixm_df.index, cpixm_df['y'] * 12, label=cpixm_title,
@@ -82,14 +85,15 @@ def main():
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US PPI vs. CPI YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_ppi_cpi_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(ppi_df.index, ppi_df['y'], label=ppi_title)
     chart.add_series(ppix_df.index, ppix_df['y'], label=ppix_title)
@@ -103,27 +107,29 @@ def main():
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US CPI ex Shelter YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_ex_shelter_cpi_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(cpi_ex_shelter_df.index, cpi_ex_shelter_df['y'], label=cpi_ex_shelter_title)
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US CPI Shelter YoY vs. Zillow Rent Index"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_shelter_cpi_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     start_min = zillow_df.index[0]
     filtered_cpi_shelter_df = cpi_shelter_df[cpi_shelter_df.index >= start_min]
@@ -134,28 +140,30 @@ def main():
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Import and Export Prices YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_import_export_prices_yoy.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(import_prices_df.index, import_prices_df['y'], label=import_prices_title)
     chart.add_series(export_prices_df.index, export_prices_df['y'], label=export_prices_title)
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Import and Export Prices 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_import_export_prices_mom_6.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(import_pricesm_df.index, import_pricesm_df['y'] * 12, label=import_pricesm_title,
                      transformer=[Avg(offset=DateOffset(months=6))])
@@ -164,14 +172,15 @@ def main():
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Import and Export Prices 3M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_import_export_prices_mom_3.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(import_pricesm_df.index, import_pricesm_df['y'] * 12, label=import_pricesm_title,
                      transformer=[Avg(offset=DateOffset(months=3))])
@@ -180,21 +189,22 @@ def main():
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Inflation Expectations"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_inflation_expectations.png", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="Percentage Points")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
+                           label="Percentage Points")
 
     chart.add_series(inflation_exp1y_df.index, inflation_exp1y_df['y'], label=inflation_exp1y_title)
     chart.add_series(inflation_exp5y_df.index, inflation_exp5y_df['y'], label=inflation_exp5y_title)
 
     chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

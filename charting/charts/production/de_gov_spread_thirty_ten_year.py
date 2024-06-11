@@ -6,7 +6,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
 
-def main():
+def main(**kwargs):
     blp = BloombergSource()
     df1, t1 = blp.get_series(series_id='DEYC1030 Index', observation_start="20200101")
 
@@ -26,7 +26,7 @@ def main():
     chart.add_series(x=df1.index, y=df1['y'], label=title)
 
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
