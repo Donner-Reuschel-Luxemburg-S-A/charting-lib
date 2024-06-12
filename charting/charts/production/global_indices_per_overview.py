@@ -16,8 +16,7 @@ def main(**kwargs):
     blp = BloombergSource()
 
     indices = ["DAX Index", "SXXP Index", "SX5E Index", "SPX Index", "NDX Index", "UKX Index", "INDU Index",
-               "NKY Index",
-               "MXEF Index"]
+               "NKY Index", "MXEF Index", "SMI Index"]
 
     dfs = [blp.get_series(series_id=idx, field="RR900", observation_start=observation_start.strftime("%Y%m%d"),
                           observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
