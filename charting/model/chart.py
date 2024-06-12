@@ -131,20 +131,14 @@ class Chart:
         return axis_dict
 
     def configure_x_axis(self, label: str = None,
-                         minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
-                         minor_locator: Locator = None,
-                         major_locator: Locator = None,
                          rotation: int = None):
         """
         Configures the x-axis with label, formatter and locator.
 
         Args:
             label (str): The label for the x-axis (default: None).
-            minor_formatter (Formatter): The minor formatter for the x-axis (default: None)
             major_formatter (Formatter): The major formatter for the x-axis (default: None)
-            minor_locator (Locator): The minor locator for the x-axis (default: None)
-            major_locator (Locator): The major locator for the x-axis (default: None)
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
@@ -153,24 +147,12 @@ class Chart:
         if rotation is not None:
             ax.tick_params(axis='x', labelrotation=rotation)
 
-        if minor_formatter is not None:
-            ax.xaxis.set_minor_formatter(minor_formatter)
-
         if major_formatter is not None:
             ax.xaxis.set_major_formatter(major_formatter)
 
-        if minor_locator is not None:
-            ax.xaxis.set_minor_locator(minor_locator)
-
-        if major_locator is not None:
-            ax.xaxis.set_major_locator(major_locator)
-
     def configure_y_axis(self, label: str, row_index: int = 0, y_axis_index: int = 0,
                          y_lim: Tuple[float, float] = None,
-                         minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
-                         minor_locator: Locator = None,
-                         major_locator: Locator = None,
                          reverse_axis: bool = False):
         """
         Configures a y-axis with a label and color.
@@ -180,10 +162,7 @@ class Chart:
             y_axis_index (int): The index of the y-axis to configure (default: 0).
             label (str): The label for the y-axis.
             y_lim (tuple): The limits for the axis.
-            minor_formatter (Formatter): The minor formatter for the y-axis (default: None)
             major_formatter (Formatter): The major formatter for the y-axis (default: None)
-            minor_locator (Locator): The minor locator for the y-axis (default: AutoLocator)
-            major_locator (Locator): The major locator for the y-axis (default: AutoLocator)
             reverse_axis (bool): Indicates whether the axis should be reversed (default: False).
         Raises:
             YAxisIndexException: If the provided row or y-axis index is invalid.
@@ -200,17 +179,8 @@ class Chart:
                 ax.invert_yaxis()
                 ax.set_ylabel(f'{label} (reversed axis)', loc="top", rotation=90)
 
-            if minor_formatter is not None:
-                ax.yaxis.set_minor_formatter(minor_formatter)
-
             if major_formatter is not None:
                 ax.yaxis.set_major_formatter(major_formatter)
-
-            if minor_locator is not None:
-                ax.yaxis.set_minor_locator(minor_locator)
-
-            if major_locator is not None:
-                ax.yaxis.set_major_locator(major_locator)
 
         except IndexError:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
