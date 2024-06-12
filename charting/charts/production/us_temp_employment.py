@@ -1,12 +1,10 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-
 
 DEFAULT_START_DATE = datetime.date(1990, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()

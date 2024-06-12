@@ -19,7 +19,7 @@ def main(**kwargs):
                "SXQGR Index", "SXKGR Index", "SX4GR Index", "SX7GR Index", "SX6GR Index", "SXAGR Index", "SXNGR Index",
                "SXOGR Index", "SXFGR Index", "SXRGR Index", "SX8GR Index", "SX86GR Index"]
     dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
+                          observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
 
     names = ["Oil & Gas", "Food & Beverage", "Health Care", "Travel", "Basic Resources", "Insurance", "Media",
              "Product & Households", "Telecom", "Chemicals", "Banks", "Utilities", "Autos & Parts", "Industrials",

@@ -2,12 +2,10 @@ import datetime
 
 import matplotlib.dates as mdates
 import pandas as pd
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-
 
 DEFAULT_START_DATE = datetime.date(2014, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -19,7 +17,7 @@ def main(**kwargs):
 
     blp = BloombergSource()
     df, t = blp.get_series(series_id='LG20STAT Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
+                           observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
     df2, t2 = blp.get_series(series_id='LCB1TRUU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
     title = 'EM HC USD vs US Corporate BBB'

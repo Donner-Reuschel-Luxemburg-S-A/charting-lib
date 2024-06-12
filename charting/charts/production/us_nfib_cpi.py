@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
@@ -9,7 +8,6 @@ from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
 from charting.transformer.lead import Lead
 from charting.transformer.resample import Resample
-
 
 DEFAULT_START_DATE = datetime.date(1995, 1, 31)
 DEFAULT_END_DATE = datetime.datetime.today()

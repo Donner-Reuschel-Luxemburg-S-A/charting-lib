@@ -1,14 +1,12 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
 from charting.transformer.lag import Lag
-
 
 DEFAULT_START_DATE = datetime.date(2018, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -33,7 +31,7 @@ def main(**kwargs):
     chart.configure_y_axis(y_axis_index=0, label="Index")
     chart.configure_y_axis(y_axis_index=1, label="Percentage Points")
 
-    chart.configure_x_axis(major_formatter= mdates.DateFormatter("%b %y"))
+    chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0)
     chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1, transformer=Lag(offset=DateOffset(months=6)))

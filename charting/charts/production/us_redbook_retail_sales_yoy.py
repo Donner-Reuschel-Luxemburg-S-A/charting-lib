@@ -7,7 +7,6 @@ from source_engine.fred_source import FredSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
-
 DEFAULT_START_DATE = datetime.date(2013, 11, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
@@ -21,7 +20,7 @@ def main(**kwargs):
     title = "Redbook Research: Same Store, Retails Sales Average YoY"
 
     d1, t1 = blp.get_series(series_id='REDSWYOY Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                            observation_end=observation_end.strftime("%Y%m%d"))
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR', observation_start=observation_start.strftime("%Y-%m-%d"),
                              observation_end=observation_end.strftime("%Y-%m-%d"))
 

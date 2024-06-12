@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
@@ -9,7 +8,6 @@ from source_engine.fred_source import FredSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
-
 
 DEFAULT_START_DATE = datetime.date(1980, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -26,7 +24,7 @@ def main(**kwargs):
     df2, t2 = blp.get_series(series_id='SBOIHIRE Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
     df3, t3 = fred.get_series(series_id='JHDUSRGDPBR', observation_start=observation_start.strftime("%Y-%m-%d"),
-                             observation_end=observation_end.strftime("%Y-%m-%d"))
+                              observation_end=observation_end.strftime("%Y-%m-%d"))
 
     title = "Small Business hiring plans point to higher jobless claims"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)

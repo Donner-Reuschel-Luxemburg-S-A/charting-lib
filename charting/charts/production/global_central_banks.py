@@ -1,12 +1,10 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
-
 
 DEFAULT_START_DATE = datetime.date(2000, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -19,11 +17,11 @@ def main(**kwargs):
     blp = BloombergSource()
 
     fed, _ = blp.get_series(series_id='CERBTTAL Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                            observation_end=observation_end.strftime("%Y%m%d"))
     ecb, _ = blp.get_series(series_id='EBBSTOTA Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                            observation_end=observation_end.strftime("%Y%m%d"))
     boj, _ = blp.get_series(series_id='BJACTOTL Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                            observation_end=observation_end.strftime("%Y%m%d"))
 
     fed['y'] = (fed['y'] / fed['y'].iloc[0]) * 100
     ecb['y'] = (ecb['y'] / ecb['y'].iloc[0]) * 100

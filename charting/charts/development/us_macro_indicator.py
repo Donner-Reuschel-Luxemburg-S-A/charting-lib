@@ -52,13 +52,13 @@ def main(**kwargs):
 
     df_macro_ind = philly_business_outlook_df * 0
     df_macro_ind['y'] = (philly_business_outlook_df['y'] < 0).astype(int) + (ism_manu_df['y'] < 50).astype(int) + (
-                yc_df['y'] < 0).astype(int) + (credit_impulse_df['y'] < 0).astype(int) + (ism_serv_df['y'] < 50).astype(
+            yc_df['y'] < 0).astype(int) + (credit_impulse_df['y'] < 0).astype(int) + (ism_serv_df['y'] < 50).astype(
         int) + (richmond_manu_df['y'] < 0).astype(int)
 
     df_macro_ind_long = philly_business_outlook_df * 0
     df_macro_ind_long['y'] = (philly_business_outlook_df['y'] < 0).astype(int) + (ism_manu_df['y'] < 50).astype(int) + (
-                yc_df['y'] < 0).astype(int) + (credit_impulse_df['y'] < 0).astype(int) + (
-                                         chicago_pmi_df['y'] < 50).astype(int)
+            yc_df['y'] < 0).astype(int) + (credit_impulse_df['y'] < 0).astype(int) + (
+                                     chicago_pmi_df['y'] < 50).astype(int)
 
     title = "D&R US Recession Indicator"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)

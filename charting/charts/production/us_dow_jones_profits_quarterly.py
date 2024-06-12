@@ -1,14 +1,12 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.pct import Pct
 from charting.transformer.resample import Resample
-
 
 DEFAULT_START_DATE = datetime.date(2017, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -20,7 +18,8 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='INDU Index', field="RR906", observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='INDU Index', field="RR906",
+                             observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Quarterly DOW Jones Earnings Per Share"

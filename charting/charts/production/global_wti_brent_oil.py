@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
@@ -17,9 +16,9 @@ def main(**kwargs):
 
     fred = FredSource()
     d1, t1 = fred.get_series(series_id='DCOILWTICO', observation_start=observation_start.strftime("%Y-%m-%d"),
-                            observation_end=observation_end.strftime("%Y-%m-%d"))
+                             observation_end=observation_end.strftime("%Y-%m-%d"))
     d2, t2 = fred.get_series(series_id='DCOILBRENTEU', observation_start=observation_start.strftime("%Y-%m-%d"),
-                            observation_end=observation_end.strftime("%Y-%m-%d"))
+                             observation_end=observation_end.strftime("%Y-%m-%d"))
 
     title = 'WTI & Brent Oil'
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)

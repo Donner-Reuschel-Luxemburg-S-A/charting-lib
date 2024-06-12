@@ -7,7 +7,6 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 
-
 DEFAULT_START_DATE = datetime.date(1970, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
@@ -18,7 +17,8 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    nfp_df, nfp_title = blp.get_series(series_id="CANLNETJ Index", observation_start=observation_start.strftime("%Y%m%d"),
+    nfp_df, nfp_title = blp.get_series(series_id="CANLNETJ Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
                                        observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Canada Employment Change 6M Ann."

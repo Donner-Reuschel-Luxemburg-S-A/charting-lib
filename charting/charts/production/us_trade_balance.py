@@ -1,13 +1,11 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-
 
 DEFAULT_START_DATE = datetime.date(1990, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -21,10 +19,11 @@ def main(**kwargs):
     fred = FredSource()
 
     tb_df, tb_title = blp.get_series(series_id="USTBTOT  Index", observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                                     observation_end=observation_end.strftime("%Y%m%d"))
 
-    us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=observation_start.strftime("%Y-%m-%d"),
-                             observation_end=observation_end.strftime("%Y-%m-%d"))
+    us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR',
+                                                observation_start=observation_start.strftime("%Y-%m-%d"),
+                                                observation_end=observation_end.strftime("%Y-%m-%d"))
 
     title = "US Trade Balance"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)

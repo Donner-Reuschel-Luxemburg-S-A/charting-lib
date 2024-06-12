@@ -2,13 +2,11 @@ import datetime
 
 import matplotlib.dates as mdates
 import pandas as pd
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
-
 
 DEFAULT_START_DATE = datetime.date(2007, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -20,7 +18,7 @@ def main(**kwargs):
 
     blp = BloombergSource()
     d1, t1 = blp.get_series(series_id='CCOSNREV Index', observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+                            observation_end=observation_end.strftime("%Y%m%d"))
 
     d1["mom_change"] = d1["y"].diff()
     title = "US Nonrevolving Consumer Credit - Change on Month"

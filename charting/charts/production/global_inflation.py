@@ -1,12 +1,10 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
-
 
 DEFAULT_START_DATE = datetime.date(2000, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -18,11 +16,20 @@ def main(**kwargs):
 
     fred = FredSource()
 
-    us, us_title = fred.get_series(series_id='CPIAUCSL', observation_start=observation_start.strftime("%Y-%m-%d"), observation_end=observation_end.strftime("%Y-%m-%d"))
-    de, de_title = fred.get_series(series_id='DEUCPALTT01CTGYM', observation_start=observation_start.strftime("%Y-%m-%d"), observation_end=observation_end.strftime("%Y-%m-%d"))
-    jp, jp_title = fred.get_series(series_id='JPNCPIALLMINMEI', observation_start=observation_start.strftime("%Y-%m-%d"), observation_end=observation_end.strftime("%Y-%m-%d"))
-    uk, uk_title = fred.get_series(series_id='GBRCPALTT01CTGYM', observation_start=observation_start.strftime("%Y-%m-%d"), observation_end=observation_end.strftime("%Y-%m-%d"))
-    ch, ch_title = fred.get_series(series_id='CPALTT01CNM659N', observation_start=observation_start.strftime("%Y-%m-%d"), observation_end=observation_end.strftime("%Y-%m-%d"))
+    us, us_title = fred.get_series(series_id='CPIAUCSL', observation_start=observation_start.strftime("%Y-%m-%d"),
+                                   observation_end=observation_end.strftime("%Y-%m-%d"))
+    de, de_title = fred.get_series(series_id='DEUCPALTT01CTGYM',
+                                   observation_start=observation_start.strftime("%Y-%m-%d"),
+                                   observation_end=observation_end.strftime("%Y-%m-%d"))
+    jp, jp_title = fred.get_series(series_id='JPNCPIALLMINMEI',
+                                   observation_start=observation_start.strftime("%Y-%m-%d"),
+                                   observation_end=observation_end.strftime("%Y-%m-%d"))
+    uk, uk_title = fred.get_series(series_id='GBRCPALTT01CTGYM',
+                                   observation_start=observation_start.strftime("%Y-%m-%d"),
+                                   observation_end=observation_end.strftime("%Y-%m-%d"))
+    ch, ch_title = fred.get_series(series_id='CPALTT01CNM659N',
+                                   observation_start=observation_start.strftime("%Y-%m-%d"),
+                                   observation_end=observation_end.strftime("%Y-%m-%d"))
 
     us = (us.pct_change(periods=12) * 100).shift(1)
     jp = (jp.pct_change(periods=12) * 100).shift(1)

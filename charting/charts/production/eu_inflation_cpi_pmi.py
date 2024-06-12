@@ -7,7 +7,6 @@ from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
 from charting.transformer.pct import Pct
 
-
 DEFAULT_START_DATE = datetime.date(2006, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
@@ -18,8 +17,12 @@ def main(**kwargs):
 
     bbk = Bbk()
     estat = Ecb()
-    d1, t1 = bbk.get_data(flow_ref="BBXP1", key="M.U2.N.HICP.000000.IND.I00", parameters={'startPeriod': observation_start.strftime("%Y-%m"), 'endPeriod': observation_end.strftime("%Y-%m")})
-    d2, t2 = estat.get_data(flow_ref="ICP", key="M.U2.N.XEF000.4.INX", parameters={'startPeriod': observation_start.strftime("%Y-%m"), 'endPeriod': observation_end.strftime("%Y-%m")})
+    d1, t1 = bbk.get_data(flow_ref="BBXP1", key="M.U2.N.HICP.000000.IND.I00",
+                          parameters={'startPeriod': observation_start.strftime("%Y-%m"),
+                                      'endPeriod': observation_end.strftime("%Y-%m")})
+    d2, t2 = estat.get_data(flow_ref="ICP", key="M.U2.N.XEF000.4.INX",
+                            parameters={'startPeriod': observation_start.strftime("%Y-%m"),
+                                        'endPeriod': observation_end.strftime("%Y-%m")})
 
     d1['y'] = d1['y'].astype(float)
     d2['y'] = d2['y'].astype(float)

@@ -6,7 +6,6 @@ from source_engine.bloomberg_source import BloombergSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
-
 DEFAULT_START_DATE = datetime.date(2024, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
@@ -17,11 +16,13 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    stock_indices = ["SPX Index", "NDX Index", "RTY Index", "SXXP Index", "SX5E Index", "DAX Index", "UKX Index", "NKY Index",
+    stock_indices = ["SPX Index", "NDX Index", "RTY Index", "SXXP Index", "SX5E Index", "DAX Index", "UKX Index",
+                     "NKY Index",
                      "HSI Index"]
     stock_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d")) for idx in stock_indices]
-    stock_names = ["S&P 500", "NASDAQ 100", "Russell 2000", "Stoxx Europe 600", "Euro Stoxx 50", "DAX 40",  "FTSE 100", "Nikkei 225",
+                                observation_end=observation_end.strftime("%Y%m%d")) for idx in stock_indices]
+    stock_names = ["S&P 500", "NASDAQ 100", "Russell 2000", "Stoxx Europe 600", "Euro Stoxx 50", "DAX 40", "FTSE 100",
+                   "Nikkei 225",
                    "Hang Seng"]
     stock_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in stock_dfs]
     stock_data = sorted(zip(stock_names, stock_yields), key=lambda x: x[1])
@@ -30,7 +31,7 @@ def main(**kwargs):
     cmdty_indices = ["XBTUSD Curncy", "XAG Curncy", "XAU Curncy", "CL1 Comdty", "EURUSD Curncy", "USDJPY Curncy",
                      "EURCHF Curncy", "EURGBP Curncy"]
     cmdty_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d")) for idx in
+                                observation_end=observation_end.strftime("%Y%m%d")) for idx in
                  cmdty_indices]
     cmdty_names = ["Bitcoin USD", "Silver USD", "Gold USD", "Crude Oil WTI", "EUR/USD", "USD/JPY", "EUR/CHF", "EUR/GBP"]
     cmdty_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in cmdty_dfs]

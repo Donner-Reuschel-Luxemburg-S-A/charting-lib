@@ -1,12 +1,10 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Region, Category, Metadata
-
 
 DEFAULT_START_DATE = datetime.date(2005, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()

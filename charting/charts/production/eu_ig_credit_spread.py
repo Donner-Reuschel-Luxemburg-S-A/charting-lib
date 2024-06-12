@@ -2,12 +2,10 @@ import datetime
 
 import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-
 
 DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=10)
 DEFAULT_END_DATE = datetime.datetime.today()

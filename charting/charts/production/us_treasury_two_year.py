@@ -1,12 +1,10 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-
 
 DEFAULT_START_DATE = datetime.date(2017, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -18,7 +16,7 @@ def main(**kwargs):
 
     fred = FredSource()
     df1, t1 = fred.get_series(series_id='DGS2', observation_start=observation_start.strftime("%Y-%m-%d"),
-                             observation_end=observation_end.strftime("%Y-%m-%d"))
+                              observation_end=observation_end.strftime("%Y-%m-%d"))
 
     title = "U.S. Treasury 2-Year"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)

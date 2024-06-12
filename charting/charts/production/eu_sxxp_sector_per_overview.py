@@ -1,11 +1,9 @@
 import datetime
 
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-
 
 DEFAULT_START_DATE = datetime.date(2012, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -26,7 +24,7 @@ def main(**kwargs):
              "Travel", "Construction & Materials", "Consumer Products & Services"]
 
     dfs = [blp.get_series(series_id=idx, field="RR900", observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
+                          observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
 
     y = [df["y"].values for df, _ in dfs]
 

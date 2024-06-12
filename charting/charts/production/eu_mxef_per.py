@@ -2,14 +2,12 @@ import datetime
 
 import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
-from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
-
 
 DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=5)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -21,7 +19,8 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='MXEF Index', field="RR900", observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='MXEF Index', field="RR900",
+                             observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "MSCI Emerging Markets Price-Earnings Ratio"

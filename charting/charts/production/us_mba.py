@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
@@ -9,7 +8,6 @@ from source_engine.fred_source import FredSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
-
 
 DEFAULT_START_DATE = datetime.date(1998, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -22,12 +20,13 @@ def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
+    mba_df, mba_title = blp.get_series(series_id="MBAVCHNG Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
 
-    mba_df, mba_title = blp.get_series(series_id="MBAVCHNG Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
-
-    us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=observation_start.strftime("%Y-%m-%d"),
-                           observation_end=observation_end.strftime("%Y-%m-%d"))
+    us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR',
+                                                observation_start=observation_start.strftime("%Y-%m-%d"),
+                                                observation_end=observation_end.strftime("%Y-%m-%d"))
 
     title = "US MBA Mortgage Applications"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)

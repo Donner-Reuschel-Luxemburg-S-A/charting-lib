@@ -8,7 +8,6 @@ from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 from charting.transformer.center import Center
 
-
 DEFAULT_START_DATE = datetime.date(1992, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
@@ -20,11 +19,11 @@ def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
     d1, t1 = fred.get_series(series_id='DRTSCILM', observation_start=observation_start.strftime("%Y-%m-%d"),
-                           observation_end=observation_end.strftime("%Y-%m-%d"))
+                             observation_end=observation_end.strftime("%Y-%m-%d"))
     d2, t2 = fred.get_series(series_id='JHDUSRGDPBR', observation_start=observation_start.strftime("%Y-%m-%d"),
-                           observation_end=observation_end.strftime("%Y-%m-%d"))
+                             observation_end=observation_end.strftime("%Y-%m-%d"))
     d3, t3 = blp.get_series(series_id='NAPMPMI Index', observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+                            observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "As industrial loan standards tighten, manufacturing contracts"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)

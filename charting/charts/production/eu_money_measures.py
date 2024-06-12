@@ -17,11 +17,11 @@ def main(**kwargs):
     blp = BloombergSource()
 
     m1_df, m1_title = blp.get_series(series_id="ECMAM1YY Index", observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                                     observation_end=observation_end.strftime("%Y%m%d"))
     m2_df, m2_title = blp.get_series(series_id="ECMAM2YY Index", observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                                     observation_end=observation_end.strftime("%Y%m%d"))
     m3_df, m3_title = blp.get_series(series_id="ECMAM3YY Index", observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                                     observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "EU Money Supply Measures YoY"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)

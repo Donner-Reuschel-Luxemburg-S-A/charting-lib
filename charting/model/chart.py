@@ -9,12 +9,11 @@ from functools import reduce
 from typing import Tuple, Union, List, Dict
 
 import numpy as np
-from PIL import Image
 from matplotlib import pyplot as plt
 
 plt.switch_backend('agg')
 from matplotlib.axes import Axes
-from matplotlib.ticker import Formatter, Locator, AutoMinorLocator, AutoLocator
+from matplotlib.ticker import Formatter
 from source_engine.chart_source import ChartSource, ChartModel
 
 from charting import chart_base_path
@@ -22,7 +21,6 @@ from charting.exception import InvalidAxisConfigurationException, YAxisIndexExce
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style, colors
 from charting.model.transformer import Transformer
-import matplotlib.dates as mdates
 
 
 class Chart:
@@ -304,7 +302,7 @@ class Chart:
                 elif len(ax.patches) > len(x):
                     bar_bottom = []
                     n = len(ax.patches) // len(x)
-                    color = get_stacked_color(n+1)
+                    color = get_stacked_color(n + 1)
                     all_patches = []
                     for i in range(n):
                         start = i * len(x)

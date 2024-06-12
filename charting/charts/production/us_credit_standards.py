@@ -1,13 +1,11 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
-
 
 DEFAULT_START_DATE = datetime.date(1929, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -20,15 +18,19 @@ def main(**kwargs):
     blp = BloombergSource()
     fred = FredSource()
 
-    credit_small_df, credit_small_title = blp.get_series(series_id="SLDETGTS Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
-    credit_large_df, credit_large_title = blp.get_series(series_id="SLDETIGT Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
-    credit_consumer_df, credit_consumer_title = blp.get_series(series_id="SDCLTGTC Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+    credit_small_df, credit_small_title = blp.get_series(series_id="SLDETGTS Index",
+                                                         observation_start=observation_start.strftime("%Y%m%d"),
+                                                         observation_end=observation_end.strftime("%Y%m%d"))
+    credit_large_df, credit_large_title = blp.get_series(series_id="SLDETIGT Index",
+                                                         observation_start=observation_start.strftime("%Y%m%d"),
+                                                         observation_end=observation_end.strftime("%Y%m%d"))
+    credit_consumer_df, credit_consumer_title = blp.get_series(series_id="SDCLTGTC Index",
+                                                               observation_start=observation_start.strftime("%Y%m%d"),
+                                                               observation_end=observation_end.strftime("%Y%m%d"))
 
-    us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR', observation_start=observation_start.strftime("%Y-%m-%d"),
-                           observation_end=observation_end.strftime("%Y-%m-%d"))
+    us_nber_df, us_nber_title = fred.get_series(series_id='JHDUSRGDPBR',
+                                                observation_start=observation_start.strftime("%Y-%m-%d"),
+                                                observation_end=observation_end.strftime("%Y-%m-%d"))
 
     title = "US % of Bank Tightening Credit Standards"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)

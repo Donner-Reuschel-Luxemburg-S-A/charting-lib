@@ -9,7 +9,6 @@ from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.avg import Avg
 from charting.transformer.pct import Pct
 
-
 DEFAULT_START_DATE = datetime.date(2020, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 

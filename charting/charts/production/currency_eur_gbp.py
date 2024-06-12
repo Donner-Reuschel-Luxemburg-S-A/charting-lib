@@ -6,7 +6,6 @@ from source_engine.sdmx_source import Ecb
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
-
 DEFAULT_START_DATE = datetime.date(2017, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 

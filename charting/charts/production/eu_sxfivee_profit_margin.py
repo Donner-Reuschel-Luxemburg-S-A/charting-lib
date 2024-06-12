@@ -10,7 +10,6 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 
-
 DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=5)
 DEFAULT_END_DATE = datetime.datetime.today()
 
@@ -21,7 +20,8 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='SX5E Index', field="RR836", observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='SX5E Index', field="RR836",
+                             observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Euro Stoxx 50 Profit Margin"

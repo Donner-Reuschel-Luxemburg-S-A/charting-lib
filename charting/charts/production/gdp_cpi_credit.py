@@ -2,14 +2,12 @@ import datetime
 
 import matplotlib.dates as mdates
 import pandas as pd
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
-
 
 DEFAULT_START_DATE = datetime.date(1976, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -21,14 +19,16 @@ def main(**kwargs):
 
     blp = BloombergSource()
     fred = FredSource()
-    credit_df, credit_title = fred.get_series(series_id="TOTBKCR", observation_start=observation_start.strftime("%Y-%m-%d"),
-                             observation_end=observation_end.strftime("%Y-%m-%d"))
+    credit_df, credit_title = fred.get_series(series_id="TOTBKCR",
+                                              observation_start=observation_start.strftime("%Y-%m-%d"),
+                                              observation_end=observation_end.strftime("%Y-%m-%d"))
     credit_df = credit_df.resample("QS").last()
 
     gdp_df, gdp_title = fred.get_series(series_id="GDP", observation_start=observation_start.strftime("%Y-%m-%d"),
-                             observation_end=observation_end.strftime("%Y-%m-%d"))
-    cpi_df, cpi_title = blp.get_series(series_id="CPI YOY Index", observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                                        observation_end=observation_end.strftime("%Y-%m-%d"))
+    cpi_df, cpi_title = blp.get_series(series_id="CPI YOY Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
 
     credit_df = credit_df.pct_change(periods=4) * 100
     gdp_df = gdp_df.pct_change(periods=4) * 100

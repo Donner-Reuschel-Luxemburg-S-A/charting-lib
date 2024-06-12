@@ -1,12 +1,10 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-
 
 DEFAULT_START_DATE = datetime.date(1999, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -41,7 +39,7 @@ def main(**kwargs):
 
     chart.configure_y_axis(label="Percentage Points")
 
-    chart.configure_x_axis(major_formatter= mdates.DateFormatter("%b %y"))
+    chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1["y"], label="United Kingdom")
     chart.add_series(x=d2.index, y=d2["y"], label="Australia")

@@ -1,5 +1,4 @@
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.indeed_source import IndeedSource
 
 from charting.model.chart import Chart

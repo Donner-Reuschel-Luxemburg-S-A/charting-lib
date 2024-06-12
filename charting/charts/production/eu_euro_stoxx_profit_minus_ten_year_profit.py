@@ -2,12 +2,10 @@ import datetime
 
 import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
-
 
 DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=15)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -21,7 +19,8 @@ def main(**kwargs):
 
     df1, t1 = blp.get_series(series_id='GDBR10 Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
-    df2, t2 = blp.get_series(series_id='SX5E Index', field="RR907", observation_start=observation_start.strftime("%Y%m%d"),
+    df2, t2 = blp.get_series(series_id='SX5E Index', field="RR907",
+                             observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
     df = df2 - df1
 

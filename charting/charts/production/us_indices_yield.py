@@ -1,13 +1,11 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.ytd import Ytd
-
 
 DEFAULT_START_DATE = datetime.date(2024, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -20,13 +18,13 @@ def main(**kwargs):
     blp = BloombergSource()
 
     df1, t1 = blp.get_series(series_id='spx Index', observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
+                             observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
     df2, t2 = blp.get_series(series_id='ndx Index', observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
+                             observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
     df3, t3 = blp.get_series(series_id='indu Index', observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
+                             observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
     df4, t4 = blp.get_series(series_id='rty Index', observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
+                             observation_end=observation_end.strftime("%Y%m%d"), field="px_close_1d")
 
     title = "US Indices Performance"
 
