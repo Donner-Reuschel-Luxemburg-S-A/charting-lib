@@ -197,7 +197,7 @@ def main():
         .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
         .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
     dfi.export(styled, f'consolidated_{date_str}.png', table_conversion='playwright')
-
+    print('hello')
 
 if __name__ == '__main__':
     main()
