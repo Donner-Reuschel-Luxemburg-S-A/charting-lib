@@ -26,10 +26,7 @@ def main(**kwargs):
 
     chart.configure_y_axis(y_axis_index=0, label="Number of Bankruptcies")
 
-    minor_locator = mdates.YearLocator(base=1)
-    major_locator = mdates.YearLocator(base=4)
-    major_formatter = mdates.DateFormatter("%b %y")
-    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
+    chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(df.index, df['count'], label='Number of bankruptcies',
                      transformer=[Resample(rule='W', resampler='sum'), Avg(offset=DateOffset(weeks=4))])
