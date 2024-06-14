@@ -15,17 +15,17 @@ def main(**kwargs):
     observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
 
     blp = BloombergSource()
-    df, t = blp.get_series(series_id='I05443EU Index', observation_start=observation_start.strftime("%Y%m%d"),
+    df, t = blp.get_series(series_id='I02202EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                            observation_end=observation_end.strftime("%Y%m%d"), field='BX219')
-    df2, t2 = blp.get_series(series_id='I02202EU Index', observation_start=observation_start.strftime("%Y%m%d"),
+    df2, t2 = blp.get_series(series_id='I02201EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX219')
 
-    title = 'EUR Corporate BB - BBB Spread'
-    t = 'Bloomberg Euro High Yield BB EUR'
-    t2 = 'Bloomberg EuroAgg Corporate Baa EUR'
+    title = 'EUR Corporate BBB - A Spread'
+    t = 'Bloomberg EuroAgg Corporate Baa EUR'
+    t2 = 'Bloomberg EuroAgg Corporate A EUR'
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
 
-    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bb_bbb_spread.png")
+    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bbb_a_spread.png")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(row_index=0, label='Spread BPS')
