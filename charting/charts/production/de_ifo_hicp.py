@@ -1,6 +1,7 @@
 import datetime
 
 import matplotlib.dates as mdates
+from dateutil.relativedelta import relativedelta
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
@@ -18,7 +19,7 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='GEIFSGPE Index', observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='GEIFSGPE Index', observation_start=(observation_start - relativedelta(months=6)).strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
     df2, t2 = blp.get_series(series_id='GRCP2HYY Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
