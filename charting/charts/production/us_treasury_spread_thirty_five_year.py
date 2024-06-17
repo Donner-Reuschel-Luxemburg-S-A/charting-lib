@@ -23,7 +23,7 @@ def main(**kwargs):
 
     df = df2 - df1
 
-    title = "U.S. Treasury Spread 30-5-Year"
+    title = "U.S. Treasury Spread 5-30-Year"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="us_treasury_spread_30y_5y.png")
 

@@ -18,7 +18,7 @@ def main(**kwargs):
     df1, t1 = blp.get_series(series_id='USYC3M10 Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "10 Year - 3 Month Treasury Yield Spread"
+    title = "3 Month - 10 Year Treasury Yield Spread"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="us_3m10y_curve.png")
 

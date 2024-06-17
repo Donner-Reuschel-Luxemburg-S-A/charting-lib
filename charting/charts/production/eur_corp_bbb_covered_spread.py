@@ -20,7 +20,7 @@ def main(**kwargs):
                            observation_end=observation_end.strftime("%Y%m%d"), field='SP039')
     df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX219')
-    title = 'EUR Corporate BBB -German Covered Bonds'
+    title = 'EUR Corporate BBB - German Covered Bonds'
     t = 'iBoxx Euro Germany Covered Total Return Index'
     t2 = 'Bloomberg Pan-European Aggregate: Corporate Baa Total Return'
 

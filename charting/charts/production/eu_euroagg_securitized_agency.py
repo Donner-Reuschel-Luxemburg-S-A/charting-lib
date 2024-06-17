@@ -25,7 +25,7 @@ def main(**kwargs):
     df4, t4 = blp.get_series(series_id='I09502EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX219')
 
-    title = "Securitized & Agency 7-10Y Spread"
+    title = "Securitized & Agency Spreads"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
 
     chart = Chart(title=title, num_rows=2, metadata=metadata, filename="securitzed_spreads.png")

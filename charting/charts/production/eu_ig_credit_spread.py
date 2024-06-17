@@ -33,6 +33,7 @@ def main(**kwargs):
     chart.add_series(x=df1.index, y=mean_val, label="10Y Avg", linestyle="--")
 
     chart.legend(ncol=2)
+
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

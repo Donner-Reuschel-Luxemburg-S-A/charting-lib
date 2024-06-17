@@ -32,7 +32,7 @@ def main(**kwargs):
     chart.add_series(row_index=1, x=df2.index, y=df2['y']*100, label="Spain")
     chart.add_last_value_badge(decimals=0)
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
