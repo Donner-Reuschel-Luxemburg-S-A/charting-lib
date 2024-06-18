@@ -25,6 +25,8 @@ eu_periphery_spreads.py
 de_linker.py
 de_breaks.py
 us_move.py
-eu_core_semicore_spreads.py
+eu_core_spreads.py
+eu_semicore_spreads.py
 eu_yield_curves_rating.py
 eu_yield_curves_sector.py
+
