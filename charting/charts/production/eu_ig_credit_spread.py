@@ -31,6 +31,7 @@ def main(**kwargs):
     mean_val = [df1['y'].mean()] * len(df1.index)
     chart.add_series(x=df1.index, y=df1['y'], label=t1)
     chart.add_series(x=df1.index, y=mean_val, label="10Y Avg", linestyle="--")
+    chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)
 

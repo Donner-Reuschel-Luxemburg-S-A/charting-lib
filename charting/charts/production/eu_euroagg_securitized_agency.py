@@ -38,6 +38,7 @@ def main(**kwargs):
     chart.add_series(row_index=0, x=df3.index, y=df3['y'], label="Agency Spread to Swap")
     chart.add_series(row_index=1, x=df2.index, y=df2['y'], label="Securitized Spread to Treasury")
     chart.add_series(row_index=1, x=df4.index, y=df4['y'], label="Agency Spread to Treasury")
+    chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)
 
