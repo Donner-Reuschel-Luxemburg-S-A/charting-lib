@@ -17,23 +17,26 @@ def main(**kwargs):
     blp = BloombergSource()
     df1, t1 = blp.get_series(series_id='BN8684431 Govt', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
-
+    df2, t2 = blp.get_series(series_id='ZM1985385 Govt', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
     df3, t3 = blp.get_series(series_id='EK1581793 Govt', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
-
+    df4, t4 = blp.get_series(series_id='ZP2206560 Govt', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
     df5, t5 = blp.get_series(series_id='EK7815401 Govt', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
-
-    title = "Germany Real Rates"
+    df6, t6 = blp.get_series(series_id='AF2056345 Govt', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
+    title = "Germany Breakeven Rates"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="de_real_rates.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_breaks.png")
 
     chart.configure_y_axis(label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_series(x=df1.index, y=df1['y'], label="Germany Real Rate 2033")
-    chart.add_series(x=df3.index, y=df3['y'], label="Germany Real Rate 2030")
-    chart.add_series(x=df5.index, y=df5['y'], label="Germany Real Rate 2026")
+    chart.add_series(x=df1.index, y=df2['y']-df1['y'], label="Germany Breakeven Rate 2033")
+    chart.add_series(x=df3.index, y=df4['y'] - df3['y'], label="Germany Breakeven Rate 2030")
+    chart.add_series(x=df5.index, y=df6['y'] - df5['y'], label="Germany Breakeven Rate 2026")
     chart.add_last_value_badge(decimals=2)
 
     chart.legend()
