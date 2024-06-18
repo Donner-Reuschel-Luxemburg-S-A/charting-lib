@@ -34,6 +34,7 @@ def main(**kwargs):
     chart.add_series(x=df1.index, y=df1['y'], label="Euro Aggregate Index", transformer=Ytd())
     chart.add_series(x=df2.index, y=df2['y'], label="Euro Aggregate 1-10 Index", transformer=Ytd())
     chart.add_last_value_badge(decimals=2)
+    chart.add_horizontal_line()
 
     chart.legend(ncol=2)
 

@@ -40,6 +40,7 @@ def main(**kwargs):
     chart.add_series(x=df3.index, y=df3['y'], label=t3, transformer=Ytd())
     chart.add_series(x=df4.index, y=df4['y'], label=t4, transformer=Ytd())
     chart.add_last_value_badge(decimals=2)
+    chart.add_horizontal_line()
 
     chart.legend(ncol=2)
 
