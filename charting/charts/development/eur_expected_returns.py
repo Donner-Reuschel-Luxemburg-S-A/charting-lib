@@ -1,36 +1,28 @@
-import datetime
-
-import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
-from pandas import DataFrame
-from source_engine.bloomberg_source import BloombergSource
-from source_engine.fred_source import FredSource
 from xbbg.blp import bdp
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
-from charting.transformer.pct import Pct
 
 
 def main():
-    data = {'ticker': {'DE':
+    data = {'ticker': {'DE Sov':
                            {4: 'GDBR4 Index',
                             5: 'GDBR5 Index',
                             9: 'GDBR9 Index',
                             10: 'GDBR10 Index'
                             },
-                       'FR': {
+                       'FR Sov': {
                            4: 'GFRN4 Index',
                            5: 'GFRN5 Index',
                            9: 'GFRN9 Index',
                            10: 'GFRN10 Index'
                        },
-                       'IT': {
+                       'IT Sov': {
                            4: 'GBTPGR4 Index',
                            5: 'GBTPGR5 Index',
                            9: 'GBTPGR9 Index',
                            10: 'GBTPGR10 Index'
                        },
-                       'ES': {
+                       'ES Sov': {
                            4: 'GSPG4YR Index',
                            5: 'GSPG5YR Index',
                            9: 'GSPG9YR Index',
@@ -48,7 +40,7 @@ def main():
                            9: 'BVCSBC09 Index',
                            10: 'BVCSBC10 Index'
                        },
-                       'EUR Covered AAA': {
+                       'Covered AAA': {
                            4: 'CVEETA04 Index',
                            5: 'CVEETA05 Index',
                            9: 'CVEETA09 Index',
@@ -63,46 +55,35 @@ def main():
                 for t, index in mat.items():
                     res = bdp(index, 'PX_LAST')
                     data['result'][sector][t] = res.iloc[0,0]
-    title = "Expected Returns various Sectors"
+    title = "Expected Returns"
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
     chart = Chart(title=title, metadata=metadata, filename="expected_returns10.png")
+    chart.configure_y_axis(label="Percentage Points", y_lim=(-1 ,7))
 
-    chart.configure_y_axis(label="Percentage Points")
-
-    date = datetime.datetime.now()
     x = list(data['result'].keys())
     y_roll_long = list([(sector[10] - sector[9])*9.5 for sector in data['result'].values()])
     y_yield_long = list([sector[10] for sector in data['result'].values()])
 
-
     y_roll_short = list([(sector[5] - sector[4]) * 4.5 for sector in data['result'].values()])
     y_yield_short = list([sector[5] for sector in data['result'].values()])
-    category = ['5y', '10y']
+    category = ['5Y', '10Y']
     dict_ = {}
     for c in category:
         dict_[c] = {}
         for i, val in enumerate(x):
-            if c == '5y':
+            if c == category[0]:
                 dict_[c][val] = {'Yield': y_yield_short[i], 'Roll': y_roll_short[i]}
-            elif c == '10y':
+            elif c == category[1]:
                 dict_[c][val] = {'Yield': y_yield_long[i], 'Roll': y_roll_long[i]}
-    # for i, val in enumerate(x):
-    #     dict_[val] = {category[0]: {y_yield_short[i] + y_roll_short[i]}, category[1]: y_yield_long[i] + y_roll_long[i]}
+    grouped_bar_width = .08
+    bar_gap = .05
     counter = 0
-    for key, value in dict_.items():
-        chart.add_series([counter], {key: value}, label=key, chart_type='bar_grouped')
-        counter += 1.5
-    # title = "Erwartete Rendite 5-Jahres Sektor"
-    # metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
-    # chart5 = Chart(title=title, metadata=metadata, filename="expected_returns5.png")
-    #
-    # chart5.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(1),
-    #                        y_lim=(0, 7))
-    # chart5.add_series(x=x, y=y_yield_short, label="Kouponrendite", chart_type='bar', stacked=True, t_min=date,
-    #                    t_max=date)
-    # chart5.add_series(x=x, y=y_roll_short, label="Rolldown", chart_type='bar', stacked=True, t_min=date, t_max=date)
-    #
-    # chart10.plot()
+    for idx, (key, value) in enumerate(dict_.items()):
+        chart.add_series([counter], {key: value}, label=key, chart_type='bar_grouped',
+                         grouped_bar_width=grouped_bar_width,
+                         bar_gap=bar_gap)
+        counter += (idx+1) * (len(value.keys())+2) * (bar_gap + grouped_bar_width)
+
     chart.legend(ncol=3)
     chart.plot()
 

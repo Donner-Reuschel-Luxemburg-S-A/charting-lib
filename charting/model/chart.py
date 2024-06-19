@@ -55,6 +55,8 @@ class Chart:
         self.metadata = metadata
         self.max_label_length = 0
         self.x_ticks = []
+        self.grouped_bar_width = 0
+        self.bar_gap = 0
 
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
@@ -191,7 +193,7 @@ class Chart:
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
                    transformer: Union[Transformer, List[Transformer]] = None, t_min: [datetime, float] = None,
-                   t_max: Union[datetime, float] = None):
+                   t_max: Union[datetime, float] = None, **kwargs):
         """
         Adds a series to the chart.
 
@@ -223,7 +225,8 @@ class Chart:
         """
         color, suggested_alpha = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
-
+        self.grouped_bar_width = kwargs.get('grouped_bar_width', .08)
+        self.bar_gap = kwargs.get('bar_gap', .05)
         try:
             ax = self.axis_dict[row_index][y_axis_index]
         except IndexError:
@@ -297,14 +300,13 @@ class Chart:
             self.x_max_label.append(t_max)
         elif chart_type == 'bar_grouped':
 
-            style.color_counter = 0
-            self.grouped_bar_width = .08
+            style.color_counter = 1
             multiplier = 0
-            x_tick = list(y.keys())[0]
+            group = list(y.keys())[0]
 
-            for label, values in y[x_tick].items():
+            for label, values in y[group].items():
                 self.handles = []
-                offset = (self.grouped_bar_width + .05) * multiplier
+                offset = (self.grouped_bar_width + self.bar_gap) * multiplier
                 bottom = 0
                 self.x_ticks.append((x[0] + offset+self.grouped_bar_width, label))
                 for idx, (key, value) in enumerate(values.items()):
@@ -315,16 +317,25 @@ class Chart:
                                     bottom=bottom)
                     self.handles.append(handle)
                     bottom += value
-                color, suggested_alpha = get_color(y_axis=len(values)+1)
+                color, suggested_alpha = get_color(y_axis=idx+1)
                 handle = ax.scatter(x[0] + offset+self.grouped_bar_width, sum(values.values()), marker="D", c=color, label='Expected Return')
-                # ax.bar_label(handle, padding=3, fmt='%.2f')
                 ax.annotate('{:.2f}'.format(sum(values.values())), (x[0] + offset+self.grouped_bar_width-self.grouped_bar_width/2, max(*values.values(), sum(values.values()))+.15),
                             fontsize=7)
                 self.handles.append(handle)
                 multiplier += 1
+            bars_per_plot = len(y[group].values())
+            half = int(bars_per_plot / 2)
+            mid_point = self.x_ticks[-bars_per_plot:][half-1][0]
+            if bars_per_plot % 2 == 0:
+                mid_point += (self.grouped_bar_width + self.bar_gap)/2
+            else:
+                mid_point += self.grouped_bar_width + self.bar_gap
+
+            ax.annotate(group, (mid_point, 6),
+                        fontsize=10, weight='bold', ha='center')
             self.handles.pop(-1)
             self.x_min_axes.append(x[0])
-            self.x_max_axes.append(x[0] + multiplier*(self.grouped_bar_width + .05)+self.grouped_bar_width)
+            self.x_max_axes.append(x[0] + multiplier*(self.grouped_bar_width + self.bar_gap)+self.grouped_bar_width)
             self.x_min_label.append(label)
             self.x_max_label.append(label)
         elif chart_type == 'bar':
@@ -537,12 +548,11 @@ class Chart:
         if len(self.x_ticks) > 0:
             xs = [self.x_ticks[i][0] for i in range(len(self.x_ticks))]
             # xs.append(xs[-1]-self.x_ticks[-2][0]+self.x_ticks[-1][0])
-            self.axis[-1].set_xticks(xs, [y[1] for y in self.x_ticks], rotation=45, fontsize=6, ha='right')
+            self.axis[-1].set_xticks(xs, [y[1] for y in self.x_ticks], rotation=25, fontsize=6, ha='right')
 
         self.__add_bottom_label(bloomberg_source_override)
 
         plt.savefig(self.filepath, dpi=500)
-
         b = io.BytesIO()
         plt.savefig(b, format='png')
         b.seek(0)
