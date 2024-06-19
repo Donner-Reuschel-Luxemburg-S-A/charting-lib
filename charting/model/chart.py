@@ -130,17 +130,19 @@ class Chart:
 
     def configure_x_axis(self, label: str = None,
                          major_formatter: Formatter = None,
-                         rotation: int = None):
+                         rotation: int = None,
+                         label_loc='center'):
         """
         Configures the x-axis with label, formatter and locator.
 
         Args:
             label (str): The label for the x-axis (default: None).
             major_formatter (Formatter): The major formatter for the x-axis (default: None)
+            label_loc (str): Locate the label on the 'left', 'center' (default) or 'right'
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        ax.set_xlabel(label)
+        ax.set_xlabel(label, loc=label_loc)
 
         if rotation is not None:
             ax.tick_params(axis='x', labelrotation=rotation)
@@ -186,8 +188,8 @@ class Chart:
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
-                   transformer: Union[Transformer, List[Transformer]] = None, t_min: datetime = None,
-                   t_max: datetime = None):
+                   transformer: Union[Transformer, List[Transformer]] = None, t_min: [datetime, float] = None,
+                   t_max: Union[datetime, float] = None):
         """
         Adds a series to the chart.
 
@@ -213,7 +215,9 @@ class Chart:
                 Each transformer should implement the `transform` method to modify the series.
                 The label of the series will be updated to reflect the applied transformers.
             t_min (datetime): Optional time series minimum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_min is the minimum tenor.
             t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_max is the maximum tenor.
         """
         color = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
@@ -337,7 +341,22 @@ class Chart:
 
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
+        elif chart_type == 'curve':
+            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
 
+            if fill:
+                if fill_threshold is None:
+                    fill_threshold = ax.get_ylim()[0]
+                ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
+            date = datetime.today().date()
+            x_min = min(x) if t_min is None else t_min
+            x_max = max(x) if t_max is None else t_max
+
+            self.x_min_label.append(date)
+            self.x_max_label.append(date)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
@@ -434,7 +453,7 @@ class Chart:
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
         ax.legend(
             loc="upper center",
-            bbox_to_anchor=(0.5, 0),
+            bbox_to_anchor=(0.5, -0.05),
             borderaxespad=3,
             handles=self.handles,
             frameon=False,

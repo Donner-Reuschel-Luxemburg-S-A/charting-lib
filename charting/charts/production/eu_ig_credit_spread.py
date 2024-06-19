@@ -17,7 +17,7 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='LECPOAS Index', observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='LBEATREU Index',field='BX218', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "EUR Investment Grade Corporate Bond Spreads"
@@ -25,7 +25,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.FI)
     chart = Chart(title=title, filename="eu_ig_credit_spread.png", metadata=metadata)
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="BPS Spread to TSY")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     mean_val = [df1['y'].mean()] * len(df1.index)
