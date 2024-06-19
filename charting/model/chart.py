@@ -348,7 +348,7 @@ class Chart:
                 if fill_threshold is None:
                     fill_threshold = ax.get_ylim()[0]
                 ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
-            date = datetime.today().date()
+            date = datetime.today()
             x_min = min(x) if t_min is None else t_min
             x_max = max(x) if t_max is None else t_max
 
