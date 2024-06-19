@@ -293,6 +293,23 @@ class Chart:
 
             self.x_min_label.append(t_min)
             self.x_max_label.append(t_max)
+        elif chart_type == 'bar_grouped':
+            width = .1
+            x_ = np.array([0 + i*len(y.keys())*width + (1 if i else 0)*2*width for i in range(len(x))])
+            multiplier = 0
+            # num_bars = len(y.keys()) * len(x) + 2
+            for label, values in y.items():
+                offset = width * multiplier
+                handle = ax.bar(x_ + offset, values.values(), width, label=label)
+                ax.bar_label(handle, padding=3, fmt='%.2f')
+                self.handles.append(handle)
+                multiplier += 1
+                self.x_min_axes.append(x_[0] + offset)
+                self.x_max_axes.append(x_[-1] + offset)
+            self.x_min_label.append(x[0])
+            self.x_max_label.append(x[1])
+            ax.set_xticks(x_+width, x)
+            handle=None
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
@@ -361,6 +378,12 @@ class Chart:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
         self.handles.append(handle)
+        none_entries = []
+        for i, handle_ in enumerate(self.handles):
+            if handle_ is None:
+                none_entries.append(i)
+        for entry_ in none_entries:
+            self.handles.pop(entry_)
 
     def add_horizontal_line(self, row_index: int = 0, y_axis_index: int = 0, y: float = 0) -> None:
         """
@@ -425,10 +448,14 @@ class Chart:
 
         if self.max_label_length != 0:
             label_x_position = self.max_label_length * -0.012
-
-        label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+        if all([isinstance(x, datetime) for x in self.x_min_label]):
+            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
+                    f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+        else:
+            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
+                    f'{datetime.today().strftime("%m/%Y")} - {datetime.today().strftime("%m/%Y")}.'
 
         label_y_position = -0.125
         if self.num_rows > 1:
