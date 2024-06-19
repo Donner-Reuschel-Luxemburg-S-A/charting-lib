@@ -37,6 +37,7 @@ def main(**kwargs):
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2)
     chart.add_series(x=common_index, y=(df.loc[common_index] * 100 - df2.loc[common_index])['y'], row_index=1,
                      label=title)
+    chart.add_last_value_badge(decimals=2)
 
     chart.add_horizontal_line(row_index=1, y_axis_index=0, y=0)
     chart.legend()

@@ -18,7 +18,7 @@ def main(**kwargs):
     df1, t1 = blp.get_series(series_id='DEYC1030 Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "Germany Government Bonds Spread 30-10-Year"
+    title = "Germany Government Bonds Spread 10-30-Year"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="de_gov_spread_30y_10y.png")
 

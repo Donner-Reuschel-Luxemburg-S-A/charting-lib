@@ -1,12 +1,13 @@
 import datetime
 
 import matplotlib.dates as mdates
+from dateutil.relativedelta import relativedelta
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
-DEFAULT_START_DATE = datetime.date(2024, 1, 1)
+DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=10)
 DEFAULT_END_DATE = datetime.datetime.today()
 
 
@@ -32,7 +33,7 @@ def main(**kwargs):
     chart.add_series(row_index=1, x=df2.index, y=df2['y']*100, label="Spain")
     chart.add_last_value_badge(decimals=0)
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

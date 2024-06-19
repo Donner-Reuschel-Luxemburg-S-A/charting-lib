@@ -7,7 +7,7 @@ from source_engine.bloomberg_source import BloombergSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
-DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=10)
+DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=5)
 DEFAULT_END_DATE = datetime.datetime.today()
 
 
@@ -17,20 +17,24 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='LBEATREU Index',field='BX218', observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='MXEF Index', field="RR900",
+                             observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"))
+    df2, t2 = blp.get_series(series_id='MXWO Index', field="RR900",
+                             observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "EUR Investment Grade Corporate Bond Spreads"
+    title = "P/E Ratio of MSCI Emerging Markets Index & MSCI World Index"
 
-    metadata = Metadata(title=title, region=Region.EU, category=Category.FI)
-    chart = Chart(title=title, filename="eu_ig_credit_spread.png", metadata=metadata)
+    metadata = Metadata(title=title, region=[Region.GLOBAL, Region.EM], category=Category.EQUITY)
+    chart = Chart(title=title, metadata=metadata, filename="global_mxef_mxwo_per.png")
 
-    chart.configure_y_axis(label="BPS Spread to TSY")
+    chart.configure_y_axis(y_axis_index=0, label="P/E")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    mean_val = [df1['y'].mean()] * len(df1.index)
     chart.add_series(x=df1.index, y=df1['y'], label=t1)
-    chart.add_series(x=df1.index, y=mean_val, label="10Y Avg", linestyle="--")
+    chart.add_series(x=df2.index, y=df2['y'], label=t2)
+
     chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)

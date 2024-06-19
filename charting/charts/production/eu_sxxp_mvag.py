@@ -1,12 +1,15 @@
 import datetime
 
 import matplotlib.dates as mdates
+from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
+from charting.transformer.avg import Avg
+from charting.transformer.ytd import Ytd
 
-DEFAULT_START_DATE = datetime.date(2017, 1, 1)
+DEFAULT_START_DATE = datetime.date(2024, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
 
@@ -15,21 +18,26 @@ def main(**kwargs):
     observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
 
     blp = BloombergSource()
-    df1, t1 = blp.get_series(series_id='DEYC5Y30 Index', observation_start=observation_start.strftime("%Y%m%d"),
+
+    df1, t1 = blp.get_series(series_id='SXXP Index', field="px_close_1d",
+                             observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "Germany Government Bonds Spread 30-5-Year"
-    metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="de_gov_spread_30y_5y.png")
+    title = "Stoxx Euro 600"
 
-    chart.configure_y_axis(label="BPS")
+    metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
+    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_mvag.png")
+
+    chart.configure_y_axis(label="Index")
+
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_horizontal_line()
-    chart.add_series(x=df1.index, y=df1['y'], label=title)
+    chart.add_series(x=df1.index, y=df1['y'], label=t1)
+    chart.add_series(x=df1.index, y=df1['y'], label=t1, transformer=Avg(offset=DateOffset(days=50)))
+
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

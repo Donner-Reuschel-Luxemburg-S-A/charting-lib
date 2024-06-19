@@ -34,6 +34,8 @@ def main(**kwargs):
     chart.add_series(x=df.index, y=df['y'], label=t)
     chart.add_series(x=df2.index, y=df2['y'], label=t2)
     chart.add_series(x=df.index, y=(df - df2)['y'], row_index=1, label=title)
+    chart.add_last_value_badge(decimals=2)
+
     chart.legend()
 
     return chart.plot(upload_chart='observation_start' not in kwargs)

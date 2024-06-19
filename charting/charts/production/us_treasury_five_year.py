@@ -26,7 +26,7 @@ def main(**kwargs):
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label=title)
-
+    chart.add_horizontal_line()
     chart.legend()
     chart.add_last_value_badge(decimals=2)
 

@@ -38,6 +38,8 @@ def main(**kwargs):
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2, y_axis_index=0)
     chart.add_series(x=common_index, y=(df2.loc[common_index] - df.loc[common_index])['y'], row_index=1, y_axis_index=0,
                      label=title)
+    chart.add_last_value_badge(decimals=2)
+
     chart.legend()
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
