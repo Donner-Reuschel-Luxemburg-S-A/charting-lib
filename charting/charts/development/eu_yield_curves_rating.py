@@ -1,11 +1,6 @@
-import datetime
-
 import pandas as pd
 import xbbg.blp
-import matplotlib.dates as mdates
-from matplotlib.ticker import NullFormatter
-from source_engine.bloomberg_source import BloombergSource
-import datetime as dt
+
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
@@ -20,6 +15,7 @@ def main(**kwargs):
         term = number / div
         df = pd.DataFrame(df[yld].values, index=term, columns=['y'])
         return df
+
     observation_start = kwargs.get('observation_start', DEFAULT_START_TENOR)
     observation_end = kwargs.get('observation_end', DEFAULT_END_TENOR)
 
@@ -34,7 +30,6 @@ def main(**kwargs):
     t3 = xbbg.blp.bdp("BVSC0166 Index", 'LONG_COMP_NAME')
     df3 = fix_bds_output(df3)
 
-
     title = "EU Corporate Spreads by Rating"
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
     chart = Chart(title=title, metadata=metadata, filename="eu_corporate_curves_rating.png")
@@ -42,11 +37,11 @@ def main(**kwargs):
     chart.configure_y_axis(label="%")
     chart.configure_x_axis(label='Tenor', label_loc='right')
 
-    chart.add_series(chart_type='curve', x=df1.index, y=df1['y'], label=t1.iloc[0 ,0],t_min=observation_start,
+    chart.add_series(chart_type='curve', x=df1.index, y=df1['y'], label=t1.iloc[0, 0], t_min=observation_start,
                      t_max=observation_end)
-    chart.add_series(chart_type='curve', x=df2.index, y=df2['y'], label=t2.iloc[0 ,0],t_min=observation_start,
+    chart.add_series(chart_type='curve', x=df2.index, y=df2['y'], label=t2.iloc[0, 0], t_min=observation_start,
                      t_max=observation_end)
-    chart.add_series(chart_type='curve', x=df3.index, y=df3['y'], label=t3.iloc[0, 0],t_min=observation_start,
+    chart.add_series(chart_type='curve', x=df3.index, y=df3['y'], label=t3.iloc[0, 0], t_min=observation_start,
                      t_max=observation_end)
 
     chart.legend(2)

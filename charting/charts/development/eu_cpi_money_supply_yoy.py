@@ -1,12 +1,8 @@
-import matplotlib.dates as mdates
-import numpy as np
-from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-from charting.transformer.avg import Avg
 from charting.transformer.lag import Lag
 
 
@@ -29,6 +25,7 @@ def main(**kwargs):
     chart.add_horizontal_line()
     chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
+
 
 if __name__ == '__main__':
     main()

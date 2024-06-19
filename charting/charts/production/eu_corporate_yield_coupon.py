@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
@@ -20,8 +19,9 @@ def main(**kwargs):
     corp_ytw_df, corp_ytw_title = blp.get_series(series_id="LECPSTAT Index", field="YIELD_TO_WORST",
                                                  observation_start=observation_start.strftime("%Y%m%d"),
                                                  observation_end=observation_end.strftime("%Y%m%d"))
-    corp_cpn_df, corp_cpn_title = blp.get_series(series_id="LECPSTAT Index", field="CPN", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+    corp_cpn_df, corp_cpn_title = blp.get_series(series_id="LECPSTAT Index", field="CPN",
+                                                 observation_start=observation_start.strftime("%Y%m%d"),
+                                                 observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Euro IG Corporates Refinancing Costs"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)

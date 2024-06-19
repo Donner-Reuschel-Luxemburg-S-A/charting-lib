@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
@@ -18,14 +17,16 @@ def main(**kwargs):
     blp = BloombergSource()
 
     rr_df, rr_title = blp.get_series(series_id="RRPQTOON Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
-    tga_df, tga_title = blp.get_series(series_id="CERBTGAN Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
-    fed_df, fed_title = blp.get_series(series_id="CERBTTAL Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+                                     observation_end=observation_end.strftime("%Y%m%d"))
+    tga_df, tga_title = blp.get_series(series_id="CERBTGAN Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
+    fed_df, fed_title = blp.get_series(series_id="CERBTTAL Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
 
     spx_df, spx_title = blp.get_series(series_id="SPX Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+                                       observation_end=observation_end.strftime("%Y%m%d"))
 
     df = fed_df
     df['y'] = df['y'] - rr_df['y'] - tga_df['y']

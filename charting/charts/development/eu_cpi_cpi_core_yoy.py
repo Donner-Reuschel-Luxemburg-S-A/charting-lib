@@ -1,4 +1,5 @@
 from source_engine.bloomberg_source import BloombergSource
+
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 

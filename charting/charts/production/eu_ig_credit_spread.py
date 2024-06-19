@@ -17,7 +17,8 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='LBEATREU Index',field='BX218', observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='LBEATREU Index', field='BX218',
+                             observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "EUR Investment Grade Corporate Bond Spreads"

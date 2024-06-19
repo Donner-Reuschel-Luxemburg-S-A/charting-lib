@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-import matplotlib.pyplot as plt
 from source_engine.fred_source import FredSource
 
 from charting.model.chart import Chart

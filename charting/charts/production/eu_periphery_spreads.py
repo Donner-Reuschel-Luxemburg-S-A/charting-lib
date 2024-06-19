@@ -29,8 +29,8 @@ def main(**kwargs):
     chart.configure_y_axis(row_index=1, label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_series(row_index=0, x=df1.index, y=df1['y']*100, label="Italy")
-    chart.add_series(row_index=1, x=df2.index, y=df2['y']*100, label="Spain")
+    chart.add_series(row_index=0, x=df1.index, y=df1['y'] * 100, label="Italy")
+    chart.add_series(row_index=1, x=df2.index, y=df2['y'] * 100, label="Spain")
     chart.add_last_value_badge(decimals=0)
 
     chart.legend(ncol=2)

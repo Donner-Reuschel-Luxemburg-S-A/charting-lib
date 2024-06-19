@@ -1,7 +1,6 @@
 import datetime
 
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
@@ -17,8 +16,9 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    de_ind_prod_df, de_ind_prod_title = blp.get_series(series_id="GRIPIMOM Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+    de_ind_prod_df, de_ind_prod_title = blp.get_series(series_id="GRIPIMOM Index",
+                                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                                       observation_end=observation_end.strftime("%Y%m%d"))
 
     ind = de_ind_prod_df
     ind['y'] = ind['y']

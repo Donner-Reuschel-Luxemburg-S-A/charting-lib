@@ -34,7 +34,7 @@ def main(**kwargs):
     chart.configure_y_axis(label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_series(x=df1.index, y=df2['y']-df1['y'], label="Germany Breakeven Rate 2033")
+    chart.add_series(x=df1.index, y=df2['y'] - df1['y'], label="Germany Breakeven Rate 2033")
     chart.add_series(x=df3.index, y=df4['y'] - df3['y'], label="Germany Breakeven Rate 2030")
     chart.add_series(x=df5.index, y=df6['y'] - df5['y'], label="Germany Breakeven Rate 2026")
     chart.add_last_value_badge(decimals=2)

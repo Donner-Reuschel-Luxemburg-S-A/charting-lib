@@ -7,7 +7,6 @@ from source_engine.bloomberg_source import BloombergSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
-from charting.transformer.ytd import Ytd
 
 DEFAULT_START_DATE = datetime.date(2024, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()

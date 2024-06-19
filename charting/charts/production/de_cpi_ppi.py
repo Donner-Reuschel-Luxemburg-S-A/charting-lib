@@ -6,7 +6,6 @@ from source_engine.bloomberg_source import BloombergSource
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
-
 DEFAULT_START_DATE = datetime.date(1992, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
@@ -17,12 +16,15 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    cpi_df, cpi_title = blp.get_series(series_id="GRCP20YY Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
-    ppi_df, ppi_title = blp.get_series(series_id="GRPFIYOY Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
-    wpi_df, wpi_title = blp.get_series(series_id="GRWPYOYI Index", observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"))
+    cpi_df, cpi_title = blp.get_series(series_id="GRCP20YY Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
+    ppi_df, ppi_title = blp.get_series(series_id="GRPFIYOY Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
+    wpi_df, wpi_title = blp.get_series(series_id="GRWPYOYI Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Germany: Producer, Wholesale and Consumer Inflation"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
