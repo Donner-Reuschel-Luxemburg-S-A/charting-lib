@@ -20,6 +20,7 @@ from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style, colors
+import charting.model.style as style
 from charting.model.transformer import Transformer
 
 
@@ -53,6 +54,7 @@ class Chart:
         self.module = self._caller()
         self.metadata = metadata
         self.max_label_length = 0
+        self.x_ticks = []
 
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
@@ -219,7 +221,7 @@ class Chart:
             t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
             For chart_type 'curve' t_max is the maximum tenor.
         """
-        color = get_color(y_axis=len(self.handles))
+        color, suggested_alpha = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
 
         try:
@@ -294,22 +296,37 @@ class Chart:
             self.x_min_label.append(t_min)
             self.x_max_label.append(t_max)
         elif chart_type == 'bar_grouped':
-            width = .1
-            x_ = np.array([0 + i*len(y.keys())*width + (1 if i else 0)*2*width for i in range(len(x))])
+
+            style.color_counter = 0
+            self.grouped_bar_width = .08
             multiplier = 0
-            # num_bars = len(y.keys()) * len(x) + 2
-            for label, values in y.items():
-                offset = width * multiplier
-                handle = ax.bar(x_ + offset, values.values(), width, label=label)
-                ax.bar_label(handle, padding=3, fmt='%.2f')
+            x_tick = list(y.keys())[0]
+
+            for label, values in y[x_tick].items():
+                self.handles = []
+                offset = (self.grouped_bar_width + .05) * multiplier
+                bottom = 0
+                self.x_ticks.append((x[0] + offset+self.grouped_bar_width, label))
+                for idx, (key, value) in enumerate(values.items()):
+                    color, suggested_alpha = get_color(y_axis=idx)
+                    if value < 0:
+                        bottom = 0
+                    handle = ax.bar(x[0] + offset+self.grouped_bar_width, value, self.grouped_bar_width, label=key, color=color, alpha=1,
+                                    bottom=bottom)
+                    self.handles.append(handle)
+                    bottom += value
+                color, suggested_alpha = get_color(y_axis=len(values)+1)
+                handle = ax.scatter(x[0] + offset+self.grouped_bar_width, sum(values.values()), marker="D", c=color, label='Expected Return')
+                # ax.bar_label(handle, padding=3, fmt='%.2f')
+                ax.annotate('{:.2f}'.format(sum(values.values())), (x[0] + offset+self.grouped_bar_width-self.grouped_bar_width/2, max(*values.values(), sum(values.values()))+.15),
+                            fontsize=7)
                 self.handles.append(handle)
                 multiplier += 1
-                self.x_min_axes.append(x_[0] + offset)
-                self.x_max_axes.append(x_[-1] + offset)
-            self.x_min_label.append(x[0])
-            self.x_max_label.append(x[1])
-            ax.set_xticks(x_+width, x)
-            handle=None
+            self.handles.pop(-1)
+            self.x_min_axes.append(x[0])
+            self.x_max_axes.append(x[0] + multiplier*(self.grouped_bar_width + .05)+self.grouped_bar_width)
+            self.x_min_label.append(label)
+            self.x_max_label.append(label)
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
@@ -378,12 +395,6 @@ class Chart:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
         self.handles.append(handle)
-        none_entries = []
-        for i, handle_ in enumerate(self.handles):
-            if handle_ is None:
-                none_entries.append(i)
-        for entry_ in none_entries:
-            self.handles.pop(entry_)
 
     def add_horizontal_line(self, row_index: int = 0, y_axis_index: int = 0, y: float = 0) -> None:
         """
@@ -523,6 +534,11 @@ class Chart:
             str, the image as base64
         """
         plt.suptitle(self.title, fontdict=title_style)
+        if len(self.x_ticks) > 0:
+            xs = [self.x_ticks[i][0] for i in range(len(self.x_ticks))]
+            # xs.append(xs[-1]-self.x_ticks[-2][0]+self.x_ticks[-1][0])
+            self.axis[-1].set_xticks(xs, [y[1] for y in self.x_ticks], rotation=45, fontsize=6, ha='right')
+
         self.__add_bottom_label(bloomberg_source_override)
 
         plt.savefig(self.filepath, dpi=500)

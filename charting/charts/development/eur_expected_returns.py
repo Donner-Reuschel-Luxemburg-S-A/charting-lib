@@ -63,12 +63,11 @@ def main():
                 for t, index in mat.items():
                     res = bdp(index, 'PX_LAST')
                     data['result'][sector][t] = res.iloc[0,0]
-    title = "Erwartete Rendite 10-Jahres Sektor"
+    title = "Expected Returns various Sectors"
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
     chart = Chart(title=title, metadata=metadata, filename="expected_returns10.png")
-    #
-    # chart10.configure_y_axis(y_axis_index=0, label="Percentage Points",
-    #                        y_lim=(0, 7))
+
+    chart.configure_y_axis(label="Percentage Points")
 
     date = datetime.datetime.now()
     x = list(data['result'].keys())
@@ -78,11 +77,21 @@ def main():
 
     y_roll_short = list([(sector[5] - sector[4]) * 4.5 for sector in data['result'].values()])
     y_yield_short = list([sector[5] for sector in data['result'].values()])
-    category = ['5y Tenor', '10y Tenor']
+    category = ['5y', '10y']
     dict_ = {}
-    for i, val in enumerate(x):
-        dict_[val] = {category[0]: y_yield_short[i] + y_roll_short[i], category[1]: y_yield_long[i] + y_roll_long[i]}
-    chart.add_series(category, dict_, label=category, chart_type='bar_grouped')
+    for c in category:
+        dict_[c] = {}
+        for i, val in enumerate(x):
+            if c == '5y':
+                dict_[c][val] = {'Yield': y_yield_short[i], 'Roll': y_roll_short[i]}
+            elif c == '10y':
+                dict_[c][val] = {'Yield': y_yield_long[i], 'Roll': y_roll_long[i]}
+    # for i, val in enumerate(x):
+    #     dict_[val] = {category[0]: {y_yield_short[i] + y_roll_short[i]}, category[1]: y_yield_long[i] + y_roll_long[i]}
+    counter = 0
+    for key, value in dict_.items():
+        chart.add_series([counter], {key: value}, label=key, chart_type='bar_grouped')
+        counter += 1.5
     # title = "Erwartete Rendite 5-Jahres Sektor"
     # metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
     # chart5 = Chart(title=title, metadata=metadata, filename="expected_returns5.png")
