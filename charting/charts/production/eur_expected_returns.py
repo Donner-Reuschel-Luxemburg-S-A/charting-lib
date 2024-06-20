@@ -85,7 +85,7 @@ def main():
         counter += (idx+1) * (len(value.keys())+2) * (bar_gap + grouped_bar_width)
 
     chart.legend(ncol=3)
-    chart.plot()
+    return chart.plot()
 
 
 if __name__ == '__main__':

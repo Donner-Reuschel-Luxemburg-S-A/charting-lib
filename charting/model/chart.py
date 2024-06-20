@@ -336,8 +336,8 @@ class Chart:
             self.handles.pop(-1)
             self.x_min_axes.append(x[0])
             self.x_max_axes.append(x[0] + multiplier*(self.grouped_bar_width + self.bar_gap)+self.grouped_bar_width)
-            self.x_min_label.append(label)
-            self.x_max_label.append(label)
+            self.x_min_label.append(datetime.today())
+            self.x_max_label.append(datetime.today())
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
