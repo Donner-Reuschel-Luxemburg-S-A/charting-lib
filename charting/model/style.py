@@ -5,7 +5,7 @@ colors = ["#7EC0C6", "#124877", "#E91457", "#018C7D", "#6F3E2E", "#FD7200"]
 stacked_colors = ["#7A7978", "#87CBAC", "#90FFDC", "#8DE4FF", "#8AC4FF"]
 source_text_style = {'fontsize': 7}
 legend_style = {'size': 8}
-title_style = {'fontsize': 10, 'fontweight': 'bold'}
+title_style = {'size': 10, 'weight': 'bold'}
 
 
 def get_stacked_color(idx: int):
