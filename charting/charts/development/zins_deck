@@ -30,3 +30,11 @@ eu_semicore_spreads.py
 eu_yield_curves_rating.py
 eu_yield_curves_sector.py
 
+
+eur_expected_returns.py
+de_cpi_corecpi.py
+eu_cpi_cpi_core_yoy.py
+de_ifo_business_climate.py
+de_ifo_hicp.py
+eu_inflation_cpi_pmi.py
+eu_money_measures.py
