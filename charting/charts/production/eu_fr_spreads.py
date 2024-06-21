@@ -26,11 +26,11 @@ def main(**kwargs):
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(row_index=0, x=df1.index, y=df1['y']*100, label="France")
-    #chart.add_last_value_badge(decimals=0)
+    chart.add_last_value_badge(decimals=2)
 
     chart.legend(4)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main(observation_start=datetime.date(2019, 1, 1))
+    main()
