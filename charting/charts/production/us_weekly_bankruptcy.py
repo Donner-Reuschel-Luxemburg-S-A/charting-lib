@@ -11,7 +11,7 @@ from charting.transformer.avg import Avg
 from charting.transformer.resample import Resample
 
 
-def main(**kwargs):
+def main():
     fred = FredSource()
     excel_path = os.path.join(os.path.dirname(__file__), "data", "bankruptcy_data.xlsx")
     df = pd.read_excel(excel_path, parse_dates=True, index_col="Date")
@@ -26,7 +26,10 @@ def main(**kwargs):
 
     chart.configure_y_axis(y_axis_index=0, label="Number of Bankruptcies")
 
-    chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
+    minor_locator = mdates.YearLocator(base=1)
+    major_locator = mdates.YearLocator(base=4)
+    major_formatter = mdates.DateFormatter("%b %y")
+    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.add_series(df.index, df['count'], label='Number of bankruptcies',
                      transformer=[Resample(rule='W', resampler='sum'), Avg(offset=DateOffset(weeks=4))])
@@ -37,7 +40,7 @@ def main(**kwargs):
 
     chart.legend(ncol=2)
 
-    return chart.plot(bloomberg_source_override='BCY')
+    chart.plot(bloomberg_source_override='BCY')
 
 
 if __name__ == '__main__':

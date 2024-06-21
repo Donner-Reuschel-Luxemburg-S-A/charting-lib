@@ -6,7 +6,7 @@ from source_engine.fred_source import FredSource
 from charting.model.chart import Chart
 
 
-def main(**kwargs):
+def main():
     blp = BloombergSource()
     fred = FredSource()
 
@@ -24,28 +24,28 @@ def main(**kwargs):
 
     chart = Chart(title=title, filename="us_ng.png", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="$/MMBtu")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),label="$/MMBtu")
 
     chart.add_series(ng_df.index, ng_df['y'], label=ng_title)
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"])
 
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot()
 
     title = "Preisentwicklung von Gold"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="us_gold.png", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200), label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200),label="")
 
     chart.add_series(xau_df.index, xau_df['y'], label="Goldpreis in $")
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"])
 
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot()
 
 
 if __name__ == '__main__':
