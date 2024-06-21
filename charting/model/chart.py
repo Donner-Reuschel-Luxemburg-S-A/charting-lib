@@ -351,7 +351,7 @@ class Chart:
                 elif len(ax.patches) > len(x):
                     bar_bottom = []
                     n = len(ax.patches) // len(x)
-                    color = get_stacked_color(n + 1)
+                    color = get_stacked_color(n+1)
                     all_patches = []
                     for i in range(n):
                         start = i * len(x)

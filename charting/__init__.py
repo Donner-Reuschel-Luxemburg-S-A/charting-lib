@@ -2,11 +2,10 @@
 .. include:: ../README.md
 """
 
-__version__ = "1.14.0"
+__version__ = "1.13.0"
 
 import getpass
 import os.path
-
 user_path = f'C:\\Users\\{getpass.getuser()}'
 base_path = f"{user_path}\\OneDrive - Donner Reuschel\\General - Portfolio Management\\Organisation Development"
 chart_base_path = os.path.join(base_path, "charts")
