@@ -16,9 +16,9 @@ def main(**kwargs):
 
     blp = BloombergSource()
     df, t = blp.get_series(series_id='I02202EU Index', observation_start=observation_start.strftime("%Y%m%d"),
-                           observation_end=observation_end.strftime("%Y%m%d"), field='BX219')
+                           observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
     df2, t2 = blp.get_series(series_id='I02201EU Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"), field='BX219')
+                             observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
 
     title = 'EUR Corporate BBB - A Spread'
     t = 'Bloomberg EuroAgg Corporate Baa EUR'
@@ -28,7 +28,7 @@ def main(**kwargs):
     chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bbb_a_spread.png")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(row_index=0, label='Spread BPS')
+    chart.configure_y_axis(row_index=0, label='BPS Spread To TSY')
     chart.configure_y_axis(row_index=1, label='Spread Difference BPS')
 
     chart.add_series(x=df.index, y=df['y'], label=t)

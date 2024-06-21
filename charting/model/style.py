@@ -6,6 +6,8 @@ stacked_colors = ["#7A7978", "#87CBAC", "#90FFDC", "#8DE4FF", "#8AC4FF"]
 source_text_style = {'fontsize': 7}
 legend_style = {'size': 8}
 title_style = {'fontsize': 10, 'fontweight': 'bold'}
+color_counter = 0
+suggested_alpha = 1
 
 
 def get_stacked_color(idx: int):
@@ -27,6 +29,10 @@ def get_color(y_axis: int):
     Returns:
         str: The color corresponding to the index.
     """
+    global color_counter, suggested_alpha
+    color_counter += 1
     if y_axis >= len(colors):
+        suggested_alpha = 1 - int(color_counter/y_axis)*.1
         y_axis = y_axis % len(colors)
-    return colors[y_axis]
+
+    return colors[y_axis], suggested_alpha

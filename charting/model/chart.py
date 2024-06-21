@@ -20,6 +20,7 @@ from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style, colors
+import charting.model.style as style
 from charting.model.transformer import Transformer
 
 
@@ -53,6 +54,9 @@ class Chart:
         self.module = self._caller()
         self.metadata = metadata
         self.max_label_length = 0
+        self.x_ticks = []
+        self.grouped_bar_width = 0
+        self.bar_gap = 0
 
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
@@ -130,17 +134,19 @@ class Chart:
 
     def configure_x_axis(self, label: str = None,
                          major_formatter: Formatter = None,
-                         rotation: int = None):
+                         rotation: int = None,
+                         label_loc='center'):
         """
         Configures the x-axis with label, formatter and locator.
 
         Args:
             label (str): The label for the x-axis (default: None).
             major_formatter (Formatter): The major formatter for the x-axis (default: None)
+            label_loc (str): Locate the label on the 'left', 'center' (default) or 'right'
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        ax.set_xlabel(label)
+        ax.set_xlabel(label, loc=label_loc)
 
         if rotation is not None:
             ax.tick_params(axis='x', labelrotation=rotation)
@@ -186,8 +192,8 @@ class Chart:
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
-                   transformer: Union[Transformer, List[Transformer]] = None, t_min: datetime = None,
-                   t_max: datetime = None):
+                   transformer: Union[Transformer, List[Transformer]] = None, t_min: [datetime, float] = None,
+                   t_max: Union[datetime, float] = None, **kwargs):
         """
         Adds a series to the chart.
 
@@ -213,11 +219,14 @@ class Chart:
                 Each transformer should implement the `transform` method to modify the series.
                 The label of the series will be updated to reflect the applied transformers.
             t_min (datetime): Optional time series minimum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_min is the minimum tenor.
             t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_max is the maximum tenor.
         """
-        color = get_color(y_axis=len(self.handles))
+        color, suggested_alpha = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
-
+        self.grouped_bar_width = kwargs.get('grouped_bar_width', .08)
+        self.bar_gap = kwargs.get('bar_gap', .05)
         try:
             ax = self.axis_dict[row_index][y_axis_index]
         except IndexError:
@@ -289,6 +298,46 @@ class Chart:
 
             self.x_min_label.append(t_min)
             self.x_max_label.append(t_max)
+        elif chart_type == 'bar_grouped':
+
+            style.color_counter = 1
+            multiplier = 0
+            group = list(y.keys())[0]
+
+            for label, values in y[group].items():
+                self.handles = []
+                offset = (self.grouped_bar_width + self.bar_gap) * multiplier
+                bottom = 0
+                self.x_ticks.append((x[0] + offset+self.grouped_bar_width, label))
+                for idx, (key, value) in enumerate(values.items()):
+                    color, suggested_alpha = get_color(y_axis=idx)
+                    if value < 0:
+                        bottom = 0
+                    handle = ax.bar(x[0] + offset+self.grouped_bar_width, value, self.grouped_bar_width, label=key, color=color, alpha=1,
+                                    bottom=bottom)
+                    self.handles.append(handle)
+                    bottom += value
+                color, suggested_alpha = get_color(y_axis=idx+1)
+                handle = ax.scatter(x[0] + offset+self.grouped_bar_width, sum(values.values()), marker="D", c=color, label='Expected Return')
+                ax.annotate('{:.2f}'.format(sum(values.values())), (x[0] + offset+self.grouped_bar_width-self.grouped_bar_width/2, max(*values.values(), sum(values.values()))+.15),
+                            fontsize=7)
+                self.handles.append(handle)
+                multiplier += 1
+            bars_per_plot = len(y[group].values())
+            half = int(bars_per_plot / 2)
+            mid_point = self.x_ticks[-bars_per_plot:][half-1][0]
+            if bars_per_plot % 2 == 0:
+                mid_point += (self.grouped_bar_width + self.bar_gap)/2
+            else:
+                mid_point += self.grouped_bar_width + self.bar_gap
+
+            ax.annotate(group, (mid_point, 6),
+                        fontsize=10, weight='bold', ha='center')
+            self.handles.pop(-1)
+            self.x_min_axes.append(x[0])
+            self.x_max_axes.append(x[0] + multiplier*(self.grouped_bar_width + self.bar_gap)+self.grouped_bar_width)
+            self.x_min_label.append(datetime.today())
+            self.x_max_label.append(datetime.today())
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
@@ -337,7 +386,22 @@ class Chart:
 
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
+        elif chart_type == 'curve':
+            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
 
+            if fill:
+                if fill_threshold is None:
+                    fill_threshold = ax.get_ylim()[0]
+                ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
+            date = datetime.today().date()
+            x_min = min(x) if t_min is None else t_min
+            x_max = max(x) if t_max is None else t_max
+
+            self.x_min_label.append(date)
+            self.x_max_label.append(date)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
@@ -406,10 +470,14 @@ class Chart:
 
         if self.max_label_length != 0:
             label_x_position = self.max_label_length * -0.012
-
-        label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+        if all([isinstance(x, datetime) for x in self.x_min_label]):
+            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
+                    f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+        else:
+            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
+                    f'{datetime.today().strftime("%m/%Y")} - {datetime.today().strftime("%m/%Y")}.'
 
         label_y_position = -0.125
         if self.num_rows > 1:
@@ -434,7 +502,7 @@ class Chart:
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
         ax.legend(
             loc="upper center",
-            bbox_to_anchor=(0.5, 0),
+            bbox_to_anchor=(0.5, -0.05),
             borderaxespad=3,
             handles=self.handles,
             frameon=False,
@@ -477,10 +545,14 @@ class Chart:
             str, the image as base64
         """
         plt.suptitle(self.title, fontdict=title_style)
+        if len(self.x_ticks) > 0:
+            xs = [self.x_ticks[i][0] for i in range(len(self.x_ticks))]
+            # xs.append(xs[-1]-self.x_ticks[-2][0]+self.x_ticks[-1][0])
+            self.axis[-1].set_xticks(xs, [y[1] for y in self.x_ticks], rotation=25, fontsize=6, ha='right')
+
         self.__add_bottom_label(bloomberg_source_override)
 
         plt.savefig(self.filepath, dpi=500)
-
         b = io.BytesIO()
         plt.savefig(b, format='png')
         b.seek(0)
