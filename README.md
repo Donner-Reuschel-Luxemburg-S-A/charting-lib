@@ -103,7 +103,7 @@ chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0, fill=True,
 chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1,  transformer=Resample('M'))
 
 chart.legend()
-return chart.plot(upload_chart='observation_start' not in kwargs)
+chart.plot()
 ```
 
 Result:
@@ -135,7 +135,7 @@ chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
 chart.add_horizontal_line(y_axis_index=1)
 
 chart.legend(ncol=2)
-return chart.plot(upload_chart='observation_start' not in kwargs)
+chart.plot()
 ```
 
 Result:
@@ -163,7 +163,7 @@ chart.add_series(x=d1.index, y=d1['y'], label=t1, chart_type='bar', bar_bottom=0
                  transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])
 
 chart.legend()
-return chart.plot(upload_chart='observation_start' not in kwargs)
+chart.plot()
 ```
 
 ![alt text](docs/charts/12_07_2023_retail.png)
@@ -191,7 +191,7 @@ chart.add_series(x=d1.index, y=d1['y'], label="Bankruptcy filings", y_axis_index
 chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
 
 chart.legend(ncol=2)
-return chart.plot(upload_chart='observation_start' not in kwargs)
+chart.plot()
 ```
 
 ![alt text](docs/charts/12_07_2023_bankruptcy.png)
@@ -258,7 +258,7 @@ chart.add_series(x=food_df.index, y=food_df['weighted'], chart_type='bar', stack
 chart.add_series(x=energy_df.index, y=energy_df['weighted'], chart_type='bar', stacked=True, label="Energy")
 
 chart.legend(ncol=2)
-return chart.plot(upload_chart='observation_start' not in kwargs)
+chart.plot()
 ```
 
 ![alt text](docs/charts/12_07_2023_inflation.png)
@@ -300,7 +300,7 @@ chart.add_series(d3.index, d3["y"], row_index=2, chart_type='bar', label=t3,
                  transformer=Resample(rule='Y'))
 
 chart.legend(ncol=2)
-return chart.plot(upload_chart='observation_start' not in kwargs)
+chart.plot()
 ```
 
 ![alt text](docs/charts/12_07_2023_job-openings.png)
