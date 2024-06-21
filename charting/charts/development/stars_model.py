@@ -1,18 +1,16 @@
 import time
 from copy import deepcopy
 from datetime import datetime
+
+import dataframe_image as dfi
+import matplotlib.pyplot as plt
+import matplotlib.transforms
+import numpy as np
+import pandas as pd
 from source_engine.estat_statistics import EstatStatisticsSource
 from source_engine.imf_source import ImfSource
 from source_engine.sdmx_source import Ecb
 from xbbg import blp
-import pandas as pd
-import matplotlib.transforms
-import matplotlib.pyplot as plt
-import numpy as np
-import dataframe_image as dfi
-
-from charting.model.chart import Chart
-from charting.model.metadata import Metadata, Region, Category
 
 countries = ['DE', 'IT', 'FR', 'FI', 'NL', 'BE', 'AT', 'ES', 'PT', 'IE', 'SI', 'SK']
 period = 'A'
@@ -26,9 +24,8 @@ names = ['loan_to_deposit', 'housing_loans', 'unemployment_rate', 'government_de
 ecb_source = Ecb()
 estat_source = EstatStatisticsSource()
 
-
 estat_queries = {
-    'unemployment_rate':'tipsun30?format=JSON&sinceTimePeriod=2003-Q1&unit=PC_ACT&s_adj=SA&sex=T&age=Y15-74&lang=en',
+    'unemployment_rate': 'tipsun30?format=JSON&sinceTimePeriod=2003-Q1&unit=PC_ACT&s_adj=SA&sex=T&age=Y15-74&lang=en',
     'government_debt': 'gov_10q_ggdebt?format=JSON&sinceTimePeriod=1994-Q4&unit=PC_GDP&na_item=GD&sector=S13&lang=en',
     'eco_sentiment': 'ei_bssi_m_r2?format=JSON&sinceTimePeriod=2000-01&indic=BS-ESI-I&s_adj=SA&lang=en',
     'industrial_sentiment': 'ei_bssi_m_r2?format=JSON&sinceTimePeriod=2000-01&indic=BS-ICI-BAL&s_adj=SA&lang=en',
@@ -62,14 +59,12 @@ for index, queries in ecb_queries.items():
     results[index] = dfs
     print(index)
 
-
 estat_results = {}
 for key, query in estat_queries.items():
     out = estat_source.get_data(query)
     estat_results[key] = out
     results[key] = out.transpose()
     print(key)
-
 
 imf_result = {}
 i = 0
@@ -91,9 +86,12 @@ for key, (dataset, s) in imf_queries.items():
 
 zscores = {}
 for key, value in results.items():
-    zscores[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').apply(lambda x: 2*(x-x.min())/(x.max()-x.min()) - 1, axis=1)
+    zscores[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').apply(
+        lambda x: 2 * (x - x.min()) / (x.max() - x.min()) - 1, axis=1)
 
-weights = {'initial_conditions': (0.4, {'government_debt': (.4, -1), 'primary_balance': (.3, 1), 'overall_balance': (.2, 1), 'unemployment_rate': (.05, -1), 'international_reserves': (.05, 1)}),
+weights = {'initial_conditions': (0.4,
+                                  {'government_debt': (.4, -1), 'primary_balance': (.3, 1), 'overall_balance': (.2, 1),
+                                   'unemployment_rate': (.05, -1), 'international_reserves': (.05, 1)}),
            'momentum': (.3, {'eco_sentiment': (.5, 1), 'industrial_sentiment': (.5, 1)}),
            'competitivness': (.2, {'current_account': (.5, 1), 'financial_account': (.3, 1), 'labour_cost': (.2, -1)}),
            'leverage': (.1, {'housing_loans': (.4, -1), 'loan_to_deposit': (.4, -1), 'savings_rate': (.2, 1)})
@@ -105,17 +103,20 @@ for sector, data in weights.items():
     sector_weights = []
     for key, (weight, direction) in data[1].items():
         if key in ['primary_balance', 'overall_balance']:
-            data_table.loc[key] = zscores[key][countries].loc[zscores[key][countries].index.year == datetime.now().year].squeeze()
+            data_table.loc[key] = zscores[key][countries].loc[
+                zscores[key][countries].index.year == datetime.now().year].squeeze()
         else:
             data_table.loc[key] = zscores[key][countries].iloc[-1, :] * direction
         sector_weights.append(weight)
     sector_table.loc[sector] = data_table.loc[list(data[1].keys())].multiply(sector_weights, axis=0).sum(axis=0)
 total_score.loc['Score'] = sector_table.multiply([data[0] for _, data in weights.items()], axis=0).sum(axis=0)
 total_df = pd.concat([total_score, sector_table, data_table], axis=0)
-total_df = total_df.loc[['Score', 'initial_conditions', 'government_debt', 'primary_balance','overall_balance', 'unemployment_rate', 'international_reserves',
-              'momentum', 'eco_sentiment', 'industrial_sentiment',
-              'competitivness', 'current_account', 'financial_account', 'labour_cost',
-              'leverage', 'housing_loans', 'loan_to_deposit', 'savings_rate']]
+total_df = total_df.loc[
+    ['Score', 'initial_conditions', 'government_debt', 'primary_balance', 'overall_balance', 'unemployment_rate',
+     'international_reserves',
+     'momentum', 'eco_sentiment', 'industrial_sentiment',
+     'competitivness', 'current_account', 'financial_account', 'labour_cost',
+     'leverage', 'housing_loans', 'loan_to_deposit', 'savings_rate']]
 # total_df.index = [x.replace('_', ' ').upper() for x in total_df.index]
 
 tickers = {'DE': {5: 'GTDEM5Y Corp', 10: 'GTDEM10Y Corp'},
@@ -142,7 +143,7 @@ for country, tenors in tickers.items():
         if country == 'DE':
             spreads[country][tenor] = 0
         else:
-            spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor])*100
+            spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor]) * 100
 fig, ax = plt.subplots(1, 1)
 trans_offset = matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=-.2, units='inches')
 ax.spines['left'].set_position('zero')
@@ -153,37 +154,38 @@ ax.xaxis.set_ticks_position('bottom')
 ax.yaxis.set_ticks_position('left')
 ax.set_xlabel('Score')
 ax.set_ylabel('Spread vs. Bund', loc='top', labelpad=-50)
-ax.set_ylim(top=spreads['IT'][10]*1.2)
+ax.set_ylim(top=spreads['IT'][10] * 1.2)
 xs = total_score.loc['Score']
 ys = [spreads[country][10] for country in total_score.columns]
 ax.scatter(xs, ys)
 for x, y, c in zip(xs, ys, total_score.columns):
     if c == 'DE':
-        plt.text(x, y, c, transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=.1, units='inches'))
+        plt.text(x, y, c,
+                 transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=.1, units='inches'))
     else:
         plt.text(x, y, c, transform=trans_offset)
 m, b = np.polyfit(xs, ys, 1)
-xs_aux = np.linspace(xs.min()*1.1, xs.max()*1.1, 200)
-ax.plot(xs_aux, m*xs_aux+b, color='red')
+xs_aux = np.linspace(xs.min() * 1.1, xs.max() * 1.1, 200)
+ax.plot(xs_aux, m * xs_aux + b, color='red')
 plt.suptitle('10-jähriger Spread vs. Fundamental Score')
 plt.savefig('test_stars.png')
 index = sector_table.index.to_list()
 index.append('Score')
 sl = pd.IndexSlice[index]
 
-styled = total_df.style\
-    .format(precision=2, decimal=',')\
-    .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,))\
-    .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[data_table.index.to_list()],))\
-    .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
+styled = total_df.style \
+    .format(precision=2, decimal=',') \
+    .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,)) \
+    .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[data_table.index.to_list()],)) \
+    .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0) \
     .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)
 dfi.export(styled, 'all_data.png', table_conversion='playwright')
-styled = total_df.style\
-    .format(precision=2, decimal=',')\
-    .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,))\
-    .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)\
+styled = total_df.style \
+    .format(precision=2, decimal=',') \
+    .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,)) \
+    .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0) \
     .hide(data_table.index.to_list(), axis=0) \
     .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[sector_table.index.to_list(),])) \
-    .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
+    .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0) \
     .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
 dfi.export(styled, 'consolidated.png', table_conversion='playwright')

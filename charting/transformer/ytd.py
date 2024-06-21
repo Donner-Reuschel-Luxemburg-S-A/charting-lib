@@ -1,4 +1,3 @@
-import pandas as pd
 from pandas import Series, DataFrame
 
 from charting.model.transformer import Transformer

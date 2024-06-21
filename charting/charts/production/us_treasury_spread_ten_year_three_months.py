@@ -1,32 +1,38 @@
+import datetime
+
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
+DEFAULT_START_DATE = datetime.date(2017, 1, 1)
+DEFAULT_END_DATE = datetime.datetime.today()
 
-def main():
+
+def main(**kwargs):
+    observation_start = kwargs.get('observation_start', DEFAULT_START_DATE)
+    observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
+
     blp = BloombergSource()
-    df1, t1 = blp.get_series(series_id='USYC3M10 Index', observation_start="20220131")
+    df1, t1 = blp.get_series(series_id='USYC3M10 Index', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "10 Year - 3 Month Treasury Yield Spread"
+    title = "3 Month - 10 Year Treasury Yield Spread"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="us_3m10y_curve.png")
 
-    chart.configure_y_axis(y_axis_index=0, label="BPS", minor_locator=MultipleLocator(20),
-                           major_locator=MultipleLocator(40))
+    chart.configure_y_axis(label="BPS")
 
-    minor_locator = mdates.MonthLocator(interval=1)
-    major_locator = mdates.MonthLocator(interval=4)
-    major_formatter = mdates.DateFormatter("%b %y")
-    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
+    chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label=title)
     chart.add_horizontal_line()
 
+    chart.add_last_value_badge(decimals=2)
+
     chart.legend()
-    chart.plot()
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

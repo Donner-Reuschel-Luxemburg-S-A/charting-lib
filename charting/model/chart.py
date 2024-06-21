@@ -9,12 +9,11 @@ from functools import reduce
 from typing import Tuple, Union, List, Dict
 
 import numpy as np
-from PIL import Image
 from matplotlib import pyplot as plt
 
 plt.switch_backend('agg')
 from matplotlib.axes import Axes
-from matplotlib.ticker import Formatter, Locator
+from matplotlib.ticker import Formatter
 from source_engine.chart_source import ChartSource, ChartModel
 
 from charting import chart_base_path
@@ -130,46 +129,30 @@ class Chart:
         return axis_dict
 
     def configure_x_axis(self, label: str = None,
-                         minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
-                         minor_locator: Locator = None,
-                         major_locator: Locator = None,
-                         rotation: int = None):
+                         rotation: int = None,
+                         label_loc='center'):
         """
         Configures the x-axis with label, formatter and locator.
 
         Args:
             label (str): The label for the x-axis (default: None).
-            minor_formatter (Formatter): The minor formatter for the x-axis (default: None)
             major_formatter (Formatter): The major formatter for the x-axis (default: None)
-            minor_locator (Locator): The minor locator for the x-axis (default: None)
-            major_locator (Locator): The major locator for the x-axis (default: None)
+            label_loc (str): Locate the label on the 'left', 'center' (default) or 'right'
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        ax.set_xlabel(label)
+        ax.set_xlabel(label, loc=label_loc)
 
         if rotation is not None:
             ax.tick_params(axis='x', labelrotation=rotation)
 
-        if minor_formatter is not None:
-            ax.xaxis.set_minor_formatter(minor_formatter)
-
         if major_formatter is not None:
             ax.xaxis.set_major_formatter(major_formatter)
 
-        if minor_locator is not None:
-            ax.xaxis.set_minor_locator(minor_locator)
-
-        if major_locator is not None:
-            ax.xaxis.set_major_locator(major_locator)
-
     def configure_y_axis(self, label: str, row_index: int = 0, y_axis_index: int = 0,
                          y_lim: Tuple[float, float] = None,
-                         minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
-                         minor_locator: Locator = None,
-                         major_locator: Locator = None,
                          reverse_axis: bool = False):
         """
         Configures a y-axis with a label and color.
@@ -179,10 +162,7 @@ class Chart:
             y_axis_index (int): The index of the y-axis to configure (default: 0).
             label (str): The label for the y-axis.
             y_lim (tuple): The limits for the axis.
-            minor_formatter (Formatter): The minor formatter for the y-axis (default: None)
             major_formatter (Formatter): The major formatter for the y-axis (default: None)
-            minor_locator (Locator): The minor locator for the y-axis (default: AutoLocator)
-            major_locator (Locator): The major locator for the y-axis (default: AutoLocator)
             reverse_axis (bool): Indicates whether the axis should be reversed (default: False).
         Raises:
             YAxisIndexException: If the provided row or y-axis index is invalid.
@@ -199,17 +179,8 @@ class Chart:
                 ax.invert_yaxis()
                 ax.set_ylabel(f'{label} (reversed axis)', loc="top", rotation=90)
 
-            if minor_formatter is not None:
-                ax.yaxis.set_minor_formatter(minor_formatter)
-
             if major_formatter is not None:
                 ax.yaxis.set_major_formatter(major_formatter)
-
-            if minor_locator is not None:
-                ax.yaxis.set_minor_locator(minor_locator)
-
-            if major_locator is not None:
-                ax.yaxis.set_major_locator(major_locator)
 
         except IndexError:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
@@ -217,8 +188,8 @@ class Chart:
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
-                   transformer: Union[Transformer, List[Transformer]] = None, t_min: datetime = None,
-                   t_max: datetime = None):
+                   transformer: Union[Transformer, List[Transformer]] = None, t_min: [datetime, float] = None,
+                   t_max: Union[datetime, float] = None):
         """
         Adds a series to the chart.
 
@@ -244,7 +215,9 @@ class Chart:
                 Each transformer should implement the `transform` method to modify the series.
                 The label of the series will be updated to reflect the applied transformers.
             t_min (datetime): Optional time series minimum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_min is the minimum tenor.
             t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_max is the maximum tenor.
         """
         color = get_color(y_axis=len(self.handles))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
@@ -333,7 +306,7 @@ class Chart:
                 elif len(ax.patches) > len(x):
                     bar_bottom = []
                     n = len(ax.patches) // len(x)
-                    color = get_stacked_color(n+1)
+                    color = get_stacked_color(n + 1)
                     all_patches = []
                     for i in range(n):
                         start = i * len(x)
@@ -368,7 +341,22 @@ class Chart:
 
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
+        elif chart_type == 'curve':
+            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
 
+            if fill:
+                if fill_threshold is None:
+                    fill_threshold = ax.get_ylim()[0]
+                ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
+            date = datetime.today()
+            x_min = min(x) if t_min is None else t_min
+            x_max = max(x) if t_max is None else t_max
+
+            self.x_min_label.append(date)
+            self.x_max_label.append(date)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
@@ -465,7 +453,7 @@ class Chart:
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
         ax.legend(
             loc="upper center",
-            bbox_to_anchor=(0.5, 0),
+            bbox_to_anchor=(0.5, -0.05),
             borderaxespad=3,
             handles=self.handles,
             frameon=False,
@@ -496,12 +484,13 @@ class Chart:
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
-    def plot(self, bloomberg_source_override: str = None) -> str:
+    def plot(self, bloomberg_source_override: str = None, upload_chart: bool = True) -> str:
         """
         Plots the chart and saves it as png.
 
         Args:
             bloomberg_source_override (str): An override for bloomberg source (default: None).
+            upload_chart (bool): True if chart should be uploaded to database, False else (default: True).
 
         Return:
             str, the image as base64
@@ -516,7 +505,7 @@ class Chart:
         b.seek(0)
         img_data = base64.b64encode(b.read()).decode("utf-8")
 
-        if self.module.startswith('production') and self.metadata is not None:
+        if self.module.startswith('production') and self.metadata is not None and upload_chart:
             upload(chart=self)
 
         plt.close()
