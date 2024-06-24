@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "Silver"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
-    chart = Chart(title="Silver", metadata=metadata, filename='global_silver.png')
+    chart = Chart(title="Silver", metadata=metadata, filename='global_silver.jpeg')
 
     chart.configure_y_axis(y_axis_index=0, label="USD")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

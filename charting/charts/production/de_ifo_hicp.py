@@ -28,7 +28,7 @@ def main(**kwargs):
     title = "IFO Price Expectations & Inflation"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="de_ifo_hicp.png")
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="de_ifo_hicp.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Index")
     chart.configure_y_axis(y_axis_index=1, label="Percentage Points")

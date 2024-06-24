@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "Canada Inflation YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="ca_inflation_yoy.png", metadata=metadata)
+    chart = Chart(title=title, filename="ca_inflation_yoy.jpeg", metadata=metadata)
     chart.configure_y_axis(label="Percentage Points")
 
     chart.add_series(nfp_df.index, nfp_df['y'], label=nfp_title)

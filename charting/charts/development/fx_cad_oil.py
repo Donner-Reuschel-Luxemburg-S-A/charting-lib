@@ -23,7 +23,7 @@ def main(**kwargs):
     title = "EURCAD vs. Oil"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="fx_cad_oil.png", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_cad_oil.jpeg", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.01), label="")
 
@@ -40,7 +40,7 @@ def main(**kwargs):
     title = "EURCAD vs. Rates Delta (10y)"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="fx_cad_10y.png", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_cad_10y.jpeg", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -57,7 +57,7 @@ def main(**kwargs):
     df = gdbr2y_df
     df['y'] = df['y'] - gcan2y_df['y']
 
-    chart = Chart(title=title, filename="fx_cad_2y.png", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_cad_2y.jpeg", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 

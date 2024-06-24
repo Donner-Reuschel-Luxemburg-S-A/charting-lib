@@ -30,7 +30,7 @@ def main(**kwargs):
     title = "Total Assets - Central Banks"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.CB)
 
-    chart = Chart(title=title, metadata=metadata, filename="global_central_banks.png")
+    chart = Chart(title=title, metadata=metadata, filename="global_central_banks.jpeg")
 
     chart.configure_y_axis(label="Index")
 

@@ -168,7 +168,7 @@ m, b = np.polyfit(xs, ys, 1)
 xs_aux = np.linspace(xs.min() * 1.1, xs.max() * 1.1, 200)
 ax.plot(xs_aux, m * xs_aux + b, color='red')
 plt.suptitle('10-jähriger Spread vs. Fundamental Score')
-plt.savefig('test_stars.png')
+plt.savefig('test_stars.jpeg')
 index = sector_table.index.to_list()
 index.append('Score')
 sl = pd.IndexSlice[index]
@@ -179,7 +179,7 @@ styled = total_df.style \
     .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[data_table.index.to_list()],)) \
     .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0) \
     .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)
-dfi.export(styled, 'all_data.png', table_conversion='playwright')
+dfi.export(styled, 'all_data.jpeg', table_conversion='playwright')
 styled = total_df.style \
     .format(precision=2, decimal=',') \
     .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,)) \
@@ -188,4 +188,4 @@ styled = total_df.style \
     .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[sector_table.index.to_list(),])) \
     .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0) \
     .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
-dfi.export(styled, 'consolidated.png', table_conversion='playwright')
+dfi.export(styled, 'consolidated.jpeg', table_conversion='playwright')

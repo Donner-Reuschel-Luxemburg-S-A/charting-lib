@@ -25,7 +25,7 @@ def main(**kwargs):
     title = "Quarterly Russel 2000 Earnings Per Share"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, filename="us_russel_profits_quarterly.png", metadata=metadata, num_y_axis=2)
+    chart = Chart(title=title, filename="us_russel_profits_quarterly.jpeg", metadata=metadata, num_y_axis=2)
 
     chart.configure_y_axis(y_axis_index=0, label="USD $")
     chart.configure_y_axis(y_axis_index=1, label="Percentage Points")

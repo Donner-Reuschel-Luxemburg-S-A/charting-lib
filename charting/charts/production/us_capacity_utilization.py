@@ -31,7 +31,7 @@ def main(**kwargs):
     title = "US Capacity Utilization"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_capacity_utilization.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_capacity_utilization.jpeg")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Percentage Points")

@@ -22,7 +22,7 @@ def main(**kwargs):
 
     title = "Germany CPI & CPI excl. Food & Energy"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="de_cpi_corecpi.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_cpi_corecpi.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

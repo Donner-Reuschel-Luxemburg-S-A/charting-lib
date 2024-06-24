@@ -31,7 +31,7 @@ def main(**kwargs):
     title = "US MBA Mortgage Applications"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_mba.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_mba.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Percentage Points")

@@ -29,7 +29,7 @@ def main(**kwargs):
     title = f"European Indices P/E Overview"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_indices_per_overview.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_indices_per_overview.jpeg")
 
     chart.configure_x_axis(label="P/E")
 

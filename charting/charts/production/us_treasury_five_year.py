@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "U.S. Treasury 5-Year"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="us_treasury_5y.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_treasury_5y.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

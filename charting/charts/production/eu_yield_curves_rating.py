@@ -32,7 +32,7 @@ def main(**kwargs):
 
     title = "EU Corporate Spreads by Rating"
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
-    chart = Chart(title=title, metadata=metadata, filename="eu_corporate_curves_rating.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_corporate_curves_rating.jpeg")
 
     chart.configure_y_axis(label="%")
     chart.configure_x_axis(label='Tenor', label_loc='right')

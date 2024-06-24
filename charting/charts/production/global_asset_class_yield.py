@@ -52,7 +52,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.GLOBAL,
                         category=[Category.EQUITY, Category.FI, Category.ALTERNATIVES])
 
-    chart = Chart(title=title, metadata=metadata, filename="global_asset_class_performance.png", num_rows=3)
+    chart = Chart(title=title, metadata=metadata, filename="global_asset_class_performance.jpeg", num_rows=3)
 
     chart.configure_x_axis(label="Percentage Points")
 

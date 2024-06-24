@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "Germany: Producer, Wholesale and Consumer Inflation"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Percentage Points")
 

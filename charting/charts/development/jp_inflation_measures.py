@@ -21,7 +21,7 @@ def main(**kwargs):
     title = "Japan Inflation Measures YoY"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="jp_inflation_measures_yoy.png")
+    chart = Chart(title=title, filename="jp_inflation_measures_yoy.jpeg")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 
@@ -35,7 +35,7 @@ def main(**kwargs):
 
     title = "Japan Inflation Measures 6M Ann."
 
-    chart = Chart(title=title, filename="jp_inflation_measures_mom_6.png")
+    chart = Chart(title=title, filename="jp_inflation_measures_mom_6.jpeg")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 
@@ -50,7 +50,7 @@ def main(**kwargs):
 
     title = "Japan Inflation Measures 3M Ann."
 
-    chart = Chart(title=title, filename="jp_inflation_measures_mom_3.png")
+    chart = Chart(title=title, filename="jp_inflation_measures_mom_3.jpeg")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 
@@ -65,7 +65,7 @@ def main(**kwargs):
 
     title = "Japan Inflation Measures YoY: Change"
 
-    chart = Chart(title=title, filename="jp_inflation_measures_yoy_delta.png")
+    chart = Chart(title=title, filename="jp_inflation_measures_yoy_delta.jpeg")
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="%")
 

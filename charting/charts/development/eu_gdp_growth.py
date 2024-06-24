@@ -15,7 +15,7 @@ def main(**kwargs):
     data_yoy = (data / data.shift(4) - 1) * 100
     title = "Manheim US Vehicle Inflation"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="eu_gdp_growth.png", num_y_axis=1)
+    chart = Chart(title=title, metadata=metadata, filename="eu_gdp_growth.jpeg", num_y_axis=1)
     countries = ['EA20', 'BE', 'DE', 'IE', 'ES', 'FR', 'IT', 'NL', 'AT', 'FI', 'SE', 'NO']
     margin = 0.5
     width = .25
@@ -36,7 +36,7 @@ def main(**kwargs):
     #     chart.add_series(idx[[-5,-1]], series.iloc[[-5,-1]].to_list(), name, chart_type='bar', stacked=True)
     ax.set_xticks(x + int(number_of_bars_per_x_label / 2) * width, countries)
     ax.legend(loc='upper left', ncols=2)
-    plt.savefig('eu_gdp_growth.png')
+    plt.savefig('eu_gdp_growth.jpeg')
     # chart.legend()
     # return chart.plot(upload_chart='observation_start' not in kwargs)
 

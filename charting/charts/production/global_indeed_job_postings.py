@@ -17,7 +17,7 @@ def main(**kwargs):
     title = "Indeed Job Postings"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="global_indeed_job_postings.png", metadata=metadata)
+    chart = Chart(title=title, filename="global_indeed_job_postings.jpeg", metadata=metadata)
 
     chart.configure_y_axis(label="Index")
 

@@ -545,6 +545,7 @@ class Chart:
             str, the image as base64
         """
         plt.suptitle(self.title, fontdict=title_style)
+
         if len(self.x_ticks) > 0:
             xs = [self.x_ticks[i][0] for i in range(len(self.x_ticks))]
             # xs.append(xs[-1]-self.x_ticks[-2][0]+self.x_ticks[-1][0])
@@ -552,9 +553,9 @@ class Chart:
 
         self.__add_bottom_label(bloomberg_source_override)
 
-        plt.savefig(self.filepath, dpi=500)
+        plt.savefig(self.filepath, dpi=200, format="jpeg")
         b = io.BytesIO()
-        plt.savefig(b, format='png')
+        plt.savefig(b, format='jpeg')
         b.seek(0)
         img_data = base64.b64encode(b.read()).decode("utf-8")
 

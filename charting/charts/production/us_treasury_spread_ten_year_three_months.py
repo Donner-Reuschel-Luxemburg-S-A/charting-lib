@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "3 Month - 10 Year Treasury Yield Spread"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="us_3m10y_curve.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_3m10y_curve.jpeg")
 
     chart.configure_y_axis(label="BPS")
 

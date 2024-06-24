@@ -23,7 +23,7 @@ def main(**kwargs):
     title = "US GDP"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_gdp.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_gdp.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
                            label="Percentage Points")
@@ -38,7 +38,7 @@ def main(**kwargs):
     title = "US GDP Personal Consumption"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_gdp_personal_consumption.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_gdp_personal_consumption.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
                            label="Percentage Points")

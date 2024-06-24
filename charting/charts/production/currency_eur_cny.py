@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "Chinese Yuan ¥"
     metadata = Metadata(title=title, region=[Region.EU, Region.DE, Region.CN], category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="currency_eur_cny.png")
+    chart = Chart(title=title, metadata=metadata, filename="currency_eur_cny.jpeg")
 
     chart.configure_y_axis(label="CNY (¥)")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

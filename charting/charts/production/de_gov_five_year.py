@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "Germany Government Bonds 5-Year"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="de_gov_5y.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_gov_5y.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

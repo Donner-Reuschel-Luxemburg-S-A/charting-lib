@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "Canada Employment Change YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="ca_payrolls_yoy.png", metadata=metadata)
+    chart = Chart(title=title, filename="ca_payrolls_yoy.jpeg", metadata=metadata)
 
     nfp_df['z'] = nfp_df['y'].rolling(12).sum()
     nfp_df = nfp_df.iloc[12:, ]

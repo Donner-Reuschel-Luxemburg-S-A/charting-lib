@@ -27,7 +27,7 @@ def main(**kwargs):
 
     title = "As industrial loan standards tighten, manufacturing contracts"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
-    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening.png")
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="PMI Index", y_lim=(20, 65))
     chart.configure_y_axis(y_axis_index=1, label="Percentage Points", reverse_axis=True)

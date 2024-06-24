@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "Small Business hiring plans point to higher jobless claims"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_nfib_jobless_claims.png")
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_nfib_jobless_claims.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Thousands", y_lim=(100, 800))
     chart.configure_y_axis(y_axis_index=1, label="Percentage Points", y_lim=(-20, 30), reverse_axis=True)

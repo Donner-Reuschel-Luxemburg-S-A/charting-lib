@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "US Wholesale Inventories 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_wholesale_inventories_mom_6.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_wholesale_inventories_mom_6.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
                            label="Percentage Points")
@@ -38,7 +38,7 @@ def main(**kwargs):
     title = "US Wholesale Inventories MoM"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_wholesale_inventories_mom.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_wholesale_inventories_mom.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),
                            label="Percentage Points")
@@ -53,7 +53,7 @@ def main(**kwargs):
     title = "US Wholesale Inventories YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_wholesale_inventories_yoy.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_wholesale_inventories_yoy.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5),
                            label="Percentage Points")

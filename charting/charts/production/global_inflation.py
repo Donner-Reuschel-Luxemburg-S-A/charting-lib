@@ -36,7 +36,7 @@ def main(**kwargs):
 
     title = "Inflation Trend"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="global_inflation.png")
+    chart = Chart(title=title, metadata=metadata, filename="global_inflation.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

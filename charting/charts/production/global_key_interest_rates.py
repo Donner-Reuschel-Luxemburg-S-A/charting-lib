@@ -35,7 +35,7 @@ def main(**kwargs):
 
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.RATES)
 
-    chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates.png")
+    chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

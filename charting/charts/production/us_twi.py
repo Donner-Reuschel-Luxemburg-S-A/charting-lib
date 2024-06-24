@@ -22,7 +22,7 @@ def main(**kwargs):
 
     metadata = Metadata(title=title, region=Region.US, category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_twi.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_twi.jpeg")
 
     chart.configure_y_axis(label="Index")
 

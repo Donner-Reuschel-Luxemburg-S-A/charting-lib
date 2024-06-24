@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "S&P 500 Performance"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_spx_yield.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_spx_yield.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

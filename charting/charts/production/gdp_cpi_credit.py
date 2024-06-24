@@ -38,7 +38,7 @@ def main(**kwargs):
     title = "Bank Credit, GDP & CPI (YoY)"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="cpi_gdp.png")
+    chart = Chart(title=title, metadata=metadata, filename="cpi_gdp.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Percentage Points")
 

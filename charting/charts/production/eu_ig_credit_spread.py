@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "EUR Investment Grade Corporate Bond Spreads"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.FI)
-    chart = Chart(title=title, filename="eu_ig_credit_spread.png", metadata=metadata)
+    chart = Chart(title=title, filename="eu_ig_credit_spread.jpeg", metadata=metadata)
 
     chart.configure_y_axis(label="BPS Spread to TSY")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

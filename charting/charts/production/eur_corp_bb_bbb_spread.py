@@ -25,7 +25,7 @@ def main(**kwargs):
     t2 = 'Bloomberg EuroAgg Corporate Baa EUR'
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
 
-    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bb_bbb_spread.png")
+    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bb_bbb_spread.jpeg")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(row_index=0, label='BPS Spread To TSY')

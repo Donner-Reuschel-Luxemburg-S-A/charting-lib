@@ -68,7 +68,7 @@ def main(**kwargs):
 
     title = "U.S. CPI by Component"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="us_cpi_by_component.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_cpi_by_component.jpeg")
 
     chart.configure_y_axis(label="Percentage Points", y_lim=(-2.5, 10))
 

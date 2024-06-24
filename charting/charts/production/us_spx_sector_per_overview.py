@@ -29,7 +29,7 @@ def main(**kwargs):
     title = f"S&P 500 Sector P/E Overview"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_spx_sector_per_overview.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_spx_sector_per_overview.jpeg")
 
     chart.configure_x_axis(label="P/E")
 

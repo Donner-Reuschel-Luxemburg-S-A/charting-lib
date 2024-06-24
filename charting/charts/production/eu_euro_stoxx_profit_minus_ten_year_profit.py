@@ -27,7 +27,7 @@ def main(**kwargs):
     title = "Euro Stoxx 50 Earning Yields minus Germany Government Bonds 10-Year"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_euro_stoxx_profit_minus_ten_year_profit.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_euro_stoxx_profit_minus_ten_year_profit.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

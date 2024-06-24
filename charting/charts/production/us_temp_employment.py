@@ -22,7 +22,7 @@ def main(**kwargs):
 
     title = "Temporary Employment"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
-    chart = Chart(title=title, metadata=metadata, filename="us_temp_employment.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_temp_employment.jpeg")
 
     chart.configure_y_axis(label="Thousand of Persons")
 

@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "S&P 500 & Put Call Ratio"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, filename="us_spx_put_call_ratio.png", metadata=metadata, num_rows=2)
+    chart = Chart(title=title, filename="us_spx_put_call_ratio.jpeg", metadata=metadata, num_rows=2)
 
     chart.configure_y_axis(row_index=0, y_axis_index=0, label="USD $")
     chart.configure_y_axis(row_index=1, y_axis_index=0, label="Ratio")

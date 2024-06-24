@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "US Dollar $"
     metadata = Metadata(title=title, region=[Region.EU, Region.DE, Region.US], category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="currency_eur_usd.png")
+    chart = Chart(title=title, metadata=metadata, filename="currency_eur_usd.jpeg")
 
     chart.configure_y_axis(label="USD ($)")
 

@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "US Indices Performance"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, filename="us_indices_yield.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_indices_yield.jpeg", metadata=metadata)
 
     chart.configure_y_axis(label="Percentage Points")
 

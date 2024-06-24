@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "Canada Employment Change MoM"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="ca_payrolls_mom.png", metadata=metadata)
+    chart = Chart(title=title, filename="ca_payrolls_mom.jpeg", metadata=metadata)
 
     chart.add_series(nfp_df.index, nfp_df['y'], label=nfp_title)
 

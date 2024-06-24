@@ -28,7 +28,7 @@ def main(**kwargs):
     title = "S&P Earning Yields minus U.S. Treasury 10-Year"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_spx_profit_minus_ten_year_profit.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_spx_profit_minus_ten_year_profit.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

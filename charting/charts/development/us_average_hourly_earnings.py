@@ -23,7 +23,7 @@ def main(**kwargs):
     title = "US Average Hourly Earnings YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_ahe_yoy.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_ahe_yoy.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -38,7 +38,7 @@ def main(**kwargs):
     title = "US Average Hourly Earnings MoM 3M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_ahe_mom_3.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_ahe_mom_3.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -54,7 +54,7 @@ def main(**kwargs):
     title = "US Average Hourly Earnings MoM 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_ahe_mom_6.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_ahe_mom_6.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")

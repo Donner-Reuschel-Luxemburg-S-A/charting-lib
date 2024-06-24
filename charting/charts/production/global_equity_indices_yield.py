@@ -36,7 +36,7 @@ def main(**kwargs):
     title = "Euro Stoxx 50, Stoxx Euro 600, DAX, S&P 500, Emerging Markets Performance"
 
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.GLOBAL)
-    chart = Chart(title=title, metadata=metadata, filename="global_indices_performance.png")
+    chart = Chart(title=title, metadata=metadata, filename="global_indices_performance.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

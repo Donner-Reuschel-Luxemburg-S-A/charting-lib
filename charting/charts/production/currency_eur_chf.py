@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "Swiss Franc ₣"
     metadata = Metadata(title=title, region=[Region.EU, Region.DE, Region.CH], category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="currency_eur_chf.png")
+    chart = Chart(title=title, metadata=metadata, filename="currency_eur_chf.jpeg")
 
     chart.configure_y_axis(label="CHF (₣)")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

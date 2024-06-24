@@ -18,7 +18,7 @@ def main(**kwargs):
     # Industrial Production
     title = "Germany Industrial Production: 3M Ann."
     metadata = Metadata(title=title, region=Region.DE, category=Category.ECONOMY)
-    chart = Chart(title=title, filename="de_industrial_production_mom_3.png", metadata=metadata)
+    chart = Chart(title=title, filename="de_industrial_production_mom_3.jpeg", metadata=metadata)
     chart.configure_y_axis(label="%")
 
     chart.add_series(de_ind_prod_df.index, de_ind_prod_df['y'] * 12, label=de_ind_prod_title,

@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "DAX 40 Performance"
 
     metadata = Metadata(title=title, region=Region.DE, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="de_dax_yield.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_dax_yield.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

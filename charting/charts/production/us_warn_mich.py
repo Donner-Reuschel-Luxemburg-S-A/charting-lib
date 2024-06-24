@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "US Worker Adjustment and Retraining Notification Act Michigan"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_warn.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_warn.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Index")

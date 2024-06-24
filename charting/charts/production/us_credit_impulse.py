@@ -28,7 +28,7 @@ def main(**kwargs):
     title = "US Credit Impulse"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_credit_impulse_measures_yoy.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_credit_impulse_measures_yoy.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Percentage Points")
 

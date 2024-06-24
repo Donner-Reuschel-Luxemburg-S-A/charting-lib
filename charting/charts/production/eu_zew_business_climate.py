@@ -16,7 +16,7 @@ def main(**kwargs):
     title = "ZEW Eurozone Surveys"
     metadata = Metadata(title=title, region=Region.EU, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_zew_business_climate.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_zew_business_climate.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Index")
 

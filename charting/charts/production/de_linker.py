@@ -26,7 +26,7 @@ def main(**kwargs):
 
     title = "Germany Real Rates"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="de_real_rates.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_real_rates.jpeg")
 
     chart.configure_y_axis(label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

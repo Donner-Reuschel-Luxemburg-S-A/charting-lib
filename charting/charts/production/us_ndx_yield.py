@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "Nasdaq 100 - 6 Month Performance"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_ndx_yield_six_month.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_ndx_yield_six_month.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

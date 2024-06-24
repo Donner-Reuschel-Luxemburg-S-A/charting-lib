@@ -18,7 +18,7 @@ def main(**kwargs):
     title = f"U.S. Indices P/E Overview"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_indices_per_overview.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_indices_per_overview.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="")
     chart.configure_x_axis(label="P/E", minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5))

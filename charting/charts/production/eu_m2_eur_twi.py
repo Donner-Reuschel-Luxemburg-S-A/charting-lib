@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "M2 Money supply growth and EUR performance"
     metadata = Metadata(title=title, region=Region.EU, category=Category.CB)
 
-    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="m2_twi_eur.png")
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="m2_twi_eur.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Percentage Points")
     chart.configure_y_axis(y_axis_index=1, label="Index")

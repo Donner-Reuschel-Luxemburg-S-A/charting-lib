@@ -25,7 +25,7 @@ def main(**kwargs):
                              observation_end=observation_end.strftime("%Y-%m-%d"))
 
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
-    chart = Chart(title=title, metadata=metadata, filename="us_redbook_retail_sales_yoy.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_redbook_retail_sales_yoy.jpeg")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(-15, 25))

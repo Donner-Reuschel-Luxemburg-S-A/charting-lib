@@ -25,7 +25,7 @@ def main(**kwargs):
 
     title = "VIX & V2X Volatility Markets"
     metadata = Metadata(title=title, region=[Region.US, Region.EU], category=Category.VOLATILITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_vix_v2x.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_vix_v2x.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(10, 50))
 

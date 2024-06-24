@@ -16,7 +16,7 @@ def main(**kwargs):
     title = "STOXX 600: Real Estate vs. Utes"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks2.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks2.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Index")
 

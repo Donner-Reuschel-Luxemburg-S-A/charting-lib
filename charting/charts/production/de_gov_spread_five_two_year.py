@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "Germany Government Bonds Spread 2-5-Year"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="de_gov_spread_5y_2y.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_gov_spread_5y_2y.jpeg")
 
     chart.configure_y_axis(label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

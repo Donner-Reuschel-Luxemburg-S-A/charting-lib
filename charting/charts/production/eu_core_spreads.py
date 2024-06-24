@@ -27,7 +27,7 @@ def main(**kwargs):
         set(df2.index).intersection(set(df3.index)).intersection(set(df1.index))).sort_values()
     title = "EU Core Spreads"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="eu_core_spreads.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_core_spreads.jpeg")
 
     chart.configure_y_axis(label="BPS Spread to TSY")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

@@ -25,7 +25,7 @@ def main(**kwargs):
     title = "G7 Futures: Overview"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="ik_g7_rates10y.png", num_rows=1)
+    chart = Chart(title=title, filename="ik_g7_rates10y.jpeg", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.1), major_locator=MultipleLocator(.1), label="%")
 

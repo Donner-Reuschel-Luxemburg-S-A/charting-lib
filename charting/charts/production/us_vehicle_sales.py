@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "US Vehicle Sales"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_vehicle_sales.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_vehicle_sales.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Million Units")

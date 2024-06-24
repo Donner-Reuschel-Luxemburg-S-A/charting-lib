@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "US Home Sales 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_home_sales_mom_6.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_home_sales_mom_6.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -41,7 +41,7 @@ def main(**kwargs):
     title = "US Home Sales 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_home_sales_12.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_home_sales_12.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -58,7 +58,7 @@ def main(**kwargs):
     title = "US Home Sales YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_home_sales_yoy.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_home_sales_yoy.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
                            label="Percentage Points")

@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "US Construction Spending 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_construction_spending_mom_6.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_construction_spending_mom_6.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -37,7 +37,7 @@ def main(**kwargs):
     title = "US Construction Spending YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_construction_spending_yoy.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_construction_spending_yoy.jpeg", metadata=metadata)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 

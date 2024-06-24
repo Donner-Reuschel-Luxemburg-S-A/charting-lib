@@ -34,7 +34,7 @@ def main(**kwargs):
     title = "Net Liquidity vs. SPX"
     metadata = Metadata(title=title, region=Region.US, category=Category.CB)
 
-    chart = Chart(title=title, metadata=metadata, filename="fed_spx.png", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, metadata=metadata, filename="fed_spx.jpeg", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="Index")
     chart.configure_y_axis(label="Million USD $", y_axis_index=1)

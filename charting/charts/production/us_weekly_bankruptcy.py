@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "US Weekly Bankruptcies"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
-    chart = Chart(title=title, metadata=metadata, filename="us_weekly_bankruptcy.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_weekly_bankruptcy.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Number of Bankruptcies")
 

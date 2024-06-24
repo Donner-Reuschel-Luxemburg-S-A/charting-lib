@@ -26,7 +26,7 @@ def main(**kwargs):
     title = "IFO Business Climate"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_ifo_business_climate.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_ifo_business_climate.jpeg")
 
     chart.configure_y_axis(label="Index")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

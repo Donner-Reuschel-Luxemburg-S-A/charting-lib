@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "Stoxx Euro 600 Performance"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_yield.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_yield.jpeg")
 
     chart.configure_y_axis(label="Percentage Points")
 

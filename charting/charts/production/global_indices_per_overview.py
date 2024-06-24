@@ -27,7 +27,7 @@ def main(**kwargs):
     title = f"Global Indices P/E Overview"
 
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="global_indices_per_overview.png")
+    chart = Chart(title=title, metadata=metadata, filename="global_indices_per_overview.jpeg")
 
     chart.configure_x_axis(label="P/E")
 

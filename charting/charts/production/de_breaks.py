@@ -29,7 +29,7 @@ def main(**kwargs):
                              observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
     title = "Germany Breakeven Rates"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="de_breaks.png")
+    chart = Chart(title=title, metadata=metadata, filename="de_breaks.jpeg")
 
     chart.configure_y_axis(label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

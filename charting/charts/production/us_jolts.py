@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "US JOLTS Job Openings"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_jolts.png", metadata=metadata)
+    chart = Chart(title=title, filename="us_jolts.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

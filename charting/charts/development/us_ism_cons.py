@@ -55,7 +55,7 @@ def main(**kwargs):
     title = "US ISM Manufacturing: Consecutive Months in Contraction vs. Recessions"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_ism_cons_rec.png", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="us_ism_cons_rec.jpeg", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 

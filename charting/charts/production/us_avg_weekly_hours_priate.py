@@ -22,7 +22,7 @@ def main(**kwargs):
 
     title = "Average Weekly Hours of All Employees, Total Private"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
-    chart = Chart(title=title, metadata=metadata, filename="us_avg_weekly_hours_private.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_avg_weekly_hours_private.jpeg")
 
     chart.configure_y_axis(label="Hours")
 

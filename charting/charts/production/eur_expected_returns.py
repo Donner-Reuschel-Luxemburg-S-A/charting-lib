@@ -57,7 +57,7 @@ def main():
                     data['result'][sector][t] = res.iloc[0,0]
     title = "Expected Returns"
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
-    chart = Chart(title=title, metadata=metadata, filename="expected_returns10.png")
+    chart = Chart(title=title, metadata=metadata, filename="expected_returns10.jpeg")
     chart.configure_y_axis(label="Percentage Points", y_lim=(-1 ,7))
 
     x = list(data['result'].keys())

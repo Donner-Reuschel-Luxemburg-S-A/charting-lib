@@ -19,7 +19,7 @@ def main(**kwargs):
     title = "US Personal Interest Payments YoY"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_personal_interest.png", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_personal_interest.jpeg", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=10), major_locator=mdates.YearLocator(base=10))
     chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(10), label="%")
 

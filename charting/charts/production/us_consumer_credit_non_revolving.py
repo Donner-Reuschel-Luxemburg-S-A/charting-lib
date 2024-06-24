@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "US Nonrevolving Consumer Credit - Change on Month"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_consumer_credit_non_revolving.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_consumer_credit_non_revolving.jpeg")
 
     chart.configure_y_axis(y_axis_index=0, label="Billion USD $", y_lim=(-15, 30))
 

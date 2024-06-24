@@ -25,7 +25,7 @@ def main(**kwargs):
     title = "Stoxx Euro 600"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_mvag.png")
+    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_mvag.jpeg")
 
     chart.configure_y_axis(label="Index")
 

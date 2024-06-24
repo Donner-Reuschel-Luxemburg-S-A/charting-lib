@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "Implied Volatility U.S. Treasury"
     metadata = Metadata(title=title, region=Region.US, category=Category.VOLATILITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_move_index.png")
+    chart = Chart(title=title, metadata=metadata, filename="us_move_index.jpeg")
 
     chart.configure_y_axis(label="Index", y_lim=(50, 210))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))

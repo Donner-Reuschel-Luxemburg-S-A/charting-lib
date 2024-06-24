@@ -26,7 +26,7 @@ def main(**kwargs):
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
     common_index = pd.DatetimeIndex(set(df.index).intersection(set(df2.index))).sort_values()
-    chart = Chart(title=title, num_rows=2, filename="em_hc_us_bbb_corp.png", metadata=metadata)
+    chart = Chart(title=title, num_rows=2, filename="em_hc_us_bbb_corp.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(row_index=0, label='Spread BPS vs Tsy')
