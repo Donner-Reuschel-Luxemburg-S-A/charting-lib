@@ -1,14 +1,19 @@
+import hashlib
 from datetime import datetime
 import pandas as pd
 import numpy as np
 import dataframe_image as dfi
 import os
 from charting import chart_base_path
+from source_engine.chart_source import ChartSource, ChartModel
 
+from charting import chart_base_path
+from charting.model.chart import Chart
+from charting.model.metadata import Region, Category
 
 def main(**kwargs):
     n = datetime.now()
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    files = [f for f in os.listdir('../development') if os.path.isfile(f)]
     files = list(filter(lambda x: 'stars_output' in x, files))
     files = list(filter(lambda x: x[:14].isdigit(), files))
     files = list(filter(lambda x: x[-4:] == "xlsx", files))
@@ -25,11 +30,12 @@ def main(**kwargs):
     index = sector_table.index.to_list()
     index.append('Score')
     sl = pd.IndexSlice[index]
-    filename = f'{datetime.today().strftime("%d_%m_%Y")}_stars_sector_data.jpeg'
+    filename = f'stars_sector_data.jpeg'
+    filename_date = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
     base = os.path.join("production")
     path = os.path.join(chart_base_path, base)
     os.makedirs(path, exist_ok=True)
-    filepath = os.path.join(path, filename)
+    filepath = os.path.join(path, filename_date)
     styled = total_df.style \
         .format(precision=2, decimal=',') \
         .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,)) \
@@ -39,7 +45,20 @@ def main(**kwargs):
         .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0) \
         .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
     dfi.export(styled, filepath, table_conversion='playwright', dpi=200)
-
+    db: ChartSource = ChartSource()
+    chart_model = ChartModel(
+        id=hashlib.sha1(filename.encode('utf-8')).hexdigest(),
+        title="Stars Model Short",
+        last_update=n,
+        path=filepath,
+        module=Chart(filename)._caller(),
+        start=n.date(),
+        end=n.date(),
+        region=','.join([Region.EU.value]),
+        category=','.join([Category.FI.value, Category.RATES.value]),
+        image=open(filepath, 'rb').read()
+    )
+    db.upload(chart=chart_model)
 
 if __name__ == '__main__':
     main()
