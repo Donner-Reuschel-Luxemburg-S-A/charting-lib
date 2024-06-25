@@ -11,7 +11,37 @@ import matplotlib.pyplot as plt
 import numpy as np
 import dataframe_image as dfi
 
+
+def output_results_to_excel(results, countries, file, **kwargs):
+    mode = kwargs.get('mode', 'w')
+    if mode == 'w':
+        with pd.ExcelWriter(file, engine='openpyxl',date_format="YYYY-MM-DD",
+                            datetime_format="YYYY-MM-DD", mode=mode) as writer:
+            for key, value in results.items():
+                value[countries].to_excel(writer, sheet_name=key,
+                                          startcol=kwargs.get('startcol', 0),
+                                          startrow=kwargs.get('startrow', 0))
+    else:
+        with pd.ExcelWriter(file, engine='openpyxl', date_format="YYYY-MM-DD",
+                            datetime_format="YYYY-MM-DD", mode=mode,
+                            if_sheet_exists='overlay') as writer:
+            for key, value in results.items():
+                value[countries].to_excel(writer, sheet_name=key,
+                                          startcol=kwargs.get('startcol', 0),
+                                          startrow=kwargs.get('startrow', 0))
+
+
+def append_excel_results(file, results, countries):
+    old_data = {}
+    excel_file = pd.ExcelFile(file, engine='openpyxl')
+    for sheet in excel_file.sheet_names:
+        old_data[sheet] = excel_file.parse(sheet)
+    col = max([df.shape[1] for df in old_data.values()])
+    output_results_to_excel(results, countries, file, startcol=col + 2, mode='a')
+
+
 def main():
+    output_sheet = f'{datetime.today().strftime("%Y%m%d%H%M%S")} stars_output'
     countries = ['DE', 'IT', 'FR', 'FI', 'NL', 'BE', 'AT', 'ES', 'PT', 'IE', 'SI', 'SK']
     period = 'A'
     imf_queries = {'primary_balance': ('FM', 'GGXONLB_G01_GDP_PT'), 'overall_balance': ('FM', 'GGXCNL_G01_GDP_PT'),
@@ -23,7 +53,6 @@ def main():
 
     ecb_source = Ecb()
     estat_source = EstatStatisticsSource()
-
 
     estat_queries = {
         'unemployment_rate':'tipsun30?format=JSON&sinceTimePeriod=2003-Q1&unit=PC_ACT&s_adj=SA&sex=T&age=Y15-74&lang=en',
@@ -100,6 +129,7 @@ def main():
         else:
             normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').apply(lambda x: 2*(x-x.min())/(x.max()-x.min()) - 1, axis=1)
 
+
     weights = {'initial_conditions': (0.4, {'government_debt': (.4, -1), 'primary_balance': (.3, 1), 'overall_balance': (.2, 1), 'unemployment_rate': (.05, -1), 'international_reserves': (.05, 1)}),
                'momentum': (.3, {'eco_sentiment': (.5, 1), 'industrial_sentiment': (.5, 1)}),
                'competitivness': (.2, {'current_account': (.5, 1), 'financial_account': (.3, 1), 'labour_cost': (.2, -1)}),
@@ -123,6 +153,7 @@ def main():
                   'momentum', 'eco_sentiment', 'industrial_sentiment',
                   'competitivness', 'current_account', 'financial_account', 'labour_cost',
                   'leverage', 'housing_loans', 'loan_to_deposit', 'savings_rate']]
+
 
     tickers = {'DE': {5: 'GTDEM5Y Corp', 10: 'GTDEM10Y Corp'},
                'IT': {5: 'GTITL5Y Corp', 10: 'GTITL10Y Corp'},
@@ -149,6 +180,12 @@ def main():
                 spreads[country][tenor] = 0
             else:
                 spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor])*100
+    output_results_to_excel({'OUTPUT_LONG': total_df}, countries, output_sheet, mode='w')
+    output_results_to_excel({'OUTPUT_SHORT': sector_table}, countries, output_sheet, mode='a')
+    output_results_to_excel(results, countries, output_sheet, mode='a')
+    append_excel_results(output_sheet, normalized_score, countries)
+    output_results_to_excel({'SPREADS': pd.DataFrame(spreads)}, countries, output_sheet, mode='a')
+
     fig, ax = plt.subplots(1, 1)
     trans_offset = matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=-.2, units='inches')
     ax.spines['left'].set_position('zero')
@@ -188,6 +225,7 @@ def main():
         .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
         .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)
     dfi.export(styled, f'all_data_{date_str}.png', table_conversion='playwright')
+
     styled = total_df.style\
         .format(precision=2, decimal=',')\
         .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,))\
@@ -197,7 +235,6 @@ def main():
         .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
         .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
     dfi.export(styled, f'consolidated_{date_str}.png', table_conversion='playwright')
-    print('hello')
 
 if __name__ == '__main__':
     main()
