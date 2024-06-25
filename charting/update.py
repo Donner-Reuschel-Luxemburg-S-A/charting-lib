@@ -1,6 +1,6 @@
 import importlib
 import os
-from typing import List
+from typing import List, Union
 
 
 def get_files():
@@ -10,33 +10,41 @@ def get_files():
     return path, file_list
 
 
-def execute_main_methods() -> List[str]:
+def update_charts(module_names: Union[List[str], List] = []) -> List[str]:
     path, file_list = get_files()
     errors = []
+    charts_to_update = []
+    incorrect_names = []
+    if len(module_names) > 0:
+        for chart in module_names:
+            if not chart.endswith('py'):
+                chart = chart + '.py'
+            try:
+                charts_to_update.append(file_list[file_list.index(chart)])
+            except ValueError:
+                incorrect_names.append(chart)
+    else:
+        charts_to_update = file_list
 
-    for file_name in file_list:
+    for file_name in charts_to_update:
         if (file_name.endswith('.py') or file_name.endswith('.pyc')) and file_name != "__init__.py":
             module_name = os.path.splitext(file_name)[0]
-            module = importlib.import_module(f'charting.charts.production.{module_name}')
 
-            if hasattr(module, 'main') and callable(getattr(module, 'main')):
-                try:
+            try:
+                module = importlib.import_module(f'charting.charts.production.{module_name}')
+
+                if hasattr(module, 'main') and callable(getattr(module, 'main')):
                     module.main()
-                except Exception as e:
-                    errors.append(module_name)
+            except Exception as e:
+                errors.append(module_name)
 
     return errors
 
 
-def update(module: str):
-    module = importlib.import_module(module)
+if __name__ == '__main__':
+    update_charts()
 
-    if hasattr(module, 'main') and callable(getattr(module, 'main')):
-        module.main()
-
-
-if __name__ == "__main__":
-    errors = execute_main_methods()
-
-    for error in errors:
-        print(error)
+if __name__ == '__main__':
+    errors = update_charts()
+    for err in errors:
+        print(err)

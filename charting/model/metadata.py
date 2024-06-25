@@ -61,6 +61,3 @@ class Metadata:
     def __iter__(self):
         for field, value in asdict(self).items():
             yield field, value
-
-
-
