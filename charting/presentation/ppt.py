@@ -68,8 +68,7 @@ class Ppt:
                 slide.placeholders[0].text = title
                 slide.placeholders[13].text = subtitle
 
-                image_data = base64.b64decode(chart.base64)
-                image_stream = io.BytesIO(image_data)
+                image_stream = io.BytesIO(chart.image)
                 slide.placeholders[19].insert_picture(image_stream)
 
     def __add_disclaimer(self):
@@ -87,7 +86,7 @@ class Ppt:
 
     def __save(self) -> str:
         try:
-            path = os.path.join(ppt_base_path, f'{uuid.uuid4().__str__()}.ppt')
+            path = os.path.join(ppt_base_path, f'{uuid.uuid4().__str__()}.pptm')
             self.prs.save(path)
             filename = ntpath.basename(path)
 
