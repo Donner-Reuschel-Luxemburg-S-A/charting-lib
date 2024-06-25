@@ -1,3 +1,4 @@
+import os
 import time
 from copy import deepcopy
 from datetime import datetime
@@ -10,6 +11,7 @@ import matplotlib.transforms
 import matplotlib.pyplot as plt
 import numpy as np
 
+from charting import base_path
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
@@ -43,7 +45,10 @@ def append_excel_results(file, results, countries):
 
 
 def main():
+    path = os.path.join(base_path, 'model_output')
+    os.makedirs(path, exist_ok=True)
     output_sheet = f'{datetime.today().strftime("%Y%m%d%H%M%S")} stars_output.xlsx'
+    path = os.path.join(path, output_sheet)
     countries = ['DE', 'IT', 'FR', 'FI', 'NL', 'BE', 'AT', 'ES', 'PT', 'IE', 'SI', 'SK']
     period = 'A'
     imf_queries = {'primary_balance': ('FM', 'GGXONLB_G01_GDP_PT'), 'overall_balance': ('FM', 'GGXCNL_G01_GDP_PT'),
@@ -193,12 +198,12 @@ def main():
                 spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor]) * 100
 
     # Output results to xlsx
-    output_results_to_excel({'OUTPUT_LONG': total_df}, countries, output_sheet, mode='w')
-    output_results_to_excel({'OUTPUT_SHORT': sector_table}, countries, output_sheet, mode='a')
-    output_results_to_excel({'OUTPUT_ALL': data_table}, countries, output_sheet, mode='a')
-    output_results_to_excel(results, countries, output_sheet, mode='a')
-    append_excel_results(output_sheet, normalized_score, countries)
-    output_results_to_excel({'SPREADS': pd.DataFrame(spreads)}, countries, output_sheet, mode='a')
+    output_results_to_excel({'OUTPUT_LONG': total_df}, countries, path, mode='w')
+    output_results_to_excel({'OUTPUT_SHORT': sector_table}, countries, path, mode='a')
+    output_results_to_excel({'OUTPUT_ALL': data_table}, countries, path, mode='a')
+    output_results_to_excel(results, countries, path, mode='a')
+    append_excel_results(path, normalized_score, countries)
+    output_results_to_excel({'SPREADS': pd.DataFrame(spreads)}, countries, path, mode='a')
 
     # Charting
     title = '10-jähriger Spread vs. Fundamental Score'
@@ -233,6 +238,9 @@ def main():
     m, b = np.polyfit(xs, ys, 1)
     xs_aux = np.linspace(xs.min() * 1.1, xs.max() * 1.1, 200)
     chart.add_series(xs_aux, m * xs_aux + b, label='')
+    date = datetime.now()
+    chart.x_max_label = [date]
+    chart.x_min_label = [date]
     chart.plot()
 
 

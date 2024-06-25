@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import dataframe_image as dfi
 import os
-from charting import chart_base_path
+from charting import chart_base_path, base_path
 from source_engine.chart_source import ChartSource, ChartModel
 
 from charting import chart_base_path
@@ -13,7 +13,8 @@ from charting.model.metadata import Region, Category
 
 def main(**kwargs):
     n = datetime.now()
-    files = [f for f in os.listdir('../development') if os.path.isfile(f)]
+    destination = os.path.join(base_path, 'model_output')
+    files = [f for f in os.listdir(destination) if os.path.isfile(os.path.join(destination, f))]
     files = list(filter(lambda x: 'stars_output' in x, files))
     files = list(filter(lambda x: x[:14].isdigit(), files))
     files = list(filter(lambda x: x[-4:] == "xlsx", files))
@@ -22,7 +23,7 @@ def main(**kwargs):
     idx = min_date.index(min(min_date))
     file = files[idx]
 
-    excel_file = pd.ExcelFile(file, engine='openpyxl')
+    excel_file = pd.ExcelFile(os.path.join(destination, file), engine='openpyxl')
     sector_table = excel_file.parse('OUTPUT_SHORT', index_col=0)
     total_df = excel_file.parse('OUTPUT_LONG', index_col=0)
     data_table = excel_file.parse('OUTPUT_ALL', index_col=0)
