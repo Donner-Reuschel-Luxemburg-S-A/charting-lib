@@ -9,13 +9,15 @@ import pandas as pd
 import matplotlib.transforms
 import matplotlib.pyplot as plt
 import numpy as np
-import dataframe_image as dfi
+
+from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Region, Category
 
 
 def output_results_to_excel(results, countries, file, **kwargs):
     mode = kwargs.get('mode', 'w')
     if mode == 'w':
-        with pd.ExcelWriter(file, engine='openpyxl',date_format="YYYY-MM-DD",
+        with pd.ExcelWriter(file, engine='openpyxl', date_format="YYYY-MM-DD",
                             datetime_format="YYYY-MM-DD", mode=mode) as writer:
             for key, value in results.items():
                 value[countries].to_excel(writer, sheet_name=key,
@@ -41,7 +43,7 @@ def append_excel_results(file, results, countries):
 
 
 def main():
-    output_sheet = f'{datetime.today().strftime("%Y%m%d%H%M%S")} stars_output'
+    output_sheet = f'{datetime.today().strftime("%Y%m%d%H%M%S")} stars_output.xlsx'
     countries = ['DE', 'IT', 'FR', 'FI', 'NL', 'BE', 'AT', 'ES', 'PT', 'IE', 'SI', 'SK']
     period = 'A'
     imf_queries = {'primary_balance': ('FM', 'GGXONLB_G01_GDP_PT'), 'overall_balance': ('FM', 'GGXCNL_G01_GDP_PT'),
@@ -55,7 +57,7 @@ def main():
     estat_source = EstatStatisticsSource()
 
     estat_queries = {
-        'unemployment_rate':'tipsun30?format=JSON&sinceTimePeriod=2003-Q1&unit=PC_ACT&s_adj=SA&sex=T&age=Y15-74&lang=en',
+        'unemployment_rate': 'tipsun30?format=JSON&sinceTimePeriod=2003-Q1&unit=PC_ACT&s_adj=SA&sex=T&age=Y15-74&lang=en',
         'government_debt': 'gov_10q_ggdebt?format=JSON&sinceTimePeriod=1994-Q4&unit=PC_GDP&na_item=GD&sector=S13&lang=en',
         'eco_sentiment': 'ei_bssi_m_r2?format=JSON&sinceTimePeriod=2000-01&indic=BS-ESI-I&s_adj=SA&lang=en',
         'industrial_sentiment': 'ei_bssi_m_r2?format=JSON&sinceTimePeriod=2000-01&indic=BS-ICI-BAL&s_adj=SA&lang=en',
@@ -118,16 +120,16 @@ def main():
             adj_value[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all')
             for c in countries:
                 last_key = value[c].dropna().index[-1]
-                if list(value[countries].index).index(last_key) != value[c].shape[0]-1:
+                if list(value[countries].index).index(last_key) != value[c].shape[0] - 1:
                     est = value['EU27_2020'].loc[last_key:].apply(lambda x: x - value['EU27_2020'].loc[last_key])
                     normalized_score[key].loc[last_key:, c] = normalized_score[key].loc[last_key:, c] + est
                     adj_value[key].loc[last_key:, c] = adj_value[key].loc[last_key:, c] + est
 
-            normalized_score[key] = normalized_score[key].\
+            normalized_score[key] = normalized_score[key]. \
                 apply(lambda x: 2 * (x - x.min()) / (x.max() - x.min()) - 1, axis=1)
         else:
-            normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').\
-                apply(lambda x: 2*(x-x.min())/(x.max()-x.min()) - 1, axis=1)
+            normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all'). \
+                apply(lambda x: 2 * (x - x.min()) / (x.max() - x.min()) - 1, axis=1)
 
     weights = {'initial_conditions': (0.4, {'government_debt': (.4, -1),
                                             'primary_balance': (.3, 1),
@@ -188,16 +190,23 @@ def main():
             if country == 'DE':
                 spreads[country][tenor] = 0
             else:
-                spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor])*100
+                spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor]) * 100
 
-    #Output results to xlsx
+    # Output results to xlsx
     output_results_to_excel({'OUTPUT_LONG': total_df}, countries, output_sheet, mode='w')
     output_results_to_excel({'OUTPUT_SHORT': sector_table}, countries, output_sheet, mode='a')
+    output_results_to_excel({'OUTPUT_ALL': data_table}, countries, output_sheet, mode='a')
     output_results_to_excel(results, countries, output_sheet, mode='a')
     append_excel_results(output_sheet, normalized_score, countries)
     output_results_to_excel({'SPREADS': pd.DataFrame(spreads)}, countries, output_sheet, mode='a')
 
-    fig, ax = plt.subplots(1, 1)
+    # Charting
+    title = '10-jähriger Spread vs. Fundamental Score'
+    metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
+    chart = Chart(filename='stars_model.jpeg', title=title, metadata=metadata)
+
+    fig = chart.fig
+    ax = chart.axis[0]
     trans_offset = matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=-.2, units='inches')
     ax.spines['left'].set_position('zero')
     ax.spines['bottom'].set_position('zero')
@@ -207,45 +216,25 @@ def main():
     ax.yaxis.set_ticks_position('left')
     ax.set_xlabel('Score')
     ax.set_ylabel('Spread vs. Bund', loc='top', labelpad=-50)
-    ax.set_ylim(top=spreads['IT'][10]*1.2)
+    ax.set_ylim(top=spreads['IT'][10] * 1.2)
     xs = total_score.loc['Score']
     ys = [spreads[country][10] for country in total_score.columns]
-    ax.scatter(xs, ys)
+
+    chart.add_series(xs, ys, label='', chart_type='scatter')
     for x, y, c in zip(xs, ys, total_score.columns):
         if c == 'DE':
-            plt.text(x, y, c, transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=.1, units='inches'))
+            plt.text(x, y, c,
+                     transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.1, y=.1, units='inches'))
         elif -0.1 < x < 0.1:
             plt.text(x, y, c,
                      transform=matplotlib.transforms.offset_copy(ax.transData, fig=fig, x=-.3, y=-.2, units='inches'))
         else:
             plt.text(x, y, c, transform=trans_offset)
     m, b = np.polyfit(xs, ys, 1)
-    xs_aux = np.linspace(xs.min()*1.1, xs.max()*1.1, 200)
-    ax.plot(xs_aux, m*xs_aux+b, color='red')
-    plt.suptitle('10-jähriger Spread vs. Fundamental Score')
-    date_str = datetime.now().date().isoformat()
-    plt.savefig(f'stars_{date_str}.png')
-    index = sector_table.index.to_list()
-    index.append('Score')
-    sl = pd.IndexSlice[index]
+    xs_aux = np.linspace(xs.min() * 1.1, xs.max() * 1.1, 200)
+    chart.add_series(xs_aux, m * xs_aux + b, label='')
+    chart.plot()
 
-    styled = total_df.style\
-        .format(precision=2, decimal=',')\
-        .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,))\
-        .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[data_table.index.to_list()],))\
-        .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
-        .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)
-    dfi.export(styled, f'all_data_{date_str}.png', table_conversion='playwright')
-
-    styled = total_df.style\
-        .format(precision=2, decimal=',')\
-        .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,))\
-        .apply_index(lambda x: np.where(x.isin(index), "font-weight: bold;", "font-weight: normal;"), axis=0)\
-        .hide(data_table.index.to_list(), axis=0) \
-        .map(lambda v: 'opacity: 40%;', subset=(pd.IndexSlice[sector_table.index.to_list(),])) \
-        .format_index(lambda x: x.replace('_', ' ').upper() if isinstance(x, str) else x, axis=0)\
-        .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
-    dfi.export(styled, f'consolidated_{date_str}.png', table_conversion='playwright')
 
 if __name__ == '__main__':
     main()
