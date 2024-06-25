@@ -17,13 +17,13 @@ def main(**kwargs):
 
     indices = ["SXEGR Index", "SX3GR Index", "SXDGR Index", "SXTGR Index", "SXPGR Index", "SXIGR Index", "SXMGR Index",
                "SXQGR Index", "SXKGR Index", "SX4GR Index", "SX7GR Index", "SX6GR Index", "SXAGR Index", "SXNGR Index",
-               "SXOGR Index", "SXFGR Index", "SXRGR Index", "SX8GR Index", "SX86GR Index"]
+               "SXOGR Index", "SXFGR Index", "SXRGR Index", "SX8GR Index", "SX86GR Index", "S600CPP Index"]
     dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
                           observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
 
     names = ["Oil & Gas", "Food & Beverage", "Health Care", "Travel", "Basic Resources", "Insurance", "Media",
              "Product & Households", "Telecom", "Chemicals", "Banks", "Utilities", "Autos & Parts", "Industrials",
-             "Construction & Materials", "Financial Services", "Retail", "Technology", "Real Estate"]
+             "Construction & Materials", "Financial Services", "Retail", "Technology", "Real Estate", "Consumer Products"]
     yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in dfs]
 
     data = sorted(zip(names, yields), key=lambda x: x[1])
