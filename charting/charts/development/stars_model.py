@@ -85,14 +85,12 @@ def main():
         results[index] = dfs
         print(index)
 
-
     estat_results = {}
     for key, query in estat_queries.items():
         out = estat_source.get_data(query)
         estat_results[key] = out
         results[key] = out.transpose()
         print(key)
-
 
     imf_result = {}
     i = 0
@@ -125,15 +123,25 @@ def main():
                     normalized_score[key].loc[last_key:, c] = normalized_score[key].loc[last_key:, c] + est
                     adj_value[key].loc[last_key:, c] = adj_value[key].loc[last_key:, c] + est
 
-            normalized_score[key] = normalized_score[key].apply(lambda x: 2 * (x - x.min()) / (x.max() - x.min()) - 1, axis=1)
+            normalized_score[key] = normalized_score[key].\
+                apply(lambda x: 2 * (x - x.min()) / (x.max() - x.min()) - 1, axis=1)
         else:
-            normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').apply(lambda x: 2*(x-x.min())/(x.max()-x.min()) - 1, axis=1)
+            normalized_score[key] = value[countries].ffill(axis=0).dropna(axis=1, how='all').\
+                apply(lambda x: 2*(x-x.min())/(x.max()-x.min()) - 1, axis=1)
 
-
-    weights = {'initial_conditions': (0.4, {'government_debt': (.4, -1), 'primary_balance': (.3, 1), 'overall_balance': (.2, 1), 'unemployment_rate': (.05, -1), 'international_reserves': (.05, 1)}),
-               'momentum': (.3, {'eco_sentiment': (.5, 1), 'industrial_sentiment': (.5, 1)}),
-               'competitivness': (.2, {'current_account': (.5, 1), 'financial_account': (.3, 1), 'labour_cost': (.2, -1)}),
-               'leverage': (.1, {'housing_loans': (.4, -1), 'loan_to_deposit': (.4, -1), 'savings_rate': (.2, 1)})
+    weights = {'initial_conditions': (0.4, {'government_debt': (.4, -1),
+                                            'primary_balance': (.3, 1),
+                                            'overall_balance': (.2, 1),
+                                            'unemployment_rate': (.05, -1),
+                                            'international_reserves': (.05, 1)}),
+               'momentum': (.3, {'eco_sentiment': (.5, 1),
+                                 'industrial_sentiment': (.5, 1)}),
+               'competitivness': (.2, {'current_account': (.5, 1),
+                                       'financial_account': (.3, 1),
+                                       'labour_cost': (.2, -1)}),
+               'leverage': (.1, {'housing_loans': (.4, -1),
+                                 'loan_to_deposit': (.4, -1),
+                                 'savings_rate': (.2, 1)})
                }
     data_table = pd.DataFrame(columns=countries, index=names, dtype=float)
     sector_table = pd.DataFrame(columns=countries, index=list(weights.keys()), dtype=float)
@@ -142,18 +150,19 @@ def main():
         sector_weights = []
         for key, (weight, direction) in data[1].items():
             if key in ['primary_balance', 'overall_balance']:
-                data_table.loc[key] = normalized_score[key][countries].loc[normalized_score[key][countries].index.year == datetime.now().year].squeeze()
+                data_table.loc[key] = normalized_score[key][countries].loc[normalized_score[key][countries].index.year
+                                                                           == datetime.now().year].squeeze()
             else:
                 data_table.loc[key] = normalized_score[key][countries].iloc[-1, :] * direction
             sector_weights.append(weight)
         sector_table.loc[sector] = data_table.loc[list(data[1].keys())].multiply(sector_weights, axis=0).sum(axis=0)
     total_score.loc['Score'] = sector_table.multiply([data[0] for _, data in weights.items()], axis=0).sum(axis=0)
     total_df = pd.concat([total_score, sector_table, data_table], axis=0)
-    total_df = total_df.loc[['Score', 'initial_conditions', 'government_debt', 'primary_balance','overall_balance', 'unemployment_rate', 'international_reserves',
-                  'momentum', 'eco_sentiment', 'industrial_sentiment',
-                  'competitivness', 'current_account', 'financial_account', 'labour_cost',
-                  'leverage', 'housing_loans', 'loan_to_deposit', 'savings_rate']]
-
+    total_df = total_df.loc[['Score', 'initial_conditions', 'government_debt', 'primary_balance',
+                             'overall_balance', 'unemployment_rate', 'international_reserves',
+                             'momentum', 'eco_sentiment', 'industrial_sentiment',
+                             'competitivness', 'current_account', 'financial_account', 'labour_cost',
+                             'leverage', 'housing_loans', 'loan_to_deposit', 'savings_rate']]
 
     tickers = {'DE': {5: 'GTDEM5Y Corp', 10: 'GTDEM10Y Corp'},
                'IT': {5: 'GTITL5Y Corp', 10: 'GTITL10Y Corp'},
@@ -180,6 +189,8 @@ def main():
                 spreads[country][tenor] = 0
             else:
                 spreads[country][tenor] = (ticker_result[country][tenor] - ticker_result['DE'][tenor])*100
+
+    #Output results to xlsx
     output_results_to_excel({'OUTPUT_LONG': total_df}, countries, output_sheet, mode='w')
     output_results_to_excel({'OUTPUT_SHORT': sector_table}, countries, output_sheet, mode='a')
     output_results_to_excel(results, countries, output_sheet, mode='a')
