@@ -13,3 +13,4 @@ Pillow~=10.3.0
 SQLAlchemy~=2.0.31
 xbbg~=0.7.7
 dataframe_image~=0.2.3
+playwright~=1.44.0
