@@ -262,6 +262,22 @@ class Chart:
 
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
+        elif chart_type == 'scatter':
+            handle = ax.scatter(x, y, color=color, marker=kwargs.get('marker','o'), label=label)
+
+            # if fill:
+            #     if fill_threshold is None:
+            #         fill_threshold = ax.get_ylim()[0]
+            #     ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
+
+            x_min = min(x)
+            x_max = max(x)
+
+            self.x_min_label.append(x_min)
+            self.x_max_label.append(x_max)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
 
         elif chart_type == 'boxplot':
             median_props = dict(color=colors[1], linewidth=1)
