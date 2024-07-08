@@ -30,10 +30,9 @@ def main(**kwargs):
     t3 = xbbg.blp.bdp("BVSC0171 Index", 'LONG_COMP_NAME')
     df3 = fix_bds_output(df3)
 
-
     title = "EU Yield Curves"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov.py.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov.jpeg")
 
     chart.configure_y_axis(label="%")
     chart.configure_x_axis(label='Tenor', label_loc='right')
