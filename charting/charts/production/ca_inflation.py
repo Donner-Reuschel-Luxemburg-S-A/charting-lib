@@ -1,30 +1,37 @@
-import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
+import datetime
+
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
+DEFAULT_START_DATE = datetime.date(1970, 1, 1)
+DEFAULT_END_DATE = datetime.datetime.today()
 
-def main():
+
+def main(**kwargs):
+    observation_start = kwargs.get('observation_start', DEFAULT_START_DATE)
+    observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
+
     blp = BloombergSource()
 
-    start_time = "19700101"
-
-    nfp_df, nfp_title = blp.get_series(series_id="CACPIYOY Index", observation_start=start_time)
+    nfp_df, nfp_title = blp.get_series(series_id="CACPIYOY Index",
+                                       observation_start=observation_start.strftime("%Y%m%d"),
+                                       observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Canada Inflation YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="ca_inflation_yoy.png", metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(5000), label="")
+    chart = Chart(title=title, filename="ca_inflation_yoy.jpeg", metadata=metadata)
+    chart.configure_y_axis(label="Percentage Points")
 
     chart.add_series(nfp_df.index, nfp_df['y'], label=nfp_title)
 
     chart.add_horizontal_line()
     chart.legend(ncol=2)
-    chart.plot()
+    chart.add_last_value_badge(decimals=2)
+
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':

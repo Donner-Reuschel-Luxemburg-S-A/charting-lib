@@ -1,14 +1,17 @@
-pip~=24.0
-pdoc3~=0.10.0
-flake8~=7.0.0
+pip~=24.1
+pdoc3~=0.11.0
+flake8~=7.1.0
 matplotlib~=3.9.0
 pandas~=2.2.2
 python-dateutil~=2.9.0
 fredapi~=0.5.2
 source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.17.1
+ratesvaluation@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/rates-valuation.git@1.4.0
 python-pptx~=0.6.23
 pypiwin32
 numpy~=1.26.4
 Pillow~=10.3.0
-SQLAlchemy~=2.0.30
-scipy~=1.13.1
+SQLAlchemy~=2.0.31
+xbbg~=0.7.7
+dataframe_image~=0.2.3
+playwright~=1.44.0
