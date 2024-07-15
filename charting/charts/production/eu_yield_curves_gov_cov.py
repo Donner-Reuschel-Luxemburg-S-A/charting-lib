@@ -34,7 +34,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov.jpeg")
 
-    chart.configure_y_axis(label="%")
+    chart.configure_y_axis(label="Percentage Points")
     chart.configure_x_axis(label='Tenor', label_loc='right')
 
     chart.add_series(chart_type='curve', x=df1.index, y=df1['y'], label=t1.iloc[0, 0], t_min=observation_start,
@@ -50,3 +50,5 @@ def main(**kwargs):
 
 if __name__ == '__main__':
     main()
+
+
