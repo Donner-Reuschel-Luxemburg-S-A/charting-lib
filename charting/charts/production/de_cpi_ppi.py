@@ -38,7 +38,7 @@ def main(**kwargs):
     chart.add_series(wpi_df.index, wpi_df['y'], label=wpi_title)
 
     chart.add_horizontal_line()
-    chart.legend()
+    chart.legend(ncol=3)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
