@@ -28,7 +28,7 @@ def main(**kwargs):
     chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bb_bbb_spread.jpeg")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(row_index=0, label='BPS Spread To TSY')
+    chart.configure_y_axis(row_index=0, label='BPS')
     chart.configure_y_axis(row_index=1, label='Spread Difference BPS')
 
     chart.add_series(x=df.index, y=df['y'], label=t)

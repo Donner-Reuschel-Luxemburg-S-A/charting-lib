@@ -29,7 +29,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="eu_core_spreads.jpeg")
 
-    chart.configure_y_axis(label="BPS Spread to TSY")
+    chart.configure_y_axis(label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(row_index=0, x=common_index, y=df1.loc[common_index, 'y'], label="Netherlands")
