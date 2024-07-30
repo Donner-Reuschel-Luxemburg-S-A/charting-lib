@@ -183,7 +183,7 @@ def main():
     chart.legend(ncol=2)
     chart.plot()
 
-    title = "STOXX 600: Real Estate vs. Utes"
+    title = "STOXX 600: Real Estate vs. Utilities"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
     chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks2.png")
