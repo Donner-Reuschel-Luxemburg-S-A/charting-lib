@@ -571,7 +571,7 @@ class Chart:
 
         plt.savefig(self.filepath, dpi=200, format="jpeg")
         b = io.BytesIO()
-        plt.savefig(b, format='jpeg')
+        plt.savefig(b, dpi=200, format='jpeg')
         b.seek(0)
         img_data = base64.b64encode(b.read()).decode("utf-8")
 
