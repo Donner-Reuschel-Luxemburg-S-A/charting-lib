@@ -36,7 +36,7 @@ def main(**kwargs):
     chart.add_series(m3_df.index, m3_df['y'], label=m3_title)
 
     chart.add_horizontal_line()
-    chart.legend(ncol=1)
+    chart.legend(ncol=3)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 

@@ -220,7 +220,7 @@ def main():
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
     ax.set_xlabel('Score')
-    ax.set_ylabel('Spread vs. Bund', loc='top', labelpad=-50)
+    ax.set_ylabel('BPS', loc='top', labelpad=-50)
     ax.set_ylim(top=spreads['IT'][10] * 1.2)
     xs = total_score.loc['Score']
     ys = [spreads[country][10] for country in total_score.columns]

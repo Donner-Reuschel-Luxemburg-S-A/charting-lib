@@ -42,7 +42,7 @@ def main(**kwargs):
     chart.add_series(spx_df.index, spx_df['y'], label=spx_title)
     chart.add_series(df.index, df['y'], label="Net Liquidity", y_axis_index=1)
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

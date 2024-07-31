@@ -34,7 +34,7 @@ def main(**kwargs):
     chart.add_vertical_line(x=d2.index, y=d2["y"], label="US Recession")
     chart.add_horizontal_line()
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

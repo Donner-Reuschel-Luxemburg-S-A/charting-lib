@@ -38,7 +38,7 @@ def main(**kwargs):
 
     chart.add_last_value_badge()
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

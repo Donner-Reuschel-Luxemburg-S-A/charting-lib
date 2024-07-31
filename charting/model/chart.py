@@ -236,7 +236,7 @@ class Chart:
 
         if invert:
             y = -y
-            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)', loc="top")
+            ax.set_ylabel(f'{ax.get_ylabel()} (INVERTED AXIS)')
 
         if transformer is not None:
             if isinstance(transformer, list):

@@ -22,7 +22,7 @@ def main(**kwargs):
     chart.add_series(credit_hh_df.index, credit_hh_df['y'], label=credit_hh_title)
 
     chart.add_horizontal_line()
-    chart.legend(ncol=1)
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
