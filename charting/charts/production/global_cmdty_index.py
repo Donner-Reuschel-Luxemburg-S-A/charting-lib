@@ -22,7 +22,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.COMMODITY)
     chart = Chart(title=title, metadata=metadata, filename='global_cmdty_index.jpeg')
 
-    chart.configure_y_axis(label="EUR")
+    chart.configure_y_axis(label="EUR €")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

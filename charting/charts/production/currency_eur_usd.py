@@ -24,7 +24,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="currency_eur_usd.jpeg")
 
-    chart.configure_y_axis(label="USD ($)")
+    chart.configure_y_axis(label="USD $")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
