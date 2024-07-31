@@ -26,6 +26,7 @@ def main(**kwargs):
     df2 = xbbg.blp.bds("BVIS0575 Index", "CURVE_TENOR_RATES")
     t2 = xbbg.blp.bdp("BVIS0575 Index", 'LONG_COMP_NAME')
     df2 = fix_bds_output(df2, yld='bid_yield')
+
     df3 = xbbg.blp.bds("BVSC0171 Index", "CURVE_TENOR_RATES")
     t3 = xbbg.blp.bdp("BVSC0171 Index", 'LONG_COMP_NAME')
     df3 = fix_bds_output(df3)
@@ -34,8 +35,8 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points")
-    chart.configure_x_axis(label='Tenor', label_loc='right')
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
+    chart.configure_x_axis(label='TENOR')
 
     chart.add_series(chart_type='curve', x=df1.index, y=df1['y'], label=t1.iloc[0, 0], t_min=observation_start,
                      t_max=observation_end)

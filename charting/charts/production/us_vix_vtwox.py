@@ -27,7 +27,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=[Region.US, Region.EU], category=Category.VOLATILITY)
     chart = Chart(title=title, metadata=metadata, filename="us_vix_v2x.jpeg")
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(10, 50))
+    chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS", y_lim=(10, 50))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

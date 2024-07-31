@@ -34,7 +34,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="us_mba.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     mba_df = mba_df.iloc[12:, ]
     chart.add_series(mba_df.index, mba_df['y'], label=mba_title, transformer=[Avg(offset=DateOffset(months=12))])

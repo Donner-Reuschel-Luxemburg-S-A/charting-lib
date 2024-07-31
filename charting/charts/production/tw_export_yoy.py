@@ -23,7 +23,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.TW, category=Category.ECONOMY)
     chart = Chart(title=title, metadata=metadata, filename="tw_export_yoy.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1['y'], label=title)

@@ -28,7 +28,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="eu_sxxp_profits_quarterly.jpeg", metadata=metadata, num_y_axis=2)
 
     chart.configure_y_axis(y_axis_index=0, label="EUR €")
-    chart.configure_y_axis(y_axis_index=1, label="Percentage Points")
+    chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], chart_type='bar', transformer=[Resample('Q'), Pct(periods=4)], label=t1,

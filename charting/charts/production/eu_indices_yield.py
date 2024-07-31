@@ -29,7 +29,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.EU)
     chart = Chart(title=title, filename="eu_indices_yield.jpeg", metadata=metadata)
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

@@ -37,7 +37,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, filename="us_umich_surveys.jpeg", metadata=metadata)
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Index")
+    chart.configure_y_axis(label="INDEX")
 
     chart.add_series(sentiment_df.index, sentiment_df['y'], label=sentiment_title)
     chart.add_series(expectations_df.index, expectations_df['y'], label=expectations_title)

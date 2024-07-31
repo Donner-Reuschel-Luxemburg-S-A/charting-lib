@@ -27,7 +27,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="us_spx_mvag.jpeg")
 
-    chart.configure_y_axis(label="Index")
+    chart.configure_y_axis(label="INDEX")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

@@ -24,7 +24,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
     chart = Chart(title=title, metadata=metadata, filename="global_wti_brent_oil.jpeg")
 
-    chart.configure_y_axis(label="USD")
+    chart.configure_y_axis(label="USD $")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

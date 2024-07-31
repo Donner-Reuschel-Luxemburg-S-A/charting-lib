@@ -37,7 +37,7 @@ def main(**kwargs):
 
     chart.legend(ncol=2)
 
-    return chart.plot(bloomberg_source_override='BCY')
+    return chart.plot()
 
 
 if __name__ == '__main__':

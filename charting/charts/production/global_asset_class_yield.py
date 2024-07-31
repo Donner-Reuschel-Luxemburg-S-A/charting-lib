@@ -54,7 +54,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="global_asset_class_performance.jpeg", num_rows=3)
 
-    chart.configure_x_axis(label="Percentage Points")
+    chart.configure_x_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(stock_data[0], stock_data[1], label="", chart_type="bar",
                      t_min=min(df.index.min() for df, _ in stock_dfs), t_max=max(df.index.max() for df, _ in stock_dfs),

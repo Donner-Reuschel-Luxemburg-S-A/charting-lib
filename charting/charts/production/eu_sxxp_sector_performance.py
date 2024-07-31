@@ -34,7 +34,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_sector_performance.jpeg")
 
-    chart.configure_x_axis(label="Percentage Points")
+    chart.configure_x_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(data[0], data[1], label="", chart_type="bar",
                      t_min=min(df.index.min() for df, _ in dfs), t_max=max(df.index.max() for df, _ in dfs))

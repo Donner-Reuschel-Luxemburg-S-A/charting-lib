@@ -16,7 +16,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.INFLATION)
 
     chart = Chart(title=title, metadata=metadata, filename="eu_inflation_m3_yoy.jpeg")
-    chart.configure_y_axis(label="%")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(cpix_df.index, cpix_df['y'], label=cpix_title)

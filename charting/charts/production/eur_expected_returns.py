@@ -58,7 +58,7 @@ def main():
     title = "Expected Returns"
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
     chart = Chart(title=title, metadata=metadata, filename="expected_returns10.jpeg")
-    chart.configure_y_axis(label="Percentage Points", y_lim=(-1 ,7))
+    chart.configure_y_axis(label="PERCENTAGE POINTS", y_lim=(-1 ,7))
 
     x = list(data['result'].keys())
     y_roll_long = list([(sector[10] - sector[9])*9.5 for sector in data['result'].values()])

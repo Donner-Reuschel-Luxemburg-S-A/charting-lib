@@ -38,7 +38,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="global_inflation.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

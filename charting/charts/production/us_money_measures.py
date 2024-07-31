@@ -31,7 +31,7 @@ def main(**kwargs):
     chart = Chart(title=title, metadata=metadata, filename="us_money_measures_yoy.jpeg")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(m2_df.index, m2_df['y'], label=m2_title)
 

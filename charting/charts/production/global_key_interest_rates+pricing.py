@@ -48,7 +48,7 @@ def main(**kwargs):
     d8, t8 = blp.get_series(series_id='BOJDTR Index', observation_start=observation_start.strftime("%Y%m%d"),
                             observation_end=observation_end.strftime("%Y%m%d"))
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d5.index, y=d5["y"], label=t5, color=style.get_color(2))

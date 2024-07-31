@@ -32,7 +32,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="us_warn.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Index")
+    chart.configure_y_axis(label="INDEX")
 
     chart.add_series(warn_df.index, warn_df['y'], label=warn_title)
 

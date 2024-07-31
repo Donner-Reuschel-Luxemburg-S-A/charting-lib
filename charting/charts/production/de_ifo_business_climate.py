@@ -28,7 +28,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="de_ifo_business_climate.jpeg")
 
-    chart.configure_y_axis(label="Index")
+    chart.configure_y_axis(label="INDEX")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label=t1)

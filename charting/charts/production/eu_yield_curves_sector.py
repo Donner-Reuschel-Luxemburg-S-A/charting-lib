@@ -38,8 +38,8 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
     chart = Chart(title=title, metadata=metadata, filename="eu_corporate_curves_sector.jpeg")
 
-    chart.configure_y_axis(label="%")
-    chart.configure_x_axis(label='Tenor', label_loc='right')
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
+    chart.configure_x_axis(label='TENOR')
 
     chart.add_series(chart_type='curve', x=df1.index, y=df1['y'], label=t1.iloc[0, 0], t_min=observation_start,
                      t_max=observation_end)

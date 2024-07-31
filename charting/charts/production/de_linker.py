@@ -28,7 +28,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="de_real_rates.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label="Germany Real Rate 2033")

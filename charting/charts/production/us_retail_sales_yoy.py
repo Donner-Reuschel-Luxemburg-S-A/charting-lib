@@ -28,7 +28,7 @@ def main(**kwargs):
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(0, 35))
+    chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS", y_lim=(0, 35))
 
     chart.add_series(x=d1.index, y=d1['y'], label=t1, chart_type='bar', bar_bottom=0,
                      transformer=[Pct(periods=12), Avg(offset=DateOffset(months=3))])

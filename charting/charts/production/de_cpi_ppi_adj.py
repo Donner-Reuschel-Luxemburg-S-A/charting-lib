@@ -32,7 +32,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi_adj.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     cpi_df['z'] = np.diff(cpi_df['y'], prepend=0)
     ppi_df['z'] = np.diff(ppi_df['y'], prepend=0)

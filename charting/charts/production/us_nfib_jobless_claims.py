@@ -31,8 +31,8 @@ def main(**kwargs):
 
     chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_nfib_jobless_claims.jpeg")
 
-    chart.configure_y_axis(y_axis_index=0, label="Thousands", y_lim=(100, 800))
-    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", y_lim=(-20, 30), reverse_axis=True)
+    chart.configure_y_axis(y_axis_index=0, label="THOUSANDS", y_lim=(100, 800))
+    chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS", y_lim=(-20, 30), reverse_axis=True)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

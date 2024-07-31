@@ -19,7 +19,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, metadata=metadata, filename="eu_credit_impulse_measures_yoy.jpeg")
-    chart.configure_y_axis( label="%")
+    chart.configure_y_axis( label="PERCENTAGE POINTS")
 
     chart.add_series(credit_impulse_df.index, credit_impulse_df['y'], label=credit_impulse_title)
     chart.add_series(credit_impulse_hh_df.index, credit_impulse_hh_df['y'], label=credit_impulse_hh_title)

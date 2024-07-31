@@ -25,7 +25,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="eu_industrial_production.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(indprodcap_df.index, indprodcap_df['y'], label=indprodcap_title)
 
