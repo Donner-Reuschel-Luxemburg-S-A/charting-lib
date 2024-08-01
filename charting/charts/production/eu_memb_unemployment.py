@@ -23,20 +23,19 @@ def main(**kwargs):
     df3, t3 = blp.get_series(series_id='ITMUURS Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "Eurozone: Arbeitslosenquoten der wichtigsten Mitglieder"
-    metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
+    title = "Eurozone: Unemployment rates of the most important members"
+    metadata = Metadata(title=title, region=Region.EU, category=Category.ECONOMY)
     chart = Chart(title=title, metadata=metadata, filename="eu_memb_unemployment.jpeg")
 
-    chart.configure_y_axis(label="%")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-
-    chart.add_series(row_index=0, x=df1.index, y=df1['y'], label="Frankreich")
-    chart.add_series(row_index=0, x=df2.index, y=df2['y'], label="Deutschland")
-    chart.add_series(row_index=0, x=df3.index, y=df3['y'], label="Italien")
+    chart.add_series(row_index=0, x=df1.index, y=df1['y'], label="France")
+    chart.add_series(row_index=0, x=df2.index, y=df2['y'], label="Germany")
+    chart.add_series(row_index=0, x=df3.index, y=df3['y'], label="Italy")
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend(4)
+    chart.legend(3)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
