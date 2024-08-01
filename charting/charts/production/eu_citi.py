@@ -24,6 +24,7 @@ def main(**kwargs):
     chart.configure_x_axis(major_formatter=major_formatter)
 
     chart.add_series(x=df9.index, y=df9['y'], label=t9)
+    chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)

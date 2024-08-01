@@ -36,6 +36,8 @@ def main(**kwargs):
     chart.add_series(row_index=0, x=common_index, y=(df2.loc[common_index, 'y'] - df3.loc[common_index, 'y']) * 100,
                      label="KFW")
     chart.legend(4)
+    chart.add_last_value_badge(decimals=2)
+
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

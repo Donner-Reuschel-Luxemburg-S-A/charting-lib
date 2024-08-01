@@ -183,6 +183,8 @@ def main(**kwargs):
         counter += 1
     plt.text(today+datetime.timedelta(days=(1.2*365)), 5.2, 'OIS Implied Rates',fontsize=8)
 
+    chart.add_last_value_badge(decimals=2)
+
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
