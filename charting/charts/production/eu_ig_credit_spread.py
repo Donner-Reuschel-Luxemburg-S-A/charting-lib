@@ -4,6 +4,7 @@ import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
 from source_engine.bloomberg_source import BloombergSource
 
+from charting.model import style
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
@@ -31,11 +32,11 @@ def main(**kwargs):
 
     mean_val = [df1['y'].mean()] * len(df1.index)
     chart.add_series(row_index=0, x=df1.index, y=df1['y'], label="Corporate A")
-    chart.add_series(row_index=0, x=df1.index, y=mean_val, label="Corporate A - 10Y Avg", linestyle="--")
+    chart.add_series(row_index=0, x=df1.index, y=mean_val, label="Corporate A - 10Y Avg", linestyle="--", color=style.get_color(0))
 
     mean_val = [df2['y'].mean()] * len(df2.index)
-    chart.add_series(row_index=1, x=df2.index, y=df2['y'], label="Corporate BBB")
-    chart.add_series(row_index=1, x=df2.index, y=mean_val, label="Corporate BBB - 10Y Avg", linestyle="--")
+    chart.add_series(row_index=1, x=df2.index, y=df2['y'], label="Corporate BBB", color=style.get_color(1))
+    chart.add_series(row_index=1, x=df2.index, y=mean_val, label="Corporate BBB - 10Y Avg", linestyle="--", color=style.get_color(1))
 
     chart.add_last_value_badge(decimals=0)
 

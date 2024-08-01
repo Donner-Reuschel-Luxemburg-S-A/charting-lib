@@ -18,7 +18,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="eu_zew_business_climate.jpeg")
 
-    chart.configure_y_axis(y_axis_index=0, label="Index")
+    chart.configure_y_axis(y_axis_index=0, label="INDEX")
 
     major_formatter = mdates.DateFormatter("%b %y")
 

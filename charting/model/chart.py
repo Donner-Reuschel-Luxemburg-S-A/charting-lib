@@ -12,6 +12,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 plt.switch_backend('agg')
+plt.rcParams["font.family"] = "Arial"
+
 from matplotlib.axes import Axes
 from matplotlib.ticker import Formatter
 from source_engine.chart_source import ChartSource, ChartModel
@@ -146,7 +148,7 @@ class Chart:
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        ax.set_xlabel(label, loc=label_loc)
+        ax.set_xlabel(label, loc=label_loc, fontsize=8)
 
         if rotation is not None:
             ax.tick_params(axis='x', labelrotation=rotation)
@@ -174,14 +176,14 @@ class Chart:
 
         try:
             ax = self.axis_dict[row_index][y_axis_index]
-            ax.set_ylabel(label, loc="top", rotation=90)
+            ax.set_ylabel(label, fontsize=8)
 
             if y_lim is not None:
                 ax.set_ylim(*y_lim)
 
             if reverse_axis:
                 ax.invert_yaxis()
-                ax.set_ylabel(f'{label} (reversed axis)', loc="top", rotation=90)
+                ax.set_ylabel(f'{label} (REVERSED AXIS)', fontsize=8)
 
             if major_formatter is not None:
                 ax.yaxis.set_major_formatter(major_formatter)
@@ -234,7 +236,7 @@ class Chart:
 
         if invert:
             y = -y
-            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)', loc="top")
+            ax.set_ylabel(f'{ax.get_ylabel()} (INVERTED AXIS)')
 
         if transformer is not None:
             if isinstance(transformer, list):
@@ -280,8 +282,8 @@ class Chart:
             self.x_max_axes.append(x_max)
 
         elif chart_type == 'boxplot':
-            median_props = dict(color=colors[1], linewidth=1)
-            mean_props = dict(color=colors[1], linewidth=1, linestyle='--')
+            median_props = dict(color=colors[4], linewidth=1)
+            mean_props = dict(color=colors[4], linewidth=1, linestyle='--')
 
             handle = ax.boxplot(y, showfliers=False, labels=x, vert=False, patch_artist=True, meanline=True,
                                 showmeans=False, meanprops=mean_props, medianprops=median_props)
@@ -292,10 +294,10 @@ class Chart:
             for index, category_data in enumerate(y):
                 latest_value = category_data[-1]
                 y_pos = index + 1
-                ax.scatter(latest_value, y_pos, color=colors[1], zorder=3, s=15)
+                ax.scatter(latest_value, y_pos, color=colors[4], zorder=3, s=15)
                 ax.text(latest_value, y_pos + 0.05, f'{round(latest_value, 2)}', verticalalignment='bottom',
                         horizontalalignment="center",
-                        color=colors[1], fontdict={"fontsize": 6})
+                        color=colors[4], fontdict={"fontsize": 6})
 
             self.max_label_length = max([len(ele) for ele in x])
 
@@ -468,32 +470,36 @@ class Chart:
             handle = plt.Rectangle((0, 0), 1, 1, fc='grey', alpha=0.3, label=label)
             self.handles.append(handle)
 
-    def __add_bottom_label(self, bloomberg_source_override: str = None):
+    def __add_bottom_label(self, override: str = None):
         """
         Adds a centered label at the bottom of the chart.
 
         Args:
-            bloomberg_source_override (str): An override for bloomberg source (default: None).
+            override (str): An override for source (default: None).
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
 
-        label_x_position = -0.05
+        #label_x_position = -0.05
 
         if len(self.x_min_axes) != 0 and len(self.x_max_axes) != 0:
             ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
 
-        bloomberg_label = 'Bloomberg' if bloomberg_source_override is None else f'Bloomberg ({bloomberg_source_override})'
+        #if self.max_label_length != 0:
+        #    label_x_position = self.max_label_length * -0.012
 
-        if self.max_label_length != 0:
-            label_x_position = self.max_label_length * -0.012
+        label_x_position = .5
+
         if all([isinstance(x, datetime) for x in self.x_min_label]):
-            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                    f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+            label = f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%B %d, %Y")}. Time Series from ' \
+                    f'{min(self.x_min_label).strftime("%B %Y")} - {max(self.x_max_label).strftime("%B %Y")}.'
         else:
-            label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                    f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                    f'{datetime.today().strftime("%m/%Y")} - {datetime.today().strftime("%m/%Y")}.'
+            label = f'Source: Bloomberg & Federal Reserve Economic Data (FRED) as of ' \
+                    f'{datetime.today().strftime("%B %d, %Y")}. Time Series from ' \
+                    f'{datetime.today().strftime("%B %Y")} - {datetime.today().strftime("%B %Y")}.'
+
+        if override:
+            label = override
 
         label_y_position = -0.125
         if self.num_rows > 1:
@@ -503,9 +509,9 @@ class Chart:
             box = ax.get_legend()._legend_box
             extent = box.get_window_extent(self.fig.canvas.get_renderer())
             extent = ax.transAxes.inverted().transform(extent)
-            label_y_position = extent[0][1] - 0.05
+            label_y_position = extent[0][1] - 0.035
 
-        ax.text(label_x_position, label_y_position, label, transform=ax.transAxes, va='top', ha='left',
+        ax.text(label_x_position, label_y_position, label, transform=ax.transAxes, va='top', ha='center',
                 **source_text_style)
 
     def legend(self, ncol: int = 1):

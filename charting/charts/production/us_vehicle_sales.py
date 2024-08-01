@@ -32,7 +32,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="us_vehicle_sales.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Million Units")
+    chart.configure_y_axis(label="MILLION UNITS")
 
     chart.add_series(vehicle_sales_df.index, vehicle_sales_df['y'], label=vehicle_sales_title)
 

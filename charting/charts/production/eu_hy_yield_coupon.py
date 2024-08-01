@@ -28,7 +28,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="eu_hy_yield_coupon.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(hy_ytw_df.index, hy_ytw_df['y'] - hy_cpn_df['y'],
                      label="Euro HY Corporates: Yield to Worst minus Coupon")

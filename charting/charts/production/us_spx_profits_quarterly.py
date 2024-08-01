@@ -1,6 +1,7 @@
 import datetime
 
 import matplotlib.dates as mdates
+from dateutil.relativedelta import relativedelta
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
@@ -8,7 +9,7 @@ from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.pct import Pct
 from charting.transformer.resample import Resample
 
-DEFAULT_START_DATE = datetime.date(2017, 1, 1)
+DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=10)
 DEFAULT_END_DATE = datetime.datetime.today()
 
 
@@ -28,7 +29,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="us_spx_profits_quarterly.jpeg", metadata=metadata, num_y_axis=2)
 
     chart.configure_y_axis(y_axis_index=0, label="USD $")
-    chart.configure_y_axis(y_axis_index=1, label="Percentage Points")
+    chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

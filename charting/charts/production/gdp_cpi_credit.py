@@ -40,7 +40,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="cpi_gdp.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(final_df.index, final_df['y'], label="Credit/GDP Diff")
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title, transformer=Lag(offset=pd.DateOffset(months=24)))

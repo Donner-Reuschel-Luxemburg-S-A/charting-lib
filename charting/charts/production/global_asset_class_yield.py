@@ -27,12 +27,12 @@ def main(**kwargs):
     stock_data = sorted(zip(stock_names, stock_yields), key=lambda x: x[1])
     stock_data = list(zip(*stock_data))
 
-    cmdty_indices = ["XBTUSD Curncy", "XAG Curncy", "XAU Curncy", "CL1 Comdty", "EURUSD Curncy", "USDJPY Curncy",
+    cmdty_indices = ["XAG Curncy", "XAU Curncy", "CL1 Comdty", "EURUSD Curncy", "USDJPY Curncy",
                      "EURCHF Curncy", "EURGBP Curncy"]
     cmdty_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
                                 observation_end=observation_end.strftime("%Y%m%d")) for idx in
                  cmdty_indices]
-    cmdty_names = ["Bitcoin USD", "Silver USD", "Gold USD", "Crude Oil WTI", "EUR/USD", "USD/JPY", "EUR/CHF", "EUR/GBP"]
+    cmdty_names = ["Silver USD", "Gold USD", "Crude Oil WTI", "EUR/USD", "EUR/JPY", "EUR/CHF", "EUR/GBP"]
     cmdty_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in cmdty_dfs]
     cmdty_data = sorted(zip(cmdty_names, cmdty_yields), key=lambda x: x[1])
     cmdty_data = list(zip(*cmdty_data))
@@ -54,14 +54,14 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="global_asset_class_performance.jpeg", num_rows=3)
 
-    chart.configure_x_axis(label="Percentage Points")
-
-    chart.add_series(stock_data[0], stock_data[1], label="", chart_type="bar",
-                     t_min=min(df.index.min() for df, _ in stock_dfs), t_max=max(df.index.max() for df, _ in stock_dfs),
-                     row_index=0)
+    chart.configure_x_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(fi_data[0], fi_data[1], label="", chart_type="bar",
                      t_min=min(df.index.min() for df, _ in fi_dfs), t_max=max(df.index.max() for df, _ in fi_dfs),
+                     row_index=0)
+
+    chart.add_series(stock_data[0], stock_data[1], label="", chart_type="bar",
+                     t_min=min(df.index.min() for df, _ in stock_dfs), t_max=max(df.index.max() for df, _ in stock_dfs),
                      row_index=1)
 
     chart.add_series(cmdty_data[0], cmdty_data[1], label="", chart_type="bar",

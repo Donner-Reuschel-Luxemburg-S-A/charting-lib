@@ -31,7 +31,7 @@ def main(**kwargs):
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(row_index=0, label='BPS')
-    chart.configure_y_axis(row_index=1, label='Spread Difference BPS')
+    chart.configure_y_axis(row_index=1, label="BPS")
 
     chart.add_series(x=common_index, y=df.loc[common_index]['y'] * 100, label=t)
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2)

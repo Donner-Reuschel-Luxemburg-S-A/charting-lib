@@ -9,7 +9,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 from charting.transformer.avg import Avg
 
-DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=5)
+DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=10)
 DEFAULT_END_DATE = datetime.datetime.today()
 
 

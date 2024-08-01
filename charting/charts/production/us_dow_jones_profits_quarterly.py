@@ -28,7 +28,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="us_indu_profits_quarterly.jpeg", metadata=metadata, num_y_axis=2)
 
     chart.configure_y_axis(y_axis_index=0, label="USD $")
-    chart.configure_y_axis(y_axis_index=1, label="Percentage Points")
+    chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

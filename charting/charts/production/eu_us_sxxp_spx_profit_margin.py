@@ -31,7 +31,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=[Region.EU, Region.US], category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_us_sxxp_spx_profit_margin.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label=t1, transformer=Avg(offset=DateOffset(months=1)))

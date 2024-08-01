@@ -24,7 +24,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
     chart = Chart(title=title, metadata=metadata, filename="us_weekly_bankruptcy.jpeg")
 
-    chart.configure_y_axis(y_axis_index=0, label="Number of Bankruptcies")
+    chart.configure_y_axis(y_axis_index=0, label="NUMBER OF BANKRUPTCIES")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -37,7 +37,7 @@ def main(**kwargs):
 
     chart.legend(ncol=2)
 
-    return chart.plot(bloomberg_source_override='BCY')
+    return chart.plot()
 
 
 if __name__ == '__main__':

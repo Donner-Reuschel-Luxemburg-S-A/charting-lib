@@ -31,7 +31,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi.jpeg")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(ppi_df.index, ppi_df['y'], label=ppi_title)

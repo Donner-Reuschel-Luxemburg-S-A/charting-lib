@@ -1,9 +1,9 @@
 """
 Style Guide for D&R Charting Lib.
 """
-colors = ["#7EC0C6", "#124877", "#E91457", "#018C7D", "#6F3E2E", "#FD7200"]
-stacked_colors = ["#7A7978", "#87CBAC", "#90FFDC", "#8DE4FF", "#8AC4FF"]
-source_text_style = {'fontsize': 7}
+colors = ["#124877", '#7fbd39', "#018c7d", "#74c0c5", "#6f99ed", "#b2b2b1"]
+stacked_colors = ["#1B6CB3", '#96CD58', "#01D1BC", "#8CCBCF", "#88ABF0", "#C1C1C0"]
+source_text_style = {'fontsize': 6}
 legend_style = {'size': 8}
 title_style = {'fontsize': 10, 'fontweight': 'bold'}
 color_counter = 0

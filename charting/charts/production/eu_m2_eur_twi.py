@@ -26,8 +26,8 @@ def main(**kwargs):
 
     chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="m2_twi_eur.jpeg")
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points")
-    chart.configure_y_axis(y_axis_index=1, label="Index")
+    chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS")
+    chart.configure_y_axis(y_axis_index=1, label="INDEX")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

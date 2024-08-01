@@ -27,7 +27,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="us_spx_put_call_ratio.jpeg", metadata=metadata, num_rows=2)
 
     chart.configure_y_axis(row_index=0, y_axis_index=0, label="USD $")
-    chart.configure_y_axis(row_index=1, y_axis_index=0, label="Ratio")
+    chart.configure_y_axis(row_index=1, y_axis_index=0, label="RATIO")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

@@ -31,7 +31,7 @@ def main(**kwargs):
     chart = Chart(title=title, filename="us_trade_balance.jpeg", metadata=metadata)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Billion USD $")
+    chart.configure_y_axis(label="BILLION USD $")
 
     chart.add_series(tb_df.index, tb_df['y'], label=tb_title)
 

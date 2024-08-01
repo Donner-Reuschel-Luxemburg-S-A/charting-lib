@@ -28,8 +28,8 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="us_vehicle_inflation.jpeg", num_y_axis=2)
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(-55, 55))
-    chart.configure_y_axis(y_axis_index=1, label="Percentage Points", y_lim=(-15, 15))
+    chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS", y_lim=(-55, 55))
+    chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS", y_lim=(-15, 15))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

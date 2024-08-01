@@ -24,7 +24,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="currency_eur_chf.jpeg")
 
-    chart.configure_y_axis(label="CHF (₣)")
+    chart.configure_y_axis(label="CHF ₣")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label='ECB reference exchange rate, EUR/CHF')

@@ -37,7 +37,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -51,7 +51,7 @@ def main(**kwargs):
     chart.add_horizontal_line()
 
     chart.add_last_value_badge(decimals=2)
-    chart.legend(ncol=3)
+    chart.legend(ncol=4)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 

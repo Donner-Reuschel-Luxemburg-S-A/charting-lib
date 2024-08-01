@@ -22,7 +22,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
     chart = Chart(title="Gold", metadata=metadata, filename='global_gold.jpeg')
 
-    chart.configure_y_axis(label="USD")
+    chart.configure_y_axis(label="USD $")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1['y'], label=t1)

@@ -4,8 +4,10 @@ import matplotlib.dates as mdates
 from dateutil.relativedelta import relativedelta
 from source_engine.bloomberg_source import BloombergSource
 
+from charting.model import style
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
+from charting.model.style import colors
 
 DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=10)
 DEFAULT_END_DATE = datetime.datetime.today()
@@ -35,11 +37,11 @@ def main(**kwargs):
 
     mean_val = [df2['y'].mean()] * len(df2.index)
     chart.add_series(row_index=0, x=df2.index, y=df2['y'], label="Securitized")
-    chart.add_series(row_index=0, x=df2.index, y=mean_val, label="Securitized - 10Y Avg", linestyle="--")
+    chart.add_series(row_index=0, x=df2.index, y=mean_val, label="Securitized - 10Y Avg", linestyle="--", color=style.get_color(0))
 
     mean_val = [df4['y'].mean()] * len(df4.index)
-    chart.add_series(row_index=1, x=df4.index, y=df4['y'], label="Agency")
-    chart.add_series(row_index=1, x=df4.index, y=mean_val, label="Agency - 10Y Avg", linestyle="--")
+    chart.add_series(row_index=1, x=df4.index, y=df4['y'], label="Agency", color=style.get_color(1))
+    chart.add_series(row_index=1, x=df4.index, y=mean_val, label="Agency - 10Y Avg", linestyle="--", color=style.get_color(1))
 
     chart.add_last_value_badge(decimals=2)
 

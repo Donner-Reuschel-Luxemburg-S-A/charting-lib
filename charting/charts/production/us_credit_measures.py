@@ -37,7 +37,7 @@ def main(**kwargs):
     chart = Chart(title=title, metadata=metadata, filename="us_credit_measures.jpeg")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(bankcredit_df.index, bankcredit_df['y'], label=bankcredit_title, transformer=[Pct(12)])
     chart.add_series(ci_loans_df.index, ci_loans_df['y'], label=ci_loans_title, transformer=[Pct(12)])

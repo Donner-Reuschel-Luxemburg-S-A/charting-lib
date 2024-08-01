@@ -70,7 +70,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="us_cpi_by_component.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points", y_lim=(-2.5, 10))
+    chart.configure_y_axis(label="PERCENTAGE POINTS", y_lim=(-2.5, 10))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 

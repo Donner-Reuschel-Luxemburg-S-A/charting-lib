@@ -38,7 +38,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.INFLATION)
     chart = Chart(title=title, metadata=metadata, filename="global_inflation.jpeg")
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -50,7 +50,7 @@ def main(**kwargs):
     chart.add_series(x=uk.index, y=uk['y'], label="UK")
     chart.add_series(x=ch.index, y=ch['y'], label="China")
 
-    chart.legend(ncol=4)
+    chart.legend(ncol=5)
     chart.add_last_value_badge(decimals=2)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)

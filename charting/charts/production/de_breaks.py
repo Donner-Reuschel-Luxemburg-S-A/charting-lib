@@ -39,7 +39,7 @@ def main(**kwargs):
     chart.add_series(x=df5.index, y=df6['y'] - df5['y'], label="Germany Breakeven Rate 2026")
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend()
+    chart.legend(ncol=3)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
