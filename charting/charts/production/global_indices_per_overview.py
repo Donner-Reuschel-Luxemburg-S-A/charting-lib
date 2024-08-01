@@ -1,11 +1,12 @@
 import datetime
 
+from dateutil.relativedelta import relativedelta
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
-DEFAULT_START_DATE = datetime.date(2012, 1, 1)
+DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=10)
 DEFAULT_END_DATE = datetime.datetime.today()
 
 
@@ -15,8 +16,7 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    indices = ["DAX Index", "SXXP Index", "SX5E Index", "SPX Index", "NDX Index", "UKX Index", "INDU Index",
-               "NKY Index", "MXEF Index", "SMI Index"]
+    indices = ["MXEF Index", "NKY Index", "SMI Index", "UKX Index", "SX5E Index", "SXXP Index", "DAX Index", "INDU Index", "NDX Index", "SPX Index"]
 
     dfs = [blp.get_series(series_id=idx, field="RR900", observation_start=observation_start.strftime("%Y%m%d"),
                           observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
