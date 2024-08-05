@@ -7,6 +7,22 @@ from charting.model.metadata import Metadata, Region, Category
 DEFAULT_START_TENOR = 0
 DEFAULT_END_TENOR = 15
 
+euro_agg_corp = [
+    'LEC1TREU Index',
+    'LEC3TREU Index',
+    'LEC5TREU Index',
+    'I02137EU Index',
+    'I02138EU Index'
+]
+
+euro_agg_industrials = [
+    'I10344EU Index',
+    'I10345EU Index',
+    'I10346EU Index',
+    'I10347EU Index',
+    'I10348EU Index'
+]
+
 
 def main(**kwargs):
     def fix_bds_output(df, tenor='tenor', yld='mid_yield'):
@@ -19,6 +35,7 @@ def main(**kwargs):
 
     observation_start = kwargs.get('observation_start', DEFAULT_START_TENOR)
     observation_end = kwargs.get('observation_end', DEFAULT_END_TENOR)
+    maturities_euro_agg = xbbg.blp.bdp(euro_agg_corp, ['INDEX_TIME_TO_MATURITY', 'INDEX_YIELD_TO_MATURITY'])
 
     df1 = xbbg.blp.bds("BVSC0018 Index", "CURVE_TENOR_RATES")
     t1 = xbbg.blp.bdp("BVSC0018 Index", 'LONG_COMP_NAME')
