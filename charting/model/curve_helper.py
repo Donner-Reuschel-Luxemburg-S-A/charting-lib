@@ -54,7 +54,7 @@ def minimize_curve(observed_values):
             sum_ += (yield_ - nss_curve(x, t)) ** 2
         return sum_
 
-    result = minimize(_helper, np.array((.1, .1, .1, .1, 1, 1)), method="L-BFGS-B", options={'maxiter': 2500})
+    result = minimize(_helper, np.array((.1, .1, .1, .1, 1, 1)), method="L-BFGS-B", options={'maxiter': 2500, 'ftol': 1e-12})
     return result
 
 
