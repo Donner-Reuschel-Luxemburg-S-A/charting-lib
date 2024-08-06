@@ -56,6 +56,8 @@ def main(**kwargs):
     chart.add_series(x=d7.index, y=d7["y"], label=t7, color=style.get_color(3))
     chart.add_series(x=d8.index, y=d8["y"], label=t8, color=style.get_color(4))
     chart.add_horizontal_line()
+    chart.add_last_value_badge(decimals=2)
+
     chart.legend(ncol=2)
 
 
@@ -182,8 +184,6 @@ def main(**kwargs):
                          label=f'{cb} OIS Implied', color=style.get_color(counter), alpha=.5)
         counter += 1
     plt.text(today+datetime.timedelta(days=(1.2*365)), 5.2, 'OIS Implied Rates',fontsize=8)
-
-    chart.add_last_value_badge(decimals=2)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
