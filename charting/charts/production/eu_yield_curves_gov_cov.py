@@ -38,7 +38,7 @@ def main(**kwargs):
     covered_curve = build_curve()
     par_curve = covered_curve.par_curve()
     df3 = pd.DataFrame({'y': [x / 100 for x in par_curve[1]]}, index=par_curve[0])
-    t3 = 'Münchner Hypotheken Bank Pfandbriefe'
+    t3 = 'Deutsche Pfandbriefe'
 
     title = "EU Yield Curves"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)

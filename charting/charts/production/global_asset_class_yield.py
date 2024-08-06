@@ -15,14 +15,10 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    stock_indices = ["SPX Index", "NDX Index", "RTY Index", "SXXP Index", "SX5E Index", "DAX Index", "UKX Index",
-                     "NKY Index",
-                     "HSI Index"]
+    stock_indices = ["SPX Index", "NDX Index", "SXXP Index", "DAX Index", "NKY Index", "HSI Index", "MXEF Index"]
     stock_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
                                 observation_end=observation_end.strftime("%Y%m%d")) for idx in stock_indices]
-    stock_names = ["S&P 500", "NASDAQ 100", "Russell 2000", "Stoxx Europe 600", "Euro Stoxx 50", "DAX 40", "FTSE 100",
-                   "Nikkei 225",
-                   "Hang Seng"]
+    stock_names = ["S&P 500", "NASDAQ 100", "Stoxx Europe 600", "DAX 40", "Nikkei 225", "Hang Seng", "Emerging Markets"]
     stock_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in stock_dfs]
     stock_data = sorted(zip(stock_names, stock_yields), key=lambda x: x[1])
     stock_data = list(zip(*stock_data))
@@ -37,12 +33,12 @@ def main(**kwargs):
     cmdty_data = sorted(zip(cmdty_names, cmdty_yields), key=lambda x: x[1])
     cmdty_data = list(zip(*cmdty_data))
 
-    fi_indices = ["ER00 Index", "LEATTREU Index", "IBXXDECT Index", "IBOXXMJA Index", "JPEIHDEU Index"]
+    fi_indices = ["ER00 Index", "LEATTREU Index", "IBXXDECT Index", "IBOXXMJA Index", "JPEIHDEU Index", "REXP Index", "IS3C Index"]
     fi_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d")) for idx in
               fi_indices]
     fi_names = ["Euro Corporate", "Euro-Aggregate: Treasury", "Covered Bonds", "EUR Liquid High Yield",
-                "EMBI Global Core"]
+                "EMBI Global Core", "German Government Bonds", "Emerging Market Bonds"]
     fi_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in fi_dfs]
     fi_data = sorted(zip(fi_names, fi_yields), key=lambda x: x[1])
     fi_data = list(zip(*fi_data))
