@@ -13,7 +13,7 @@ def main(**kwargs):
     df15, t15 = blp.get_series(series_id='SX86P Index', observation_start=start_date)
     df17, t17 = blp.get_series(series_id='SX6P Index', observation_start=start_date)
 
-    title = "STOXX 600: Real Estate vs. Utes"
+    title = "STOXX 600: Real Estate vs. Utilities"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
     chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks2", language=kwargs.get('language', 'en'))

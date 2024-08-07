@@ -20,7 +20,7 @@ def main(**kwargs):
                            observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
     df2, t2 = blp.get_series(series_id='I02201EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
-    title = 'EUR Corporate A -German Covered Bonds'
+    title = 'EUR Corporate A - German Covered Bonds'
     t = 'Bloomberg Covered Bonds EUR Germany'
     t2 = 'Bloomberg EuroAgg Corporate A'
 

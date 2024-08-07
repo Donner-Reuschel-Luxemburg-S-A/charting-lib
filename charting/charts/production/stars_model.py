@@ -206,7 +206,7 @@ def main(**kwargs):
     output_results_to_excel({'SPREADS': pd.DataFrame(spreads)}, countries, path, mode='a')
 
     # Charting
-    title = '10-jähriger Spread vs. Fundamental Score'
+    title = '10Y Spread vs. Fundamental Score'
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
     chart = Chart(filename='stars_model', title=title, metadata=metadata, language=kwargs.get('language', 'en'))
 

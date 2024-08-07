@@ -20,7 +20,7 @@ def main(**kwargs):
                            observation_end=observation_end.strftime("%Y%m%d"))
     df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
-    title = 'EUR Corporate BBB - BTP/Bund Spread'
+    title = 'EUR Corporate BBB - Italy/German Government Bonds Spread'
     t = 'BTPS - Bund 10Y Spread'
     t2 = 'Bloomberg Pan-European Aggregate: Corporate Baa Total Return'
 

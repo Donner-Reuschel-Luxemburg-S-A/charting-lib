@@ -18,7 +18,7 @@ def main(**kwargs):
     df1, t1 = blp.get_series(series_id='.FRA10 G Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "France Spread to Bunds"
+    title = "France Spread to German Government Bonds"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="eu_fr_spreads", language=kwargs.get('language', 'en'))
 

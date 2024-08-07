@@ -16,9 +16,6 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    today = datetime.datetime.today().date()
-    start = today - relativedelta(months=1)
-
     indices = ["S5BANKX Index", "S5AUCO Index", "S5SFTW Index", "S5CPGS Index", "S5RETL Index", "S5TRAN Index",
                "S5PHRM Index", "S5INSU Index", "S5TECH Index", "S5TELSX Index", "S5CODU Index", "S5MEDA Index",
                "S5HOUS Index", "S5HCES Index", "S5UTILX Index", "S5FDBT Index", "S5HOTR Index", "S5COMS Index",

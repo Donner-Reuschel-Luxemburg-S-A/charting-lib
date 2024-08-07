@@ -34,7 +34,8 @@ def update_charts(module_names: Union[List[str], List] = []) -> List[str]:
                 module = importlib.import_module(f'charting.charts.production.{module_name}')
 
                 if hasattr(module, 'main') and callable(getattr(module, 'main')):
-                    module.main()
+                    module.main(language="en")
+                    module.main(language="de")
             except Exception as e:
                 errors.append(module_name)
 
