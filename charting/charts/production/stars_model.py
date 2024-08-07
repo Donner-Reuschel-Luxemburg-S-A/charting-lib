@@ -44,7 +44,7 @@ def append_excel_results(file, results, countries):
     output_results_to_excel(results, countries, file, startcol=col + 2, mode='a')
 
 
-def main():
+def main(**kwargs):
     path = os.path.join(base_path, 'model_output')
     os.makedirs(path, exist_ok=True)
     output_sheet = f'{datetime.today().strftime("%Y%m%d%H%M%S")} stars_output.xlsx'
@@ -208,7 +208,7 @@ def main():
     # Charting
     title = '10-jähriger Spread vs. Fundamental Score'
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
-    chart = Chart(filename='stars_model.jpeg', title=title, metadata=metadata)
+    chart = Chart(filename='stars_model', title=title, metadata=metadata, language=kwargs.get('language', 'en'))
 
     fig = chart.fig
     ax = chart.axis[0]
@@ -245,4 +245,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

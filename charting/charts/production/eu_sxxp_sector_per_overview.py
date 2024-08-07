@@ -31,7 +31,7 @@ def main(**kwargs):
     title = f"Stoxx Euro 600 Sector P/E Overview"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_sector_per_overview.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_sector_per_overview", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(label="P/E")
 
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -23,7 +23,7 @@ def main(**kwargs):
     title = "Japanese Yen ¥"
     metadata = Metadata(title=title, region=[Region.EU, Region.DE, Region.JP], category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="currency_eur_jpy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="currency_eur_jpy", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="JPY ¥")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -36,4 +36,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

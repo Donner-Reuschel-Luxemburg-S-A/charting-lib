@@ -32,7 +32,7 @@ def main(**kwargs):
     index = sector_table.index.to_list()
     index.append('Score')
     sl = pd.IndexSlice[index]
-    filename = f'stars_all_data.jpeg'
+    filename = f'stars_all_data'
     filename_date = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
     filepath = os.path.join(chart_base_path, "production", filename_date)
     styled = total_df.style \
@@ -59,4 +59,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

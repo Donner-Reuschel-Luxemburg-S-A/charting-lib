@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "US JOLTS Job Openings"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_jolts.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_jolts", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -44,4 +44,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

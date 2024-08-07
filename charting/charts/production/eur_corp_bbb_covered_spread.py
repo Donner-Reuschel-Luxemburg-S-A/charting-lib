@@ -28,7 +28,7 @@ def main(**kwargs):
 
     common_index = pd.DatetimeIndex(set(df.index).intersection(set(df2.index))).sort_values()
 
-    chart = Chart(title=title, num_rows=2, num_y_axis=1, filename="eur_corp_bbb_covered_spread.jpeg", metadata=metadata)
+    chart = Chart(title=title, num_rows=2, num_y_axis=1, filename="eur_corp_bbb_covered_spread", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(y_axis_index=0, row_index=0, label='BPS')
@@ -46,4 +46,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

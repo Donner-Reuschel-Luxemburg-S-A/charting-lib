@@ -25,7 +25,7 @@ def main(**kwargs):
 
     title = "NFIB Small Business Higher Prices & Nat'l Fed. of Ind. Business"
     metadata = Metadata(title=title, region=Region.US, category=[Category.INFLATION, Category.SURVEY])
-    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="us_nfib_cpi.jpeg")
+    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="us_nfib_cpi", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="EUR €", y_lim=(-35, 70))
     chart.configure_y_axis(y_axis_index=1, label="EUR €")
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

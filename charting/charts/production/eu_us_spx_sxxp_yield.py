@@ -27,7 +27,7 @@ def main(**kwargs):
     title = "Stoxx Euro 600 & S&P 500 Performance"
 
     metadata = Metadata(title=title, region=[Region.EU, Region.US], category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_us_spx_sxxp_yield.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_us_spx_sxxp_yield", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -43,4 +43,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -25,7 +25,7 @@ def main(**kwargs):
     title = "S&P 500"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_spx_mvag.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_spx_mvag", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="INDEX")
 
@@ -41,4 +41,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -22,7 +22,7 @@ def main(**kwargs):
 
     title = 'WTI & Brent Oil'
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
-    chart = Chart(title=title, metadata=metadata, filename="global_wti_brent_oil.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="global_wti_brent_oil", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="USD $")
 
@@ -37,4 +37,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

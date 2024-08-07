@@ -26,7 +26,7 @@ def main(**kwargs):
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
     common_index = pd.DatetimeIndex(set(df.index).intersection(set(df2.index))).sort_values()
-    chart = Chart(title=title, num_rows=2, filename="us_bbb_eu_bbb_corp.jpeg", metadata=metadata)
+    chart = Chart(title=title, num_rows=2, filename="us_bbb_eu_bbb_corp", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(row_index=0, label="BPS")
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

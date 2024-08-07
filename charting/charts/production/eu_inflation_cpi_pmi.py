@@ -29,7 +29,7 @@ def main(**kwargs):
 
     title = "Eurozone inflation"
     metadata = Metadata(title=title, region=Region.EU, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_cpi_pmi.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_cpi_pmi", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS")
 
@@ -46,4 +46,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

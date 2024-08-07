@@ -25,7 +25,7 @@ def main(**kwargs):
 
     title = "Eurozone: Indexed GDP development of the most important members"
     metadata = Metadata(title=title, region=Region.EU, category=Category.ECONOMY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_memb_gdp.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_memb_gdp", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -44,4 +44,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

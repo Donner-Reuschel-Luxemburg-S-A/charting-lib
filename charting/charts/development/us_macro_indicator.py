@@ -63,7 +63,7 @@ def main(**kwargs):
     title = "D&R US Recession Indicator"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="macro_index_ff_rate.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="macro_index_ff_rate", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="")
 
@@ -79,4 +79,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

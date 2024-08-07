@@ -18,7 +18,7 @@ def main(**kwargs):
     title = "STOXX 600: Cyclicals vs. Defensives"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="INDEX")
 
@@ -37,4 +37,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

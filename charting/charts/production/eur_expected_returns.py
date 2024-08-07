@@ -3,7 +3,7 @@ from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 
 
-def main():
+def main(**kwargs):
     data = {'ticker': {'DE Sov':
                            {4: 'GDBR4 Index',
                             5: 'GDBR5 Index',
@@ -57,7 +57,7 @@ def main():
                     data['result'][sector][t] = res.iloc[0,0]
     title = "Expected Returns"
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
-    chart = Chart(title=title, metadata=metadata, filename="expected_returns10.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="expected_returns10", language=kwargs.get('language', 'en'))
     chart.configure_y_axis(label="PERCENTAGE POINTS", y_lim=(-1 ,7))
 
     x = list(data['result'].keys())
@@ -89,4 +89,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -1,0 +1,26 @@
+{
+  "title": {
+    "U.S. Treasury 10-Year": "10-jährige U.S. Staatsanleihen",
+    "EU Yield Curves": "EU Renditekurven"
+  },
+  "x_axis": {
+    "P/E": "KGV",
+    "PERCENTAGE POINTS": "PROZENTPUNKTE",
+    "TENOR": "LAUFZEIT"
+  },
+  "y_axis": {
+    "PERCENTAGE POINTS": "PROZENTPUNKTE",
+    "INDEX": "INDEX",
+    "BPS": "BPS",
+    "REVERSED AXIS": "UMGEKEHRTE ACHSE",
+    "INVERTED AXIS": "INVERTIERTE ACHSE",
+    "RATIO": "VERHÄLTNIS"
+  },
+  "source": {
+      "FredSource": "Federal Reserve Economic Data (FRED)",
+      "BloombergSource": "Bloomberg",
+      "Bbk": "Deutsche Bundesbank",
+      "Ecb": "Europäische Zentralbank (EZB)",
+      "IndeedSource": "Indeed"
+  }
+}

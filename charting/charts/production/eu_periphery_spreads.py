@@ -24,7 +24,7 @@ def main(**kwargs):
 
     title = "EU Peripheral Spreads"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eu_periphery_spreads.jpeg")
+    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eu_periphery_spreads", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(row_index=0, label="BPS")
     chart.configure_y_axis(row_index=1, label="BPS")
@@ -45,4 +45,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

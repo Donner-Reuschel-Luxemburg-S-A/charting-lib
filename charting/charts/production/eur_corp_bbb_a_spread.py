@@ -25,7 +25,7 @@ def main(**kwargs):
     t2 = 'Bloomberg EuroAgg Corporate A EUR'
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
 
-    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bbb_a_spread.jpeg")
+    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eur_corp_bbb_a_spread", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(row_index=0, label='BPS')
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "Commodity Index"
     metadata = Metadata(title=title, region=Region.EU, category=Category.COMMODITY)
-    chart = Chart(title=title, metadata=metadata, filename='global_cmdty_index.jpeg')
+    chart = Chart(title=title, metadata=metadata, filename='global_cmdty_index', language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="EUR €")
 
@@ -35,4 +35,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

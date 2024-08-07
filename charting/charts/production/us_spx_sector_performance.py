@@ -40,7 +40,7 @@ def main(**kwargs):
     title = f"S&P 500 Sector Performance"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_spx_sector_performance.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_spx_sector_performance", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(label="PERCENTAGE POINTS")
 
@@ -51,4 +51,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

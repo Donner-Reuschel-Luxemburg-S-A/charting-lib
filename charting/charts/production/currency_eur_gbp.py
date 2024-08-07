@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "Pound Sterling £"
     metadata = Metadata(title=title, region=[Region.EU, Region.DE, Region.UK], category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="currency_eur_gbp.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="currency_eur_gbp", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="GBP £")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -35,4 +35,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -27,7 +27,7 @@ def main(**kwargs):
     title = "P/E Ratio of MSCI Emerging Markets Index & MSCI World Index"
 
     metadata = Metadata(title=title, region=[Region.GLOBAL, Region.EM], category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="global_mxef_mxwo_per.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="global_mxef_mxwo_per", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="P/E")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -43,4 +43,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

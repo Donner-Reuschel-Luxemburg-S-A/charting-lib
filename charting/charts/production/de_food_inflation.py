@@ -26,7 +26,7 @@ def main(**kwargs):
     d2, t2 = blp.get_series(series_id='GMFDDSE3 Index', observation_start=observation_start.strftime("%Y%m%d"),
                             observation_end=observation_end.strftime("%Y%m%d"))
 
-    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="german_food_inflation.jpeg")
+    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="german_food_inflation", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -43,4 +43,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

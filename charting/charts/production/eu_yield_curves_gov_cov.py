@@ -42,7 +42,7 @@ def main(**kwargs):
 
     title = "EU Yield Curves"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(label='TENOR')
@@ -59,4 +59,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

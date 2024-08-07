@@ -15,10 +15,10 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    stock_indices = ["SPX Index", "NDX Index", "SXXP Index", "DAX Index", "NKY Index", "HSI Index", "MXEF Index"]
+    stock_indices = ["SPX Index", "NDX Index", "SXXP Index", "SX5E Index", "DAX Index", "NKY Index", "MXEF Index"]
     stock_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
                                 observation_end=observation_end.strftime("%Y%m%d")) for idx in stock_indices]
-    stock_names = ["S&P 500", "NASDAQ 100", "Stoxx Europe 600", "DAX 40", "Nikkei 225", "Hang Seng", "Emerging Markets"]
+    stock_names = ["S&P 500", "NASDAQ 100", "Stoxx Europe 600", "Euro Stoxx 50", "DAX 40", "Nikkei 225", "Emerging Markets"]
     stock_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in stock_dfs]
     stock_data = sorted(zip(stock_names, stock_yields), key=lambda x: x[1])
     stock_data = list(zip(*stock_data))
@@ -48,7 +48,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.GLOBAL,
                         category=[Category.EQUITY, Category.FI, Category.ALTERNATIVES])
 
-    chart = Chart(title=title, metadata=metadata, filename="global_asset_class_performance.jpeg", num_rows=3)
+    chart = Chart(title=title, metadata=metadata, filename="global_asset_class_performance", num_rows=3, language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(label="PERCENTAGE POINTS")
 
@@ -67,4 +67,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

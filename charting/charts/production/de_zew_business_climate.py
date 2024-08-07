@@ -16,7 +16,7 @@ def main(**kwargs):
     title = "ZEW Germany Surveys"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_zew_business_climate.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_zew_business_climate", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="INDEX")
 
@@ -33,4 +33,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

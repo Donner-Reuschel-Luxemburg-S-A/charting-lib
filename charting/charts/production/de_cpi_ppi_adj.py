@@ -30,7 +30,7 @@ def main(**kwargs):
     title = "Germany: Producer, Wholesale and Consumer Inflation: Changes"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi_adj.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi_adj", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -49,4 +49,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

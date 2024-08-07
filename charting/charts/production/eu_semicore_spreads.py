@@ -26,7 +26,7 @@ def main(**kwargs):
 
     title = "EU Semi Core Spreads"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="eu_semicore_spreads.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_semicore_spreads", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="BPS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -43,4 +43,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

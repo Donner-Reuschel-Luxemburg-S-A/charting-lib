@@ -20,7 +20,7 @@ def main(**kwargs):
 
     title = "Silver"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
-    chart = Chart(title="Silver", metadata=metadata, filename='global_silver.jpeg')
+    chart = Chart(title="Silver", metadata=metadata, filename='global_silver', language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="USD $")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -33,4 +33,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

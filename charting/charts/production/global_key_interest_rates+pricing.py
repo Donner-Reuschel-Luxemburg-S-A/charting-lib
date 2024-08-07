@@ -36,7 +36,7 @@ def main(**kwargs):
     observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
     title = "Central Banks - Key Interest Rates"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates+pricing.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates+pricing", language=kwargs.get('language', 'en'))
 
     blp = BloombergSource()
     d5, t5 = blp.get_series(series_id='FDTR Index', observation_start=observation_start.strftime("%Y%m%d"),
@@ -189,4 +189,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

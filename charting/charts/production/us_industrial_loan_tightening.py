@@ -27,7 +27,7 @@ def main(**kwargs):
 
     title = "As industrial loan standards tighten, manufacturing contracts"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
-    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening.jpeg")
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="us_industrial_loan_tightening", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="INDEX", y_lim=(20, 65))
     chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS", reverse_axis=True)
@@ -45,4 +45,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -22,7 +22,7 @@ def main(**kwargs):
 
     title = "Germany CPI & CPI excl. Food & Energy"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="de_cpi_corecpi.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_cpi_corecpi", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -39,4 +39,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

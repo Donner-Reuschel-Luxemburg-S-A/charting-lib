@@ -27,7 +27,7 @@ def main(**kwargs):
     title = "Dow Jones Performance"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_indu_yield.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_indu_yield", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

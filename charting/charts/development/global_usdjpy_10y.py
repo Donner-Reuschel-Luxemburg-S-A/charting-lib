@@ -14,7 +14,7 @@ def main(**kwargs):
     title = "USDJPY"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="global_usdjpy_10y.jpeg")
+    chart = Chart(title=title, filename="global_usdjpy_10y", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="Level")
 
@@ -27,4 +27,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

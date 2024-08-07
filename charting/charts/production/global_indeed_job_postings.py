@@ -17,7 +17,7 @@ def main(**kwargs):
     title = "Indeed Job Postings"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="global_indeed_job_postings.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="global_indeed_job_postings", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="INDEX")
 
@@ -37,4 +37,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

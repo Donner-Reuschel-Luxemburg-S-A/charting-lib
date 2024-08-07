@@ -29,7 +29,7 @@ def main(**kwargs):
     title = "European Interest Rate Markets Sectors"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_rates_sector_performance.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_rates_sector_performance", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -48,4 +48,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

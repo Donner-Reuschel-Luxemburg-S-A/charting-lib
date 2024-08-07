@@ -25,7 +25,7 @@ def main(**kwargs):
     title = "Stoxx Euro 600"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_mvag.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_mvag", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="INDEX")
 
@@ -41,4 +41,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')
