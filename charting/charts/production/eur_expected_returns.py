@@ -1,4 +1,4 @@
-from xbbg.blp import bdp
+import xbbg.blp
 from charting.model.chart import Chart
 from charting.model.metadata import Category, Region, Metadata
 
@@ -53,12 +53,12 @@ def main(**kwargs):
             for sector, mat in d.items():
                 data['result'][sector] = {}
                 for t, index in mat.items():
-                    res = bdp(index, 'PX_LAST')
-                    data['result'][sector][t] = res.iloc[0,0]
+                    res = xbbg.blp.bdp(index, 'PX_LAST')
+                    data['result'][sector][t] = res.iloc[0, 0]
     title = "Expected Returns"
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
     chart = Chart(title=title, metadata=metadata, filename="expected_returns10", language=kwargs.get('language', 'en'))
-    chart.configure_y_axis(label="PERCENTAGE POINTS", y_lim=(-1 ,7))
+    chart.configure_y_axis(label="PERCENTAGE POINTS", y_lim=(-1, 7))
 
     x = list(data['result'].keys())
     y_roll_long = list([(sector[10] - sector[9])*9.5 for sector in data['result'].values()])

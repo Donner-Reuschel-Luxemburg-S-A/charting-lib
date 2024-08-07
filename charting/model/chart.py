@@ -296,6 +296,8 @@ class Chart:
             inverted_label = self._("INVERTED AXIS", part='y_axis')
             ax.set_ylabel(f'{ax.get_ylabel()} ({inverted_label})')
 
+        label = self._(label, part='labels')
+
         if transformer is not None:
             if isinstance(transformer, list):
                 x, y = reduce(lambda xy, trans: trans.transform(*xy), transformer, (x, y))
@@ -323,7 +325,7 @@ class Chart:
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
         elif chart_type == 'scatter':
-            handle = ax.scatter(x, y, color=color, marker=kwargs.get('marker','o'), label=label)
+            handle = ax.scatter(x, y, color=color, marker=kwargs.get('marker', 'o'), label=label)
 
             x_min = min(x)
             x_max = max(x)
@@ -384,12 +386,14 @@ class Chart:
                     color, suggested_alpha = get_color(y_axis=idx)
                     if value < 0:
                         bottom = 0
-                    handle = ax.bar(x[0] + offset+self.grouped_bar_width, value, self.grouped_bar_width, label=key, color=color, alpha=1,
+                    key = self._(key, part='labels')
+                    handle = ax.bar(x[0] + offset + self.grouped_bar_width, value, self.grouped_bar_width, label=key, color=color, alpha=1,
                                     bottom=bottom)
                     self.handles.append(handle)
                     bottom += value
                 color, suggested_alpha = get_color(y_axis=idx+1)
-                handle = ax.scatter(x[0] + offset+self.grouped_bar_width, sum(values.values()), marker="D", c=color, label='Expected Return')
+                l = self._('Expected Return', part='labels')
+                handle = ax.scatter(x[0] + offset + self.grouped_bar_width, sum(values.values()), marker="D", c=color, label=l)
                 ax.annotate('{:.2f}'.format(sum(values.values())), (x[0] + offset+self.grouped_bar_width-self.grouped_bar_width/2, max(*values.values(), sum(values.values()))+.15),
                             fontsize=7)
                 self.handles.append(handle)
@@ -402,7 +406,7 @@ class Chart:
             else:
                 mid_point += self.grouped_bar_width + self.bar_gap
 
-            ax.annotate(group, (mid_point, 6),
+            ax.annotate(self._(group, 'labels'), (mid_point, 6),
                         fontsize=10, weight='bold', ha='center')
             self.handles.pop(-1)
             self.x_min_axes.append(x[0])
@@ -556,7 +560,7 @@ class Chart:
         max_time_series = None
 
         if all([isinstance(x, datetime) for x in self.x_min_label]):
-            if min(self.x_min_label) != max(self.x_min_label):
+            if min(self.x_min_label) != min(self.x_max_label):
                 min_time_series = min(self.x_min_label).strftime("%B %Y")
                 max_time_series = max(self.x_max_label).strftime("%B %Y")
 

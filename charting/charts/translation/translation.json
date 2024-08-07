@@ -1,4 +1,11 @@
 {
+  "labels": {
+    "Expected Return": "Erwartete Rendite",
+    "Roll": "Roll",
+    "Yield": "Rendite",
+    "5Y": "5 Jahre",
+    "10Y": "10 Jahre"
+  },
   "title": {
     "EU Yield Curves": "EU Renditekurven",
     "AUD Trade Weighted Index Spot": "AUD handelsgewichteter Index Spot",
