@@ -323,10 +323,10 @@
     "RATIO": "VERHÄLTNIS"
   },
   "source": {
-      "FredSource": "Federal Reserve Economic Data (FRED)",
-      "BloombergSource": "Bloomberg",
-      "Bbk": "Deutsche Bundesbank",
-      "Ecb": "Europäische Zentralbank (EZB)",
-      "IndeedSource": "Indeed"
+      "Federal Reserve Economic Data (FRED)": "Federal Reserve Economic Data (FRED)",
+      "Bloomberg": "Bloomberg",
+      "German Federal Bank": "Deutsche Bundesbank",
+      "European Central Bank (ECB)": "Europäische Zentralbank (EZB)",
+      "Indeed": "Indeed"
   }
 }
