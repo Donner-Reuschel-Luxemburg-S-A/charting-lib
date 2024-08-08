@@ -44,7 +44,7 @@ def main(**kwargs):
     chart.add_last_value_badge(decimals=2)
 
     chart.add_horizontal_line()
-    chart.legend(ncol=3)
+    chart.legend(ncol=1)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 

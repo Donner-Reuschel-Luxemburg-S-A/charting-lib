@@ -10,12 +10,12 @@ def get_files():
     return path, file_list
 
 
-def update_charts(module_names: Union[List[str], List] = []) -> List[str]:
+def update_charts(module_names: Union[List[str], List]) -> List[str]:
     path, file_list = get_files()
     errors = []
     charts_to_update = []
     incorrect_names = []
-    if len(module_names) > 0:
+    if module_names and len(module_names) > 0:
         for chart in module_names:
             if not chart.endswith('py'):
                 chart = chart + '.py'
@@ -41,9 +41,6 @@ def update_charts(module_names: Union[List[str], List] = []) -> List[str]:
 
     return errors
 
-
-if __name__ == '__main__':
-    update_charts()
 
 if __name__ == '__main__':
     errors = update_charts(module_names=[
