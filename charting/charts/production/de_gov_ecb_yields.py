@@ -22,8 +22,8 @@ def main(**kwargs):
     df3, t3 = blp.get_series(series_id='EUORDEPO Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    t1 = "Germany Govt Bond 2 Yr BKO"
-    t2 = "Germany Govt Bond 10 Yr DBR"
+    t1 = "Germany Govt Bond 2 Yr"
+    t2 = "Germany Govt Bond 10 Yr"
     t3 = "ECB Deposit Facility Announcement"
 
     title = "Germany Government Bonds & ECB Deposit Rate"
