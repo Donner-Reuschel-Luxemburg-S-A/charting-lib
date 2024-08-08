@@ -36,7 +36,7 @@ def main(**kwargs):
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1['y'], label="Eurozone Harmonized CPI", transformer=Pct(periods=12))
-    chart.add_series(x=d2.index, y=d2['y'], label="Eurozone Harmonized CPI ex. Energy, Food, Alcohol and Tabacco",
+    chart.add_series(x=d2.index, y=d2['y'], label="Eurozone Harmonized CPI ex. Energy, Food, Alcohol and Tobacco",
                      transformer=Pct(periods=12))
     chart.add_horizontal_line(y=2)
     chart.add_last_value_badge()
