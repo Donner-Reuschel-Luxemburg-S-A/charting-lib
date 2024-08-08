@@ -41,7 +41,7 @@ def main(**kwargs):
 
     chart.add_series(x=df1.index, y=df1['y'], transformer=Resample('Q'), label=t1)
     chart.add_horizontal_line(y_axis_index=1)
-    chart.legend(ncol=2)
+    chart.legend(ncol=1)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 

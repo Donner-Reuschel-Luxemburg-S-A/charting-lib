@@ -54,7 +54,7 @@ def main(**kwargs):
     chart.add_series(chart_type='curve', x=df3.index, y=df3['y'], label=t3, t_min=observation_start,
                      t_max=observation_end)
 
-    chart.legend(2)
+    chart.legend(3)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

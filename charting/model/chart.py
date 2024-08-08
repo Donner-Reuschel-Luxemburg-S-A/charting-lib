@@ -33,9 +33,9 @@ base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 def set_locale(language):
     if language == 'de':
-        locale.setlocale(locale.LC_TIME, 'de_DE.utf8')
+        locale.setlocale(locale.LC_ALL, 'de_DE.utf8')
     else:
-        locale.setlocale(locale.LC_TIME, 'en_US.utf8')
+        locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 
 
 def load_translations():
