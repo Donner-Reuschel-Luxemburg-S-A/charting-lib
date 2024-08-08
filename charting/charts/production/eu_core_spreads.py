@@ -34,7 +34,7 @@ def main(**kwargs):
 
     chart.add_series(row_index=0, x=common_index, y=df1.loc[common_index, 'y'], label="Netherlands")
     chart.add_series(row_index=0, x=common_index, y=(df2.loc[common_index, 'y'] - df3.loc[common_index, 'y']) * 100,
-                     label="KFW")
+                     label="German Reconstruction Roan Corporation (KfW)")
     chart.legend(4)
     chart.add_last_value_badge(decimals=2)
 

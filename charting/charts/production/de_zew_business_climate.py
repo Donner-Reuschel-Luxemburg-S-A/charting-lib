@@ -13,6 +13,9 @@ def main(**kwargs):
     df4, t4 = blp.get_series(series_id='GRZECURR Index', observation_start=start_date)
     df5, t5 = blp.get_series(series_id='GRZEWI Index', observation_start=start_date)
 
+    t4 = "ZEW Germany Assessment of Current Situation"
+    t5 = "ZEW Germany Expectation of Economic Growth"
+
     title = "ZEW Germany Surveys"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 

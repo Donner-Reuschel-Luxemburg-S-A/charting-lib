@@ -18,7 +18,10 @@ def main(**kwargs):
     d1, t1 = fred.get_series(series_id='DCOILWTICO', observation_start=observation_start.strftime("%Y-%m-%d"),
                              observation_end=observation_end.strftime("%Y-%m-%d"))
     d2, t2 = fred.get_series(series_id='DCOILBRENTEU', observation_start=observation_start.strftime("%Y-%m-%d"),
-                             observation_end=observation_end.strftime("%Y-%m-%d"))
+                                observation_end=observation_end.strftime("%Y-%m-%d"))
+
+    t1 = "Crude Oil WTI"
+    t2 = "Crude Oil Brent"
 
     title = 'WTI & Brent Oil'
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)

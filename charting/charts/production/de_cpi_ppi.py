@@ -26,6 +26,10 @@ def main(**kwargs):
                                        observation_start=observation_start.strftime("%Y%m%d"),
                                        observation_end=observation_end.strftime("%Y%m%d"))
 
+    cpi_title = "Germany CPI All Items YoY"
+    ppi_title = "Germany Producer Prices YoY"
+    wpi_title = "Germany Wholesale Prices YoY"
+
     title = "Germany: Producer, Wholesale and Consumer Inflation"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 

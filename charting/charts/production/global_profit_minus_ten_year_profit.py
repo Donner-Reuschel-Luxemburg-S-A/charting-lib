@@ -38,14 +38,14 @@ def main(**kwargs):
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     df = df2 - df1
-    chart.add_series(x=df.index, y=df['y'], label="SXXP Index Earning Yields - GDBR10 Index")
+    chart.add_series(x=df.index, y=df['y'], label="Stoxx Europe 600 Earning Yields - Germany Government Bond 10 Year DBR Yield")
     df = df4 - df3
-    chart.add_series(x=df.index, y=df['y'], label="SPX Index Earning Yields - USGG10YR Index")
+    chart.add_series(x=df.index, y=df['y'], label="S&P 500 Price Earning Yields - US Generic Government 10 Year Yield")
 
     chart.add_horizontal_line()
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend(ncol=2)
+    chart.legend(ncol=1)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

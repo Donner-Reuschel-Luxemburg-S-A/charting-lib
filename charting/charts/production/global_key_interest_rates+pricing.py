@@ -6,7 +6,7 @@ from source_engine.bloomberg_source import BloombergSource
 from ratesvaluation.curves import SwapCurve
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
-from xbbg import blp as blp_
+import xbbg.blp
 from scipy import optimize
 import charting.model.style as style
 
@@ -48,6 +48,11 @@ def main(**kwargs):
     d8, t8 = blp.get_series(series_id='BOJDTR Index', observation_start=observation_start.strftime("%Y%m%d"),
                             observation_end=observation_end.strftime("%Y%m%d"))
 
+    t5 = "Federal Funds Target Rate - Up"
+    t6 = "ECB Deposit Facility Announcement"
+    t7 = "UK Bank of England Official Bank Rate"
+    t8 = "Bank Of Japan Unsecured Overnight Call Rate"
+
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -60,7 +65,6 @@ def main(**kwargs):
 
     chart.legend(ncol=2)
 
-
     curves = {'ECB': {},
               'FED': {},
               'BOE': {},
@@ -69,7 +73,7 @@ def main(**kwargs):
 
     # EUR
     eur_curve = SwapCurve(ticker='YCSW0514 Index')
-    ecb_meetings = blp_.bds('EURR002W Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
+    ecb_meetings = xbbg.blp.bds('EURR002W Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
     ecb_meetings = ecb_meetings.apply(lambda x: datetime.datetime.strptime(x[0][:10], '%Y/%m/%d'), axis=1). \
         reset_index(drop=True)
 
@@ -81,7 +85,7 @@ def main(**kwargs):
 
     # USD
     usd_curve = SwapCurve(ticker='YCSW0490 Index')
-    usd_on = blp_.bdp('SOFRRATE Index', 'PX_LAST')
+    usd_on = xbbg.blp.bdp('SOFRRATE Index', 'PX_LAST')
     fdates = [1/365]
     fdates.extend(usd_curve.dates[0])
     usd_curve.dates = fdates
@@ -89,7 +93,7 @@ def main(**kwargs):
     usd_rates.extend((usd_curve._data['mid_yield'] / 100).tolist())
     usd_curve._rates = []
     usd_curve.rates = usd_rates
-    fed_meetings = blp_.bds('FDTR Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
+    fed_meetings = xbbg.blp.bds('FDTR Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
     fed_meetings = fed_meetings.apply(lambda x: datetime.datetime.strptime(x[0][:10], '%Y/%m/%d'), axis=1). \
         reset_index(drop=True)
     fed_meetings = fed_meetings[fed_meetings > datetime.datetime.today()]
@@ -99,7 +103,7 @@ def main(**kwargs):
 
     # GBP
     gbp_curve = SwapCurve(ticker='YCSW0141 Index')
-    gbp_on = blp_.bdp('SONIO/N Index', 'PX_LAST')
+    gbp_on = xbbg.blp.bdp('SONIO/N Index', 'PX_LAST')
     fdates = [1 / 365]
     fdates.extend(gbp_curve.dates[0])
     gbp_curve.dates = fdates
@@ -107,7 +111,7 @@ def main(**kwargs):
     gbp_rates.extend((gbp_curve._data['mid_yield'] / 100).tolist())
     gbp_curve._rates = []
     gbp_curve.rates = gbp_rates
-    boe_meetings = blp_.bds('UKBRBASE Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
+    boe_meetings = xbbg.blp.bds('UKBRBASE Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
     boe_meetings = boe_meetings.apply(lambda x: datetime.datetime.strptime(x[0][:10], '%Y/%m/%d'), axis=1). \
         reset_index(drop=True)
     boe_meetings = boe_meetings[boe_meetings > datetime.datetime.today()]
@@ -118,7 +122,7 @@ def main(**kwargs):
 
     # JPY
     jpy_curve = SwapCurve(ticker='YCSW0195 Index')
-    jpy_on = blp_.bdp('MUTKCALM Index', 'PX_LAST')
+    jpy_on = xbbg.blp.bdp('MUTKCALM Index', 'PX_LAST')
     fdates = [1 / 365]
     fdates.extend(jpy_curve.dates[0])
     jpy_curve.dates = fdates
@@ -126,7 +130,7 @@ def main(**kwargs):
     jpy_rates.extend((jpy_curve._data['mid_yield'] / 100).tolist())
     jpy_curve._rates = []
     jpy_curve.rates = jpy_rates
-    boj_meetings = blp_.bds('UKBRBASE Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
+    boj_meetings = xbbg.blp.bds('UKBRBASE Index', 'ECO_FUTURE_RELEASE_DATE_LIST')
     boj_meetings = boj_meetings.apply(lambda x: datetime.datetime.strptime(x[0][:10], '%Y/%m/%d'), axis=1). \
         reset_index(drop=True)
     boj_meetings = boj_meetings[boj_meetings > datetime.datetime.today()]
@@ -183,7 +187,10 @@ def main(**kwargs):
         chart.add_series(x=data['PRICED_FILLED'].index, y=data['PRICED_FILLED']['Rates']*100+correction,
                          label=f'{cb} OIS Implied', color=style.get_color(counter), alpha=.5)
         counter += 1
-    plt.text(today+datetime.timedelta(days=(1.2*365)), 5.2, 'OIS Implied Rates',fontsize=8)
+
+    la = 'Overnight Interest Swap\nImplied Rates' if kwargs.get('language') == 'en' else 'Übernacht-Zinsswap\nimplizierte Zinssätze'
+
+    plt.text(today+datetime.timedelta(days=(1.2*365)), 5.2, la, fontsize=8)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 

@@ -23,6 +23,10 @@ def main(**kwargs):
     df3, t3 = blp.get_series(series_id='GRIFPBUS Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
+    t1 = "Ifo Pan Germany Business Expectations"
+    t2 = "Ifo Pan Germany Current Assessment"
+    t3 = "Ifo Pan Germany Business Climate"
+
     title = "IFO Business Climate"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 

@@ -21,8 +21,9 @@ def main(**kwargs):
     df1, t1 = blp.get_series(series_id='SXXP Index', field="px_close_1d",
                              observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
+    t1 = "Stoxx Europe 600"
 
-    title = "Stoxx Euro 600"
+    title = "Stoxx Europe 600"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_sxxp_mvag", language=kwargs.get('language', 'en'))

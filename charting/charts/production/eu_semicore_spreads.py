@@ -35,7 +35,7 @@ def main(**kwargs):
     chart.add_series(row_index=0, x=df2.index, y=df2['y'] * 100, label="Belgium")
     chart.add_series(row_index=0, x=df3.index, y=df3['y'], label="Finland")
     chart.add_series(row_index=0, x=df4.index, y=df4['y'], label="Austria")
-    # chart.add_last_value_badge(decimals=0)
+
     chart.add_last_value_badge(decimals=2)
 
     chart.legend(4)

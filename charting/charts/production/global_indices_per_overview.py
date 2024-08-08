@@ -16,12 +16,13 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    indices = ["NKY Index", "HSI Index", "MXEF Index", "SXXP Index", "DAX Index", "NDX Index", "SPX Index"]
+    indices = ["NKY Index", "MXEF Index", "SXXP Index", "SX5E Index", "DAX Index", "NDX Index", "SPX Index"]
 
     dfs = [blp.get_series(series_id=idx, field="RR900", observation_start=observation_start.strftime("%Y%m%d"),
                           observation_end=observation_end.strftime("%Y%m%d")) for idx in indices]
 
-    names = [title for _, title in dfs]
+    names = ["Nikkei 225", "Emerging Markets", "Stoxx Europe 600", "Euro Stoxx 50", "DAX 40",  "NASDAQ 100", "S&P 500"]
+
     y = [df["y"].values for df, _ in dfs]
 
     title = f"Global Indices P/E Overview"

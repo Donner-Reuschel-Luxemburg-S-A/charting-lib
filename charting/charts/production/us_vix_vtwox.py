@@ -32,7 +32,7 @@ def main(**kwargs):
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1['y'], label="Implied Volatility S&P 500")
-    chart.add_series(x=d2.index, y=d2['y'], label="Implied Volatility Eurostoxx 50")
+    chart.add_series(x=d2.index, y=d2['y'], label="Implied Volatility Euro Stoxx 50")
     chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)

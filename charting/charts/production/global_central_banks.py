@@ -36,9 +36,9 @@ def main(**kwargs):
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_series(x=fed.index, y=fed['y'], label="FED")
-    chart.add_series(x=ecb.index, y=ecb['y'], label="ECB")
-    chart.add_series(x=boj.index, y=boj['y'], label="BOJ")
+    chart.add_series(x=fed.index, y=fed['y'], label="Federal Reserve (FED)")
+    chart.add_series(x=ecb.index, y=ecb['y'], label="European Central Bank (ECB)")
+    chart.add_series(x=boj.index, y=boj['y'], label="Bank of Japan (BOJ)")
 
     chart.legend(ncol=3)
     chart.add_last_value_badge(decimals=2)

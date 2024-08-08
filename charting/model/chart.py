@@ -138,7 +138,7 @@ class Chart:
             'xbbg.blp': 'Bloomberg'
         }
 
-        return [self._(mapping.get(key), part='source') for key in matching_imports]
+        return list(set([self._(mapping.get(key), part='source') for key in matching_imports]))
 
     def _caller(self):
         _, filename, line, function, _, _ = inspect.stack()[2]
@@ -300,10 +300,10 @@ class Chart:
 
         if transformer is not None:
             if isinstance(transformer, list):
-                x, y = reduce(lambda xy, trans: trans.transform(*xy), transformer, (x, y))
+                x, y = reduce(lambda xy, trans: trans.transform(*xy, self.language), transformer, (x, y))
                 label = f"{label}, {axis_label} ({', '.join(trans.label() for trans in transformer)})"
             elif isinstance(transformer, Transformer):
-                x, y = transformer.transform(x, y)
+                x, y = transformer.transform(x, y, self.language)
                 label = f"{label}, {axis_label} ({transformer.label()})"
         else:
             label = f"{label}, {axis_label}"
@@ -339,6 +339,7 @@ class Chart:
         elif chart_type == 'boxplot':
             median_props = dict(color=colors[4], linewidth=1)
             mean_props = dict(color=colors[4], linewidth=1, linestyle='--')
+            x = [self._(ele, 'labels') for ele in x]
 
             handle = ax.boxplot(y, showfliers=False, labels=x, vert=False, patch_artist=True, meanline=True,
                                 showmeans=False, meanprops=mean_props, medianprops=median_props)
@@ -362,6 +363,8 @@ class Chart:
             self.x_min_label.append(t_min)
             self.x_max_label.append(t_max)
         elif chart_type == 'bar' and all(isinstance(p, str) for p in x):
+            x = [self._(ele, 'labels') for ele in x]
+
             handle = ax.barh(x, y, align='center', label=label, color=color, left=bar_bottom, alpha=alpha)
 
             self.max_label_length = max([len(ele) for ele in x])

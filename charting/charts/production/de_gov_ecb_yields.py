@@ -22,6 +22,10 @@ def main(**kwargs):
     df3, t3 = blp.get_series(series_id='EUORDEPO Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
+    t1 = "Germany Govt Bond 2 Yr BKO"
+    t2 = "Germany Govt Bond 10 Yr DBR"
+    t3 = "ECB Deposit Facility Announcement"
+
     title = "Germany Government Bonds & ECB Deposit Rate"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="de_gov_ecb_yields", language=kwargs.get('language', 'en'))

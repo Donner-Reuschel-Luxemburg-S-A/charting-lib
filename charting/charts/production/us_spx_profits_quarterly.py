@@ -24,6 +24,7 @@ def main(**kwargs):
                              observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Quarterly S&P 500 Earnings Per Share"
+    t1 = "S&P 500 Earnings Per Share"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
     chart = Chart(title=title, filename="us_spx_profits_quarterly", metadata=metadata, num_y_axis=2, language=kwargs.get('language', 'en'))

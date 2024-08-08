@@ -19,6 +19,8 @@ def main(**kwargs):
                             observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Silver"
+    t1 = "Silver USD"
+
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
     chart = Chart(title="Silver", metadata=metadata, filename='global_silver', language=kwargs.get('language', 'en'))
 

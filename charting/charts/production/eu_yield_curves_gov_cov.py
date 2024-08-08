@@ -20,7 +20,7 @@ def main(**kwargs):
     observation_start = kwargs.get('observation_start', DEFAULT_START_TENOR)
     observation_end = kwargs.get('observation_end', DEFAULT_END_TENOR)
 
-    t1 = 'Deutschland Staatsanleihen'
+    t1 = 'German Government Bonds'
     df1 = xbbg.blp.bds("YCGT0016 Index", "CURVE_TENOR_RATES")
     df1 = fix_bds_output(df1, yld='bid_yield')
     result = minimize_curve(dict(zip(df1.index, df1['y'])))
@@ -28,7 +28,7 @@ def main(**kwargs):
     df1_smooth = pd.DataFrame(y, index=df1.index, columns=['y'])
 
     df2 = xbbg.blp.bds("YCGT0040 Index", "CURVE_TENOR_RATES")
-    t2 = 'Italien Staatsanleihen'
+    t2 = 'Italy Government Bonds'
     df2 = fix_bds_output(df2, yld='bid_yield')
     result = minimize_curve(dict(zip(df2.index, df2['y'])))
     y = [nss_curve(result.x.tolist(), x) for x in df2.index]
@@ -38,7 +38,7 @@ def main(**kwargs):
     covered_curve = build_curve()
     par_curve = covered_curve.par_curve()
     df3 = pd.DataFrame({'y': [x / 100 for x in par_curve[1]]}, index=par_curve[0])
-    t3 = 'Deutsche Pfandbriefe'
+    t3 = 'German Covered Bonds'
 
     title = "EU Yield Curves"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)

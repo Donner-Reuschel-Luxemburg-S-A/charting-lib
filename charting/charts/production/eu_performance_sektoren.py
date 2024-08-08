@@ -26,6 +26,11 @@ def main(**kwargs):
     df4, t4 = blp.get_series(series_id='I02003EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
+    t1 = "Treasury"
+    t2 = "Government-Related"
+    t3 = "Corporates"
+    t4 = "Securitized"
+
     title = "European Interest Rate Markets Sectors"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
 

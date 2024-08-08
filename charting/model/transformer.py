@@ -18,7 +18,7 @@ class Transformer(ABC):
         pass
 
     @abstractmethod
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Transforms the time series data.
 

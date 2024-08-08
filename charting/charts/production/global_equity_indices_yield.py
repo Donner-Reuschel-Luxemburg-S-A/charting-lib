@@ -38,6 +38,13 @@ def main(**kwargs):
 
     title = "Stoxx Euro 600, Euro Stoxx 50, DAX, S&P 500, Nasdaq 100, Emerging Markets Performance"
 
+    t1 = "Stoxx Europe 600"
+    t2 = "Euro Stoxx 50"
+    t3 = "DAX 40"
+    t4 = "S&P 500"
+    t5 = "NASDAQ 100"
+    t6 = "Emerging Markets"
+
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.GLOBAL)
     chart = Chart(title=title, metadata=metadata, filename="global_indices_performance", language=kwargs.get('language', 'en'))
 

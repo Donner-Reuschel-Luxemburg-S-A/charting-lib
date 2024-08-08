@@ -23,7 +23,8 @@ def main(**kwargs):
                              observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "Quarterly Stoxx Euro 600 Earnings Per Share"
+    title = "Quarterly Stoxx Europe 600 Earnings Per Share"
+    t1 = "Stoxx Europe 600 Earnings Per Share"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
     chart = Chart(title=title, filename="eu_sxxp_profits_quarterly", metadata=metadata, num_y_axis=2, language=kwargs.get('language', 'en'))

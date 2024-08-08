@@ -21,7 +21,7 @@ class Center(Transformer):
         super().__init__()
         self.val = val
 
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Applies the difference transformation to the time series.
 
@@ -32,7 +32,7 @@ class Center(Transformer):
         Returns:
             (Series, Series): The transformed x-values and y-values.
         """
-
+        self.language = language
         return x, y - self.val
 
     def label(self) -> str:
@@ -43,4 +43,9 @@ class Center(Transformer):
             str: The label for the transformation.
         """
 
-        return f"centered ~ {self.val}"
+        if self.language == 'en':
+            label = 'centered'
+        else:
+            label = 'zentriert'
+
+        return f"{label} ~ {self.val}"
