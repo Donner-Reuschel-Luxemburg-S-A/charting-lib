@@ -28,8 +28,8 @@ def main(**kwargs):
 
     title = "Stoxx Euro 600 & S&P 500 Profit Margin"
 
-    t1 = "Stoxx Europe 600 Trailing 12M Profit Margin"
-    t2 = "S&P 500 Trailing 12M Profit Margin"
+    t1 = "Stoxx Europe 600 12M Profit Margin"
+    t2 = "S&P 500 12M Profit Margin"
 
     metadata = Metadata(title=title, region=[Region.EU, Region.US], category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="eu_us_sxxp_spx_profit_margin", language=kwargs.get('language', 'en'))

@@ -32,7 +32,7 @@ def main(**kwargs):
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(y_axis_index=0, row_index=0, label='BPS')
-    chart.configure_y_axis(y_axis_index=0, row_index=1, label="BPS")
+    chart.configure_y_axis(y_axis_index=0, row_index=1, label="BASISPOINTS")
 
     chart.add_series(x=common_index, y=df.loc[common_index]['y'], label=t, y_axis_index=0)
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2, y_axis_index=0)

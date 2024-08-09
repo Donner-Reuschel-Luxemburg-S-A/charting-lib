@@ -31,8 +31,8 @@ def main(**kwargs):
     chart = Chart(title=title, num_rows=2, filename="us_bbb_bb_corp", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(row_index=0, label="BPS")
-    chart.configure_y_axis(row_index=1, label="BPS")
+    chart.configure_y_axis(row_index=0, label="BASISPOINTS")
+    chart.configure_y_axis(row_index=1, label="BASISPOINTS")
     chart.add_series(x=common_index, y=df.loc[common_index]['y'], label=t)
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2)
     chart.add_series(x=common_index, y=(df.loc[common_index] - df2.loc[common_index])['y'], row_index=1, label=title)

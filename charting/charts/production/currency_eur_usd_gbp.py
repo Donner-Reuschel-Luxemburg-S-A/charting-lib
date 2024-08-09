@@ -18,20 +18,26 @@ def main(**kwargs):
     df1, t1 = source.get_data(flow_ref="EXR", key='D.USD.EUR.SP00.A',
                               parameters={'startPeriod': observation_start.strftime("%Y-%m-%d"),
                                           'endPeriod': observation_end.strftime("%Y-%m-%d")})
+    df2, t2 = source.get_data(flow_ref="EXR", key='D.GBP.EUR.SP00.A',
+                              parameters={'startPeriod': observation_start.strftime("%Y-%m-%d"),
+                                          'endPeriod': observation_end.strftime("%Y-%m-%d")})
 
-    title = "US Dollar $"
-    metadata = Metadata(title=title, region=[Region.EU, Region.DE, Region.US], category=Category.FX)
+    title = "US Dollar $ & Pound Sterling £"
+    metadata = Metadata(title=title, region=[Region.EU, Region.DE, Region.US, Region.UK], category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="currency_eur_usd", language=kwargs.get('language', 'en'))
+    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="currency_eur_usd_gbp", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="USD $")
+    chart.configure_y_axis(label="USD $", y_axis_index=0)
+    chart.configure_y_axis(label="GBP £", y_axis_index=1)
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_series(x=df1.index, y=df1['y'], label='ECB reference exchange rate, EUR/USD')
+    chart.add_series(x=df1.index, y=df1['y'], label='ECB reference exchange rate, EUR/USD', y_axis_index=0)
+    chart.add_series(x=df2.index, y=df2['y'], label='ECB reference exchange rate, EUR/GBP', y_axis_index=1)
+
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 

@@ -18,10 +18,10 @@ def main(**kwargs):
     blp = BloombergSource()
     df1, t1 = blp.get_series(series_id='.NLDE10B G Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='PX_LAST')
-    df2, t2 = blp.get_series(series_id='AS4641773 Corp', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
-    df3, t3 = blp.get_series(series_id='EC8300625 Govt', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
+    df2, t2 = blp.get_series(series_id='IB10KFW BVLI Index', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"), field='PX_LAST')
+    df3, t3 = blp.get_series(series_id='GDBR10 Index', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"), field='PX_LAST')
 
     common_index = pd.DatetimeIndex(
         set(df2.index).intersection(set(df3.index)).intersection(set(df1.index))).sort_values()
@@ -29,7 +29,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="eu_core_spreads", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="BPS")
+    chart.configure_y_axis(label="BASISPOINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(row_index=0, x=common_index, y=df1.loc[common_index, 'y'], label="Netherlands")

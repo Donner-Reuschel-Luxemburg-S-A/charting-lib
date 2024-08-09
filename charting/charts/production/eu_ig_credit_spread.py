@@ -26,8 +26,8 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
     chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eu_ig_credit_spread", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(row_index=0, label="BPS")
-    chart.configure_y_axis(row_index=1, label="BPS")
+    chart.configure_y_axis(row_index=0, label="BASISPOINTS")
+    chart.configure_y_axis(row_index=1, label="BASISPOINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     mean_val = [df1['y'].mean()] * len(df1.index)

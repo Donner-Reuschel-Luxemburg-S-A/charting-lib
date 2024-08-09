@@ -22,7 +22,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
     chart = Chart(title=title, metadata=metadata, filename="de_gov_spread_30y_10y", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="BPS")
+    chart.configure_y_axis(y_axis_index=0, label="BASISPOINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_horizontal_line()

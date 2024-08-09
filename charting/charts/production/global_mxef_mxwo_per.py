@@ -26,8 +26,8 @@ def main(**kwargs):
 
     title = "P/E Ratio of MSCI Emerging Markets Index & MSCI World Index"
 
-    t1 = "Emerging Markets P/E"
-    t2 = "Developed Markets P/E"
+    t1 = "Emerging Markets"
+    t2 = "Developed Markets"
 
     metadata = Metadata(title=title, region=[Region.GLOBAL, Region.EM], category=Category.EQUITY)
     chart = Chart(title=title, metadata=metadata, filename="global_mxef_mxwo_per", language=kwargs.get('language', 'en'))

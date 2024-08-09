@@ -48,10 +48,10 @@ def main(**kwargs):
     d8, t8 = blp.get_series(series_id='BOJDTR Index', observation_start=observation_start.strftime("%Y%m%d"),
                             observation_end=observation_end.strftime("%Y%m%d"))
 
-    t5 = "Federal Funds Target Rate - Up"
-    t6 = "ECB Deposit Facility Announcement"
-    t7 = "UK Bank of England Official Bank Rate"
-    t8 = "Bank Of Japan Unsecured Overnight Call Rate"
+    t5 = "FED Key Interest Rates"
+    t6 = "ECB Key Interest Rates"
+    t7 = "BOE Key Interest Rates"
+    t8 = "BOJ Key Interest Rates"
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -187,10 +187,6 @@ def main(**kwargs):
         chart.add_series(x=data['PRICED_FILLED'].index, y=data['PRICED_FILLED']['Rates']*100+correction,
                          label=f'{cb} OIS Implied', color=style.get_color(counter), alpha=.5)
         counter += 1
-
-    la = 'Overnight Interest Swap\nImplied Rates' if kwargs.get('language') == 'en' else 'Übernacht-Zinsswap\nimplizierte Zinssätze'
-
-    plt.text(today+datetime.timedelta(days=(1.2*365)), 5.2, la, fontsize=8)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 

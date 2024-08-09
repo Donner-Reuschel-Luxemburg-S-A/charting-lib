@@ -37,8 +37,8 @@ def main(**kwargs):
     fi_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d")) for idx in
               fi_indices]
-    fi_names = ["Euro Corporate", "Euro-Aggregate: Treasury", "Covered Bonds", "EUR Liquid High Yield",
-                "EMBI Global Core", "German Government Bonds", "Emerging Market Bonds"]
+    fi_names = ["Euro Corporate", "Euro Government Bonds", "Covered Bonds", "Euro Liquid High Yield",
+                "Emerging Markets Hard Currency (USD, EUR-Hedged)", "German Government Bonds", "Emerging Markets Local Currency (EUR)"]
     fi_yields = [((df['y'].iloc[-1] / df['y'].iloc[0]) - 1) * 100 for df, _ in fi_dfs]
     fi_data = sorted(zip(fi_names, fi_yields), key=lambda x: x[1])
     fi_data = list(zip(*fi_data))
