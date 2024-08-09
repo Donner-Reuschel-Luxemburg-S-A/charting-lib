@@ -18,10 +18,10 @@ def main(**kwargs):
     blp = BloombergSource()
     df1, t1 = blp.get_series(series_id='.NLDE10B G Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='PX_LAST')
-    df2, t2 = blp.get_series(series_id='IB10KFW BVLI Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"), field='PX_LAST')
-    df3, t3 = blp.get_series(series_id='GDBR10 Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"), field='PX_LAST')
+    df2, t2 = blp.get_series(series_id='AS4641773 Corp', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
+    df3, t3 = blp.get_series(series_id='EC8300625 Govt', observation_start=observation_start.strftime("%Y%m%d"),
+                             observation_end=observation_end.strftime("%Y%m%d"), field='YLD_YTM_MID')
 
     common_index = pd.DatetimeIndex(
         set(df2.index).intersection(set(df3.index)).intersection(set(df1.index))).sort_values()
@@ -35,7 +35,7 @@ def main(**kwargs):
     chart.add_series(row_index=0, x=common_index, y=df1.loc[common_index, 'y'], label="Netherlands")
     chart.add_series(row_index=0, x=common_index, y=(df2.loc[common_index, 'y'] - df3.loc[common_index, 'y']) * 100,
                      label="German Reconstruction Roan Corporation (KfW)")
-    chart.legend(4)
+    chart.legend(2)
     chart.add_last_value_badge(decimals=2)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
