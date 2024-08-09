@@ -38,7 +38,7 @@ def main(**kwargs):
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     df = df2 - df1
-    chart.add_series(x=df.index, y=df['y'], label="Stoxx Europe 600 Earning Yields - Germany Government Bond 10 Year DBR Yield")
+    chart.add_series(x=df.index, y=df['y'], label="Stoxx Europe 600 Earning Yields - Germany Government Bond 10 Year Yield")
     df = df4 - df3
     chart.add_series(x=df.index, y=df['y'], label="S&P 500 Price Earning Yields - US Generic Government 10 Year Yield")
 
