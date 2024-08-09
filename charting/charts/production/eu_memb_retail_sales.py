@@ -36,7 +36,7 @@ def main(**kwargs):
 
     chart.add_series(row_index=0, x=df1.index, y=np.exp(np.cumsum(np.log(1+df1['y']/100))), label="France")
     chart.add_series(row_index=0, x=df2.index, y=np.exp(np.cumsum(np.log(1+df2['y']/100))), label="Germany")
-    chart.add_series(row_index=0, x=df3.index, y=np.exp(np.cumsum(np.log(1+df3['y']/100))), label="Itlay")
+    chart.add_series(row_index=0, x=df3.index, y=np.exp(np.cumsum(np.log(1+df3['y']/100))), label="Italy")
     chart.add_last_value_badge(decimals=2)
 
     chart.legend(3)
