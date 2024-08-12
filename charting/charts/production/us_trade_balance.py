@@ -28,7 +28,7 @@ def main(**kwargs):
     title = "US Trade Balance"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_trade_balance.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_trade_balance", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="BILLION USD $")
@@ -43,4 +43,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

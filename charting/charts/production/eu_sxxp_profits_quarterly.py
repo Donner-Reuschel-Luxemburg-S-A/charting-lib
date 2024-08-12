@@ -23,10 +23,11 @@ def main(**kwargs):
                              observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "Quarterly Stoxx Euro 600 Earnings Per Share"
+    title = "Quarterly Stoxx Europe 600 Earnings Per Share"
+    t1 = "Stoxx Europe 600 Earnings Per Share"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, filename="eu_sxxp_profits_quarterly.jpeg", metadata=metadata, num_y_axis=2)
+    chart = Chart(title=title, filename="eu_sxxp_profits_quarterly", metadata=metadata, num_y_axis=2, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="EUR €")
     chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
@@ -40,10 +41,11 @@ def main(**kwargs):
 
     chart.add_series(x=df1.index, y=df1['y'], transformer=Resample('Q'), label=t1)
     chart.add_horizontal_line(y_axis_index=1)
-    chart.legend(ncol=2)
+    chart.legend(ncol=1)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

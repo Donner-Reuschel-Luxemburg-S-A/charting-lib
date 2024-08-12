@@ -23,10 +23,14 @@ def main(**kwargs):
     df3, t3 = blp.get_series(series_id='GRIFPBUS Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
+    t1 = "Ifo Pan Germany Business Expectations"
+    t2 = "Ifo Pan Germany Current Assessment"
+    t3 = "Ifo Pan Germany Business Climate"
+
     title = "IFO Business Climate"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_ifo_business_climate.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_ifo_business_climate", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="INDEX")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -42,4 +46,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

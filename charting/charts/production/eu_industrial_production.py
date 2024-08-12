@@ -23,7 +23,7 @@ def main(**kwargs):
     title = "Eurozone: Industrial Production YoY"
     metadata = Metadata(title=title, region=Region.EU, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_industrial_production.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_industrial_production", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -36,4 +36,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -29,7 +29,7 @@ def main(**kwargs):
     title = f"European Indices P/E Overview"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_indices_per_overview.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_indices_per_overview", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(label="P/E")
 
@@ -40,4 +40,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

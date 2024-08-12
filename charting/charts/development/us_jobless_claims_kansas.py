@@ -21,7 +21,7 @@ def main():
     title = "US Jobless Claims vs. Kansas Fed Labor Market Conditions"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_jobless_claims_kansas.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="us_jobless_claims_kansas", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(1000), label="")
 
@@ -33,4 +33,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

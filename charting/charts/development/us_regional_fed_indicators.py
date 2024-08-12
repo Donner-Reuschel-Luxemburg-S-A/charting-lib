@@ -35,7 +35,7 @@ def main(**kwargs):
     title = "US Philadelphia Fed Indicators"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_philly.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_philly", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -51,7 +51,7 @@ def main(**kwargs):
     title = "US Dallas Fed Indicators"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_dallas.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_dallas", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -66,7 +66,7 @@ def main(**kwargs):
     title = "US Kansas Fed Indicators"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_kansas.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_kansas", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -81,7 +81,7 @@ def main(**kwargs):
     title = "US Richmond Fed Indicators"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_richmond.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_richmond", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -97,7 +97,7 @@ def main(**kwargs):
     title = "US Empire Manufacturing Index"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_empire.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_empire", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -111,7 +111,7 @@ def main(**kwargs):
     title = "US NY Fed Business Activity Index"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="nyfed_serv.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="nyfed_serv", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -124,4 +124,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

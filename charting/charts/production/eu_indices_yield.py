@@ -27,7 +27,7 @@ def main(**kwargs):
     title = "European Indices Performance"
 
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.EU)
-    chart = Chart(title=title, filename="eu_indices_yield.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="eu_indices_yield", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -45,4 +45,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

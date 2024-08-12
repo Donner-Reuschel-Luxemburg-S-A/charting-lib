@@ -26,7 +26,7 @@ def main(**kwargs):
     title = "Performance of MSCI World Quality vs. MSCI World Value"
 
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.GLOBAL)
-    chart = Chart(title=title, metadata=metadata, filename="global_value_vs_index.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="global_value_vs_index", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -41,4 +41,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

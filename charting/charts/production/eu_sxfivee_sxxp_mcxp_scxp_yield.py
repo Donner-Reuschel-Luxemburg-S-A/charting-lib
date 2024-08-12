@@ -34,7 +34,7 @@ def main(**kwargs):
     title = "Euro Stoxx 50, Stoxx Euro 600, Stoxx Euro 200 Small & Mid Caps Performance"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_sxfivee_sxxp_mcxp_scxp_yield.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_sxfivee_sxxp_mcxp_scxp_yield", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -52,4 +52,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

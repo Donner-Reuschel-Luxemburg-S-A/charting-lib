@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "Canada Employment Change YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="ca_payrolls_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="ca_payrolls_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
 
     nfp_df['z'] = nfp_df['y'].rolling(12).sum()
     nfp_df = nfp_df.iloc[12:, ]
@@ -37,4 +37,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

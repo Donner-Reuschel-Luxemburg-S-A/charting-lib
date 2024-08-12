@@ -10,7 +10,7 @@ class Invert(Transformer):
     This transformer applies a negation to the values of the input time series.
     """
 
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Applies the inversion transformation to the time series.
 
@@ -21,7 +21,7 @@ class Invert(Transformer):
         Returns:
             (Series, Series): The transformed x-values and y-values.
         """
-
+        self.language = language
         return x, -y
 
     def label(self) -> str:
@@ -32,4 +32,4 @@ class Invert(Transformer):
             str: The label for the transformation.
         """
 
-        return "inverted"
+        return "inverted" if self.language == 'en' else 'invertiert'

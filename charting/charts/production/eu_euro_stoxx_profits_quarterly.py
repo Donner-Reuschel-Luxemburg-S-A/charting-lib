@@ -25,7 +25,7 @@ def main(**kwargs):
     title = "Quarterly Euro Stoxx 50 Earnings Per Share"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, filename="eu_sx5e_profits_quarterly.jpeg", metadata=metadata, num_y_axis=2)
+    chart = Chart(title=title, filename="eu_sx5e_profits_quarterly", metadata=metadata, num_y_axis=2, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="EUR €")
     chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
@@ -46,4 +46,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

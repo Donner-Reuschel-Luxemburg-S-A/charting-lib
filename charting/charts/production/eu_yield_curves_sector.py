@@ -55,7 +55,7 @@ def main(**kwargs):
 
     title = "EU Corporate Spreads by Sector"
     metadata = Metadata(title=title, region=Region.EU, category=Category.CREDIT)
-    chart = Chart(title=title, metadata=metadata, filename="eu_corporate_curves_sector.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_corporate_curves_sector", language=kwargs.get('language', 'en'))
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(label='TENOR')
 
@@ -77,4 +77,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

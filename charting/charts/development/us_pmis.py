@@ -43,7 +43,7 @@ def main(**kwargs):
     title = "US ISM Manufacturing & Services"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_ism.jpeg", num_rows=1, num_y_axis=1, metadata=metadata)
+    chart = Chart(title=title, filename="us_ism", num_rows=1, num_y_axis=1, metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -57,7 +57,7 @@ def main(**kwargs):
 
     title = "US PMIs"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
-    chart = Chart(title=title, filename="us_pmis.jpeg", num_rows=1, metadata=metadata)
+    chart = Chart(title=title, filename="us_pmis", num_rows=1, metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -74,7 +74,7 @@ def main(**kwargs):
     title = "US Small Business Optimism"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_small_business_optimism.jpeg", num_rows=1, num_y_axis=1, metadata=metadata)
+    chart = Chart(title=title, filename="us_small_business_optimism", num_rows=1, num_y_axis=1, metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -88,7 +88,7 @@ def main(**kwargs):
     title = "Chicago PMI"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_pmi_chicago.jpeg", num_rows=1, num_y_axis=1, metadata=metadata)
+    chart = Chart(title=title, filename="us_pmi_chicago", num_rows=1, num_y_axis=1, metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -102,7 +102,7 @@ def main(**kwargs):
     title = "Conference Board Leading Indicator"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_leading_indicator.jpeg", num_rows=1, metadata=metadata)
+    chart = Chart(title=title, filename="us_leading_indicator", num_rows=1, metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -118,7 +118,7 @@ def main(**kwargs):
     title = "US Consumer Confidence"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_consumer_confidence.jpeg", num_rows=1, metadata=metadata)
+    chart = Chart(title=title, filename="us_consumer_confidence", num_rows=1, metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
 
@@ -132,4 +132,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')
