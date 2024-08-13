@@ -24,9 +24,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_ahe_yoy.jpeg", metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
-                           label="Percentage Points")
+    chart.configure_y_axis(label="Percentage Points")
 
     chart.add_series(ahe_y_df.index, ahe_y_df['y'], label=ahe_y_title)
 
@@ -39,9 +37,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_ahe_mom_3.jpeg", metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
-                           label="Percentage Points")
+    chart.configure_y_axis(label="Percentage Points")
 
     chart.add_series(ahe_m_df.index, ahe_m_df['y'] * 12, label=ahe_m_title,
                      transformer=[Avg(offset=DateOffset(months=3))])
@@ -55,9 +51,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
     chart = Chart(title=title, filename="us_ahe_mom_6.jpeg", metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
-                           label="Percentage Points")
+    chart.configure_y_axis(label="Percentage Points")
 
     chart.add_series(ahe_m_df.index, ahe_m_df['y'] * 12, label=ahe_m_title,
                      transformer=[Avg(offset=DateOffset(months=6))])

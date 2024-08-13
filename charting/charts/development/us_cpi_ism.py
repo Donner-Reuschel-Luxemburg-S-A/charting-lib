@@ -25,8 +25,6 @@ def main(**kwargs):
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="cpi_ism_manu.jpeg", num_rows=1, num_y_axis=2)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(ism_manu_df.index, ism_manu_df['y'], label=ism_manu_title, y_axis_index=1,
@@ -34,23 +32,22 @@ def main(**kwargs):
 
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US ISM Serv./Man. Prices Paid vs. CPI"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
     chart = Chart(title=title, filename="cpi_ism_serv.jpeg", num_rows=1, num_y_axis=2)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
+
 
     # chart.add_series(cpi_serv_df.index, cpi_serv_df['y'], label=cpi_serv_title,transformer=[Pct(periods=12)])
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(ism_serv_df.index, ism_serv_df['y'], label=ism_serv_title, y_axis_index=1,
                      transformer=[Lag(DateOffset(months=-2))])
 
-    # chart.add_horizontal_line(y=0)
+    chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
