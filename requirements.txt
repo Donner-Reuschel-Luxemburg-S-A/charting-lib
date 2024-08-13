@@ -5,8 +5,8 @@ matplotlib~=3.9.0
 pandas~=2.2.2
 python-dateutil~=2.9.0
 fredapi~=0.5.2
-source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.17.1
-ratesvaluation@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/rates-valuation.git@1.4.0
+source_engine@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/source-engine.git@1.18.0
+ratesvaluation@ git+ssh://git@github.com/Donner-Reuschel-Luxemburg-S-A/rates-valuation.git@default-prob
 python-pptx~=0.6.23
 pypiwin32
 numpy~=1.26.4
