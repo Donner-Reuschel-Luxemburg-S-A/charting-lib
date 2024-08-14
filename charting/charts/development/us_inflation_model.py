@@ -7,6 +7,7 @@ from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
+from statsmodels.tsa.stattools import adfuller
 
 from charting.model.chart import Chart
 import matplotlib.dates as mdates
@@ -16,120 +17,167 @@ from charting.transformer.lag import Lag
 from charting.transformer.avg import Avg
 
 
+def transform_data(t,k):
+    return (t-t.shift(k))/t.shift(k)
+
+
 def main():
 
-    start_date = "20200101"
+    start_date = "20040101"
 
     blp = BloombergSource()
 
+# ------------------------ DOWNLOAD DATA ---------------------------------
 
+    # X variables
+
+    # Gasoline
     xb1_df, xb1_title = blp.get_series(series_id="XB1 Comdty",field="PX_LAST", observation_start=start_date)
+    xb1_df=xb1_df.resample("ME").last()
+    # Oil
+    #cl1_df, cl1_title = blp.get_series(series_id="CL1 Comdty",field="PX_LAST", observation_start=start_date)
+    # Natural Gas
+    ng1_df, ng1_title = blp.get_series(series_id="NG1 Comdty", field="PX_LAST", observation_start=start_date)
+    ng1_df = ng1_df.resample("ME").last()
 
-    cl1_df, cl1_title = blp.get_series(series_id="CL1 Comdty",field="CHG_PCT_1M", observation_start=start_date)
 
-    manu_df, manu_title = blp.get_series(series_id="NAPMPRIC INDEX",field="PX_LAST", observation_start=start_date)
-    serv_df, serv_title = blp.get_series(series_id="NAPMNPRC INDEX", field="PX_LAST", observation_start=start_date)
+
+    # ISM Manufacturing Prices Paid
+    #manu_df, manu_title = blp.get_series(series_id="NAPMPRIC INDEX",field="PX_LAST", observation_start=start_date)
+    # ISM Services Prices Paid
+    #serv_df, serv_title = blp.get_series(series_id="NAPMNPRC INDEX", field="PX_LAST", observation_start=start_date)
+
+    #ism_prices_df = serv_df
+    #ism_prices_df['y']=0.8*ism_prices_df['y']+0.2*manu_df['y']
+
+    # Atlanta Fed Wage Tracker
     atl_df, atl_title = blp.get_series(series_id="WGTRMDWG INDEX", field="PX_LAST", observation_start=start_date)
-    gdp_df, gdp_title = blp.get_series(series_id="EHGDUSY INDEX", field="PX_LAST", observation_start=start_date)
+    # US GDP YOY
+    #gdp_df, gdp_title = blp.get_series(series_id="EHGDUSY INDEX", field="PX_LAST", observation_start=start_date)
+    # US M2 YOY
     m2_df, m2_title = blp.get_series(series_id="M2% YOY INDEX", field="PX_LAST", observation_start=start_date)
+    # Dollar Index
     dxy_df, dxy_title = blp.get_series(series_id="DXY CURNCY", field="PX_LAST", observation_start=start_date)
-    ng_df, ng_title = blp.get_series(series_id="NG1 Comdty", field="PX_LAST", observation_start=start_date)
 
-    mxn_df, mxn_title = blp.get_series(series_id="USDMXN CURNCY", field="CHG_PCT_1M", observation_start=start_date)
-    eur_df, eur_title = blp.get_series(series_id="USDEUR CURNCY", field="CHG_PCT_1M", observation_start=start_date)
-    jpy_df, jpy_title = blp.get_series(series_id="USDJPY CURNCY", field="CHG_PCT_1M", observation_start=start_date)
-    cny_df, cny_title = blp.get_series(series_id="USDCNY CURNCY", field="CHG_PCT_1M", observation_start=start_date)
-    cad_df, cad_title = blp.get_series(series_id="USDCAD CURNCY", field="CHG_PCT_1M", observation_start=start_date)
 
-    inf_df, inf_title = blp.get_series(series_id="IMP1CHNG Index", field="PX_LAST", observation_start=start_date)
+    # Currencies
+    mxn_df, mxn_title = blp.get_series(series_id="USDMXN CURNCY", field="PX_LAST", observation_start=start_date)
+    mxn_df = mxn_df.resample("ME").last()
+    #eur_df, eur_title = blp.get_series(series_id="USDEUR CURNCY", field="PX_LAST", observation_start=start_date)
+    #jpy_df, jpy_title = blp.get_series(series_id="USDJPY CURNCY", field="PX_LAST", observation_start=start_date)
+    #cny_df, cny_title = blp.get_series(series_id="USDCNY CURNCY", field="PX_LAST", observation_start=start_date)
+    #cad_df, cad_title = blp.get_series(series_id="USDCAD CURNCY", field="PX_LAST", observation_start=start_date)
 
+    # Y variable
+
+    # Inflation
+    inf_df, inf_title = blp.get_series(series_id="CPI YOY Index", field="PX_LAST", observation_start=start_date)
+
+    # ------------------------ MERGE ---------------------------------
+    xb1_df.resample("ME")
+
+    merge=inf_df
+    merge = pd.merge(merge, m2_df, how='inner', left_index=True, right_index=True)
+    merge.columns = ['CPI', 'M2']
+    merge = pd.merge(merge, atl_df, how='left', left_index=True, right_index=True).ffill()
+    merge.columns = ['CPI', 'M2','Wages']
+    merge = pd.merge(merge, xb1_df, how='left', left_index=True, right_index=True).ffill()
+    merge.columns = ['CPI', 'M2', 'Wages', 'Gasoline']
+    merge = pd.merge(merge, ng1_df, how='inner', left_index=True, right_index=True)
+    merge.columns = ['CPI', 'M2', 'Wages', 'Gasoline', 'NatGas']
+    merge = pd.merge(merge,mxn_df, how='inner', left_index=True, right_index=True)
+    merge.columns = ['CPI', 'M2', 'Wages', 'Gasoline','NatGas','MXN']
+
+    monate = 12
+    merge['Wages']=merge['Wages'].shift(1)
+    merge['M2'] = merge['M2'].shift(18)
+    merge['Gasoline'] = transform_data(merge['Gasoline'], monate)
+    merge['NatGas'] = transform_data(merge['NatGas'], monate)
+    merge['MXN'] = transform_data(merge['MXN'], monate)
+
+
+    merge = merge.dropna()
+
+    # ------------------------ TRANSFORM ---------------------------------
+
+
+
+    #est = smf.ols(formula='CPI ~ 0+JPY+CNY', data=merge).fit()
+    est = smf.ols(formula='CPI ~ 0+M2+Wages+Gasoline+NatGas+MXN',data=merge).fit()
+    print(est.summary())
+
+    lastm2 = [m2_df['y'].tail(18)[0]]
+    lastwages = [atl_df['y'].tail(1)[0]]
+    lastgasoline = [(xb1_df['y'].tail(2)[0]-xb1_df['y'].tail(12)[0])/xb1_df['y'].tail(12)[0]]
+    lastgas = [(ng1_df['y'].tail(2)[0] - ng1_df['y'].tail(12)[0]) / ng1_df['y'].tail(12)[0]]
+    lastmxn = [(mxn_df['y'].tail(2)[0] - mxn_df['y'].tail(12)[0]) / mxn_df['y'].tail(12)[0]]
+
+    Xnew = pd.DataFrame({'M2':lastm2,'Wages':lastwages,'Gasoline':lastgasoline,'NatGas':lastgas,'MXN':lastmxn})
+    model=est.predict()
     title = "US Inflation Model"
     #title = "Euro Unternehmensanleihen: Refinanzierungskosten"
     #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_inflation_model.png",num_y_axis=2,num_rows=4)
+    chart = Chart(title=title, filename="us_inflation_model_fit.png",num_y_axis=1)
 
-    minor_locator = mdates.MonthLocator(interval=3)
-    major_locator = mdates.MonthLocator(interval=12)
+    minor_locator = mdates.MonthLocator(interval=12)
+    major_locator = mdates.MonthLocator(interval=24)
     major_formatter = mdates.DateFormatter("%b %y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
 
-    chart.add_series(inf_df.index, inf_df['y'], label=inf_title,y_axis_index=0,row_index=0)
-    chart.add_series(m2_df.index, m2_df['y'], label=m2_title,transformer=[Lag(offset=DateOffset(months=-12))],y_axis_index=1,row_index=0)
-
-    chart.add_series(inf_df.index, inf_df['y'], label=inf_title, y_axis_index=0,row_index=1)
-    chart.add_series(atl_df.index, atl_df['y'], label=atl_title, y_axis_index=1,row_index=1)
-
-    chart.add_series(inf_df.index, inf_df['y'], label=inf_title, y_axis_index=0, row_index=2)
-    chart.add_series(manu_df.index, manu_df['y'], label=manu_title, y_axis_index=1, row_index=2)
-
-    chart.add_series(inf_df.index, inf_df['y'], label=inf_title, y_axis_index=0, row_index=2)
-    chart.add_series(serv_df.index, serv_df['y'], label=serv_title, y_axis_index=1, row_index=2)
+    chart.add_series(merge.index, merge['CPI'], label="Inflation")
+    chart.add_series(merge.index, model, label="Model")
 
     chart.legend(ncol=1)
     chart.plot()
 
-    inf_df['y'] = inf_df['y']/100
+    # ------------------------ CHARTS ---------------------------------
 
-    merge = pd.merge(inf_df, manu_df, how='inner', left_index=True, right_index=True)
+    title = "US Inflation: Money Supply & Wages"
 
-    merge = pd.merge(merge, serv_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services']
-    m2_df=m2_df.shift(12)
-    merge = pd.merge(merge, m2_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services','M2']
-    atl_df=atl_df.shift(1)
-    merge = pd.merge(merge, atl_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2','Wages']
-    merge = pd.merge(merge, xb1_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2', 'Wages', 'Gasoline']
-    merge = pd.merge(merge, cl1_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2', 'Wages', 'Gasoline','Oil']
+    chart = Chart(title=title, filename="us_inflation_model_m2_atl.png", num_y_axis=2, num_rows=2)
 
-    merge = pd.merge(merge,mxn_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2', 'Wages', 'Gasoline','Oil','MXN']
-    merge = pd.merge(merge, eur_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2', 'Wages', 'Gasoline','Oil', 'MXN','EUR']
-    merge = pd.merge(merge, jpy_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2', 'Wages', 'Gasoline', 'Oil','MXN', 'EUR','JPY']
-    merge = pd.merge(merge, cny_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2', 'Wages', 'Gasoline', 'Oil','MXN', 'EUR', 'JPY','CNY']
-    merge = pd.merge(merge, cad_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'Manufacturing', 'Services', 'M2', 'Wages', 'Gasoline', 'Oil','MXN', 'EUR', 'JPY', 'CNY','CAD']
-
-    #merge = merge - merge.shift(1)
-    merge = merge.dropna()
-
-    est = smf.ols(formula='CPI ~ 0+JPY+CNY', data=merge).fit()
-    #est = smf.ols(formula='CPI ~ 0+Manufacturing+Services+M2+Wages+Gasoline+DXY',data=merge).fit()
-    print(est.summary())
-
-    df_model = inf_df
-    df_model['y'] = 0.02 * merge['CPI'] + 0.025 * merge['Manufacturing']+0.1 * merge['M2'] + 0.13 * merge['Wages'] + 0.004 * merge['Gasoline']
-    df_model = df_model.dropna()
-
-    title = "US Inflation Model fitted"
-    #title = "Euro Unternehmensanleihen: Refinanzierungskosten"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
-
-    chart = Chart(title=title, filename="us_inflation_model_fit.png",num_y_axis=2)
-
-    minor_locator = mdates.MonthLocator(interval=3)
-    major_locator = mdates.MonthLocator(interval=12)
+    minor_locator = mdates.MonthLocator(interval=12)
+    major_locator = mdates.MonthLocator(interval=48)
     major_formatter = mdates.DateFormatter("%b %y")
 
     chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
 
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
 
-    chart.add_series(inf_df.index, inf_df['y'], label=inf_title,y_axis_index=0)
-    chart.add_series(df_model.index, df_model['y'], label="Model",y_axis_index=1)
+    chart.add_series(m2_df.index, m2_df['y'], label=m2_title, transformer=[Lag(offset=DateOffset(months=-12))],y_axis_index=1, row_index=0)
+    chart.add_series(inf_df.index, inf_df['y'], label=inf_title, y_axis_index=0, row_index=0)
+
+    chart.add_series(inf_df.index, inf_df['y'], label=inf_title, y_axis_index=0, row_index=1)
+    chart.add_series(atl_df.index, atl_df['y'], label=atl_title, y_axis_index=1, row_index=1)
 
     chart.legend(ncol=1)
     chart.plot()
+
+    title = "US Inflation: Gasoline & Natural Gas Prices"
+
+    chart = Chart(title=title, filename="us_inflation_model_xb1_ng1.png", num_y_axis=2, num_rows=2)
+
+    minor_locator = mdates.MonthLocator(interval=12)
+    major_locator = mdates.MonthLocator(interval=48)
+    major_formatter = mdates.DateFormatter("%b %y")
+
+    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
+
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
+
+    chart.add_series(xb1_df.index, xb1_df['y'], label=xb1_title, y_axis_index=1, row_index=0)
+    chart.add_series(inf_df.index, inf_df['y'], label=inf_title, y_axis_index=0, row_index=0)
+
+    chart.add_series(inf_df.index, inf_df['y'], label=inf_title, y_axis_index=0, row_index=1)
+    chart.add_series(ng1_df.index, ng1_df['y'], label=ng1_title, y_axis_index=1, row_index=1)
+
+    chart.legend(ncol=1)
+    chart.plot()
+
 
 if __name__ == '__main__':
     main()
