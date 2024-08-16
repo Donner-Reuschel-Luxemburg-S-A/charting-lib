@@ -10,7 +10,7 @@ from ratesvaluation.provider import UnderlyingProvider
 
 
 DEFAULT_START_TENOR = 0
-DEFAULT_END_TENOR = 15
+DEFAULT_END_TENOR = 30
 
 
 def main(**kwargs):
@@ -27,22 +27,35 @@ def main(**kwargs):
     estimators = {c: CurveEstimator(bonds=provider.get_bonds_for_country(c)) for c in ['DE', 'IT', 'RO', 'FR']}
     title = "EU Yield Curves"
     # metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, filename="default_zcurve.jpeg")  # metadata=metadata,
+    chart = Chart(title=title, filename="default_curve.jpeg")  # metadata=metadata,
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(label='TENOR')
-    for c, est in estimators.items():
-        tenor, z_curve = est.zero_curve()
-        chart.add_series(chart_type='curve', x=tenor, y=z_curve, label=c, t_min=observation_start,
-                         t_max=observation_end)
-    chart.legend(2)
-    chart.plot(upload_chart='observation_start' not in kwargs)
     df_curves = {}
     for c in ['IT', 'RO', 'FR']:
         df_curves[c] = estimators[c].default_curve(estimators['DE'])
+    for c, (tenor, rates) in df_curves.items():
+        # cum_prob = 1 - np.exp(-rates * np.array(tenor))
+        chart.add_series(chart_type='curve', x=tenor, y=rates, label=c,
+                         t_min=observation_start,
+                         t_max=observation_end)
+    chart.legend(2)
+    chart.plot(upload_chart='observation_start' not in kwargs)
+
 
     title = "EU Yield Curves"
     # metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
+    chart = Chart(title=title, filename="default_cum.jpeg")  # metadata=metadata,
+
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
+    chart.configure_x_axis(label='TENOR')
+    for c, (tenor, rates) in df_curves.items():
+        cum_prob = 1 - np.exp(-rates * np.array(tenor))
+        chart.add_series(chart_type='curve', x=tenor, y=cum_prob, label=c,
+                         t_min=observation_start,
+                         t_max=observation_end)
+    chart.legend(2)
+    chart.plot(upload_chart='observation_start' not in kwargs)
     chart = Chart(title=title,  filename="default.jpeg")    #metadata=metadata,
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
