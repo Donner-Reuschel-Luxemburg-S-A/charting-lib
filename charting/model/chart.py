@@ -309,7 +309,7 @@ class Chart:
             label = f"{label}, {axis_label}"
 
         if chart_type == 'line':
-            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
+            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha, **kwargs)
 
             if fill:
                 if fill_threshold is None:
