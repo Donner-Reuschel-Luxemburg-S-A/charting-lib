@@ -135,7 +135,10 @@ class Chart:
             'Bbk': 'German Federal Bank',
             'Ecb': 'European Central Bank (ECB)',
             'IndeedSource': 'Indeed',
-            'xbbg.blp': 'Bloomberg'
+            'xbbg.blp': 'Bloomberg',
+            'blp': 'Bloomberg',
+            'EstatStatisticsSource': 'EuroStat',
+            'ImfSource': 'IMF'
         }
 
         return list(set([self._(mapping.get(key), part='source') for key in matching_imports]))
