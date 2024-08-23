@@ -282,7 +282,11 @@ class Chart:
             t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
             For chart_type 'curve' t_max is the maximum tenor.
         """
-        color, suggested_alpha = kwargs.get('color', get_color(y_axis=len(self.handles)))
+        if 'color' in kwargs.keys():
+            color, suggested_alpha = kwargs.pop('color')
+        else:
+            color, suggested_alpha = get_color(y_axis=len(self.handles))
+
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
         self.grouped_bar_width = kwargs.get('grouped_bar_width', .08)
         self.bar_gap = kwargs.get('bar_gap', .05)
