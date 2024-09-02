@@ -34,39 +34,21 @@ def main():
     # Gasoline
     xb1_df, xb1_title = blp.get_series(series_id="XB1 Comdty",field="PX_LAST", observation_start=start_date)
     xb1_df=xb1_df.resample("ME").last()
-    # Oil
-    #cl1_df, cl1_title = blp.get_series(series_id="CL1 Comdty",field="PX_LAST", observation_start=start_date)
+
     # Natural Gas
     ng1_df, ng1_title = blp.get_series(series_id="NG1 Comdty", field="PX_LAST", observation_start=start_date)
     ng1_df = ng1_df.resample("ME").last()
 
-
-
-    # ISM Manufacturing Prices Paid
-    #manu_df, manu_title = blp.get_series(series_id="NAPMPRIC INDEX",field="PX_LAST", observation_start=start_date)
-    # ISM Services Prices Paid
-    #serv_df, serv_title = blp.get_series(series_id="NAPMNPRC INDEX", field="PX_LAST", observation_start=start_date)
-
-    #ism_prices_df = serv_df
-    #ism_prices_df['y']=0.8*ism_prices_df['y']+0.2*manu_df['y']
-
     # Atlanta Fed Wage Tracker
     atl_df, atl_title = blp.get_series(series_id="WGTRMDWG INDEX", field="PX_LAST", observation_start=start_date)
-    # US GDP YOY
-    #gdp_df, gdp_title = blp.get_series(series_id="EHGDUSY INDEX", field="PX_LAST", observation_start=start_date)
+
     # US M2 YOY
     m2_df, m2_title = blp.get_series(series_id="M2% YOY INDEX", field="PX_LAST", observation_start=start_date)
-    # Dollar Index
-    dxy_df, dxy_title = blp.get_series(series_id="DXY CURNCY", field="PX_LAST", observation_start=start_date)
-
 
     # Currencies
     mxn_df, mxn_title = blp.get_series(series_id="USDMXN CURNCY", field="PX_LAST", observation_start=start_date)
     mxn_df = mxn_df.resample("ME").last()
-    #eur_df, eur_title = blp.get_series(series_id="USDEUR CURNCY", field="PX_LAST", observation_start=start_date)
-    #jpy_df, jpy_title = blp.get_series(series_id="USDJPY CURNCY", field="PX_LAST", observation_start=start_date)
-    #cny_df, cny_title = blp.get_series(series_id="USDCNY CURNCY", field="PX_LAST", observation_start=start_date)
-    #cad_df, cad_title = blp.get_series(series_id="USDCAD CURNCY", field="PX_LAST", observation_start=start_date)
+
 
     # Y variable
 
@@ -98,22 +80,28 @@ def main():
 
     merge = merge.dropna()
 
-    # ------------------------ TRANSFORM ---------------------------------
+    # ------------------------ MODEL ---------------------------------
 
 
-
-    #est = smf.ols(formula='CPI ~ 0+JPY+CNY', data=merge).fit()
     est = smf.ols(formula='CPI ~ 0+M2+Wages+Gasoline+NatGas+MXN',data=merge).fit()
     print(est.summary())
+    model = est.predict()
 
-    lastm2 = [m2_df['y'].tail(18)[0]]
-    lastwages = [atl_df['y'].tail(1)[0]]
-    lastgasoline = [(xb1_df['y'].tail(2)[0]-xb1_df['y'].tail(12)[0])/xb1_df['y'].tail(12)[0]]
-    lastgas = [(ng1_df['y'].tail(2)[0] - ng1_df['y'].tail(12)[0]) / ng1_df['y'].tail(12)[0]]
-    lastmxn = [(mxn_df['y'].tail(2)[0] - mxn_df['y'].tail(12)[0]) / mxn_df['y'].tail(12)[0]]
+
+    # ----------------------- PREDICT OOS -----------------------------
+    versatz = 12
+    lastm2 = [m2_df['y'].iloc[-19]]
+    lastwages = [atl_df['y'].iloc[-2]]
+    lastgasoline = [(xb1_df['y'].iloc[-1]-xb1_df['y'].iloc[-versatz])/xb1_df['y'].iloc[-versatz]]
+    lastgas = [(ng1_df['y'].iloc[-1] - ng1_df['y'].iloc[-versatz]) / ng1_df['y'].iloc[-versatz]]
+    lastmxn = [(mxn_df['y'].iloc[-1] - mxn_df['y'].iloc[-versatz]) / mxn_df['y'].iloc[-versatz]]
 
     Xnew = pd.DataFrame({'M2':lastm2,'Wages':lastwages,'Gasoline':lastgasoline,'NatGas':lastgas,'MXN':lastmxn})
-    model=est.predict()
+    print('New CPI Estimate:')
+    print(est.predict(Xnew))
+
+    # ----------------------- CHART -----------------------------
+
     title = "US Inflation Model"
     #title = "Euro Unternehmensanleihen: Refinanzierungskosten"
     #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
