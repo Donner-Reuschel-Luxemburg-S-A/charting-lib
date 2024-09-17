@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import xbbg.blp
 from charting.model.chart import Chart
@@ -26,6 +27,7 @@ def main(**kwargs):
     result = minimize_curve(dict(zip(df1.index, df1['y'])))
     y = [nss_curve(result.x.tolist(), x) for x in df1.index]
     df1_smooth = pd.DataFrame(y, index=df1.index, columns=['y'])
+    df1_smooth = df1_smooth.loc[df1_smooth.index>=.5]
 
     df2 = xbbg.blp.bds("YCGT0040 Index", "CURVE_TENOR_RATES")
     t2 = 'Italy Government Bonds'
@@ -33,11 +35,14 @@ def main(**kwargs):
     result = minimize_curve(dict(zip(df2.index, df2['y'])))
     y = [nss_curve(result.x.tolist(), x) for x in df2.index]
     df2_smooth = pd.DataFrame(y, index=df2.index, columns=['y'])
+    df2_smooth = df2_smooth.loc[df2_smooth.index >= .5]
 
     # Covereds
     covered_curve = build_curve()
     par_curve = covered_curve.par_curve()
-    df3 = pd.DataFrame({'y': [x / 100 for x in par_curve[1]]}, index=par_curve[0])
+    x_ = [x>=.5 for x in par_curve[0]]
+
+    df3 = pd.DataFrame({'y': [x / 100 for x in np.array(par_curve[1])[x_]]}, index=np.array(par_curve[0])[x_])
     t3 = 'German Covered Bonds'
 
     title = "EU Yield Curves"
