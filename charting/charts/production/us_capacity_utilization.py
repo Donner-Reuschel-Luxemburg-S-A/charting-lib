@@ -31,10 +31,10 @@ def main(**kwargs):
     title = "US Capacity Utilization"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_capacity_utilization.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_capacity_utilization", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(cap_df.index, cap_df['y'], label=cap_title)
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
@@ -46,4 +46,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

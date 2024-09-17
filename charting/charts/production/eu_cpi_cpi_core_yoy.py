@@ -13,8 +13,8 @@ def main(**kwargs):
     title = "EU Inflation Measures YoY"
     metadata = Metadata(title=title, region=Region.EU, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_cpi_cpi_core_yoy.jpeg")
-    chart.configure_y_axis(label="%")
+    chart = Chart(title=title, metadata=metadata, filename="eu_cpi_cpi_core_yoy", language=kwargs.get('language', 'en'))
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(cpix_df.index, cpix_df['y'], label=cpix_title)
@@ -26,4 +26,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

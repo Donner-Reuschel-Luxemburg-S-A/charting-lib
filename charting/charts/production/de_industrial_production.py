@@ -31,7 +31,7 @@ def main(**kwargs):
     title = "Germany: Consecutive Months of Decline in Industrial Production"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_ind_prod_cons.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_ind_prod_cons", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="")
 
@@ -44,4 +44,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -16,9 +16,9 @@ def main(**kwargs):
     title = "ZEW Eurozone Surveys"
     metadata = Metadata(title=title, region=Region.EU, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_zew_business_climate.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_zew_business_climate", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="Index")
+    chart.configure_y_axis(y_axis_index=0, label="INDEX")
 
     major_formatter = mdates.DateFormatter("%b %y")
 
@@ -32,4 +32,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -1,13 +1,12 @@
 import datetime
 
 import matplotlib.dates as mdates
-from dateutil.relativedelta import relativedelta
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Region, Category
 
-DEFAULT_START_DATE = datetime.datetime.today() - relativedelta(years=15)
+DEFAULT_START_DATE = datetime.date(2017, 1, 1)
 DEFAULT_END_DATE = datetime.datetime.today()
 
 
@@ -16,26 +15,22 @@ def main(**kwargs):
     observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
 
     blp = BloombergSource()
-
-    start = datetime.datetime.today().date() - relativedelta(years=15)
-    df1, t1 = blp.get_series(series_id='USGG10YR Index', observation_start=observation_start.strftime("%Y%m%d"),
+    df1, t1 = blp.get_series(series_id='DEYC2Y10 Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
-    df2, t2 = blp.get_series(series_id='SPX Index', field="RR907",
-                             observation_start=observation_start.strftime("%Y%m%d"),
+    df2, t2 = blp.get_series(series_id='DEYC1030 Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
-    df = df2 - df1
 
-    title = "S&P Earning Yields minus U.S. Treasury 10-Year"
+    title = "Germany Government Bonds Spreads"
+    metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
+    chart = Chart(title=title, metadata=metadata, filename="de_gov_spreads", language=kwargs.get('language', 'en'))
 
-    metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_spx_profit_minus_ten_year_profit.jpeg")
-
-    chart.configure_y_axis(label="Percentage Points")
-
+    chart.configure_y_axis(label="BASISPOINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_series(x=df.index, y=df['y'], label="SPX Index Earning Yields - USGG10YR Index")
     chart.add_horizontal_line()
+    chart.add_series(x=df1.index, y=df1['y'], label=t1)
+    chart.add_series(x=df2.index, y=df2['y'], label=t2)
+
     chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)
@@ -43,4 +38,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

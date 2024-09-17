@@ -25,14 +25,14 @@ def main(**kwargs):
 
     title = "VIX & V2X Volatility Markets"
     metadata = Metadata(title=title, region=[Region.US, Region.EU], category=Category.VOLATILITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_vix_v2x.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_vix_v2x", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(10, 50))
+    chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS", y_lim=(10, 50))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1['y'], label="Implied Volatility S&P 500")
-    chart.add_series(x=d2.index, y=d2['y'], label="Implied Volatility Eurostoxx 50")
+    chart.add_series(x=d2.index, y=d2['y'], label="Implied Volatility Euro Stoxx 50")
     chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)
@@ -41,4 +41,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

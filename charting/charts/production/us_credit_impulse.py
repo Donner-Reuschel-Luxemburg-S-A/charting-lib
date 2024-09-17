@@ -28,9 +28,9 @@ def main(**kwargs):
     title = "US Credit Impulse"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_credit_impulse_measures_yoy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_credit_impulse_measures_yoy", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(credit_impulse_df.index, credit_impulse_df['y'], label=credit_impulse_title)
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -18,9 +18,9 @@ def main(**kwargs):
     title = "Composite PMIs: Eurozone"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_pmi.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_pmi", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="Index")
+    chart.configure_y_axis(y_axis_index=0, label="INDEX")
 
     major_formatter = mdates.DateFormatter("%b %y")
 
@@ -36,4 +36,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

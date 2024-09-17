@@ -21,7 +21,7 @@ class Pct(Transformer):
         super().__init__()
         self.periods = periods
 
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Applies the percentage change transformation to the input data.
 
@@ -32,6 +32,7 @@ class Pct(Transformer):
         Returns:
             Tuple[Series, Series]: The transformed x-values and y-values.
         """
+        self.language = language
         df = DataFrame({'y': y}, index=x)
         df = df.pct_change(periods=self.periods) * 100
         df = df.dropna()
@@ -46,4 +47,5 @@ class Pct(Transformer):
         Returns:
             str: The label for the transformation.
         """
-        return f"pct ~ {self.periods} periods"
+        label = 'periods' if self.language == 'en' else 'Perioden'
+        return f"% ~ {self.periods} {label}"

@@ -20,9 +20,9 @@ def main(**kwargs):
 
     title = "U.S. Treasury 2-Year"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="us_treasury_2y.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_treasury_2y", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -34,4 +34,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

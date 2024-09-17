@@ -18,11 +18,11 @@ def main(**kwargs):
     df1, t1 = blp.get_series(series_id='.FRA10 G Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "France Spread to Bunds"
+    title = "France Spread to German Government Bonds"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="eu_fr_spreads.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_fr_spreads", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="BPS")
+    chart.configure_y_axis(label="BASISPOINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(row_index=0, x=df1.index, y=df1['y']*100, label="France")
@@ -33,4 +33,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

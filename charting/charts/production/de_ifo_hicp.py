@@ -28,10 +28,10 @@ def main(**kwargs):
     title = "IFO Price Expectations & Inflation"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="de_ifo_hicp.jpeg")
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="de_ifo_hicp", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="Index")
-    chart.configure_y_axis(y_axis_index=1, label="Percentage Points")
+    chart.configure_y_axis(y_axis_index=0, label="INDEX")
+    chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -43,4 +43,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

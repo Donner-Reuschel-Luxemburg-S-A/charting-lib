@@ -20,18 +20,18 @@ def main(**kwargs):
                            observation_end=observation_end.strftime("%Y%m%d"))
     df2, t2 = blp.get_series(series_id='I02561EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
-    title = 'EUR Corporate BBB - BTP/Bund Spread'
+    title = 'EUR Corporate BBB - Italy/German Government Bonds Spread'
     t = 'BTPS - Bund 10Y Spread'
     t2 = 'Bloomberg Pan-European Aggregate: Corporate Baa Total Return'
 
     metadata = Metadata(title=title, region=Region.EU, category=[Category.CREDIT, Category.RATES])
     common_index = pd.DatetimeIndex(set(df.index).intersection(set(df2.index))).sort_values()
 
-    chart = Chart(title=title, num_rows=2, filename="eur_corp_bbb_btp_spread.jpeg", metadata=metadata)
+    chart = Chart(title=title, num_rows=2, filename="eur_corp_bbb_btp_spread", metadata=metadata, language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(row_index=0, label='BPS Spread To TSY')
-    chart.configure_y_axis(row_index=1, label='Spread Difference BPS')
+    chart.configure_y_axis(row_index=0, label='BPS')
+    chart.configure_y_axis(row_index=1, label="BASISPOINTS")
 
     chart.add_series(x=common_index, y=df.loc[common_index]['y'] * 100, label=t)
     chart.add_series(x=common_index, y=df2.loc[common_index]['y'], label=t2)
@@ -46,4 +46,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

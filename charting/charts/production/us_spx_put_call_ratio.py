@@ -19,15 +19,18 @@ def main(**kwargs):
     df1, t1 = blp.get_series(series_id='SPX Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
     df2, t2 = blp.get_series(series_id='PCUSEQTR Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"))
+                            observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "S&P 500 & Put Call Ratio"
 
+    t1 = "S&P 500"
+    t2 = "CBOE Equity Put/Call Ratio"
+
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, filename="us_spx_put_call_ratio.jpeg", metadata=metadata, num_rows=2)
+    chart = Chart(title=title, filename="us_spx_put_call_ratio", metadata=metadata, num_rows=2, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(row_index=0, y_axis_index=0, label="USD $")
-    chart.configure_y_axis(row_index=1, y_axis_index=0, label="Ratio")
+    chart.configure_y_axis(row_index=1, y_axis_index=0, label="RATIO")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -41,4 +44,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

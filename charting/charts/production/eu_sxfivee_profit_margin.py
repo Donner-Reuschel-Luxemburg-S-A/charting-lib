@@ -26,9 +26,9 @@ def main(**kwargs):
     title = "Euro Stoxx 50 Profit Margin"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_sx5e_profit_margin.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_sx5e_profit_margin", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -41,4 +41,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

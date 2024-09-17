@@ -26,22 +26,29 @@ def main(**kwargs):
                                        observation_start=observation_start.strftime("%Y%m%d"),
                                        observation_end=observation_end.strftime("%Y%m%d"))
 
+    cpi_title = "Germany CPI All Items YoY"
+    ppi_title = "Germany Producer Prices YoY"
+    wpi_title = "Germany Wholesale Prices YoY"
+
     title = "Germany: Producer, Wholesale and Consumer Inflation"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_cpi_ppi", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
     chart.add_series(ppi_df.index, ppi_df['y'], label=ppi_title)
     chart.add_series(wpi_df.index, wpi_df['y'], label=wpi_title)
 
+    chart.add_last_value_badge(decimals=2)
+
     chart.add_horizontal_line()
-    chart.legend()
+    chart.legend(ncol=1)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

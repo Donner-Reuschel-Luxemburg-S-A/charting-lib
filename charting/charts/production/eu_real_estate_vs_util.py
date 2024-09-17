@@ -13,12 +13,12 @@ def main(**kwargs):
     df15, t15 = blp.get_series(series_id='SX86P Index', observation_start=start_date)
     df17, t17 = blp.get_series(series_id='SX6P Index', observation_start=start_date)
 
-    title = "STOXX 600: Real Estate vs. Utes"
+    title = "STOXX 600: Real Estate vs. Utilities"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks2.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inside_stocks2", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="Index")
+    chart.configure_y_axis(y_axis_index=0, label="INDEX")
 
     major_formatter = mdates.DateFormatter("%b %y")
 
@@ -32,4 +32,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

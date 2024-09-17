@@ -21,7 +21,7 @@ def main(**kwargs):
     title = "US Initial Jobless Claims"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_initial_claims.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_initial_claims", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(100), major_locator=MultipleLocator(500), label="")
 
@@ -35,7 +35,7 @@ def main(**kwargs):
     title = "US Continuing Jobless Claims"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="us_continuing_claims.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_continuing_claims", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(5000), label="")
 
@@ -48,4 +48,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

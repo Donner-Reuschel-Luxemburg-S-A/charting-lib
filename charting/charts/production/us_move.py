@@ -20,9 +20,9 @@ def main(**kwargs):
 
     title = "Implied Volatility U.S. Treasury"
     metadata = Metadata(title=title, region=Region.US, category=Category.VOLATILITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_move_index.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_move_index", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Index", y_lim=(50, 210))
+    chart.configure_y_axis(label="INDEX", y_lim=(50, 210))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1['y'], label=t1)
@@ -32,4 +32,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

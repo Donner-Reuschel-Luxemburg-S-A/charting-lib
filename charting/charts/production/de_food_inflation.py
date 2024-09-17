@@ -26,21 +26,22 @@ def main(**kwargs):
     d2, t2 = blp.get_series(series_id='GMFDDSE3 Index', observation_start=observation_start.strftime("%Y%m%d"),
                             observation_end=observation_end.strftime("%Y%m%d"))
 
-    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="german_food_inflation.jpeg")
+    chart = Chart(title=title, metadata=metadata, num_y_axis=2, filename="german_food_inflation", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", y_lim=(-5, 22.5))
-    chart.configure_y_axis(y_axis_index=1, label="Index", y_lim=(-20, 90))
+    chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS", y_lim=(-5, 22.5))
+    chart.configure_y_axis(y_axis_index=1, label="INDEX", y_lim=(-20, 90))
 
     chart.add_series(x=d2.index, y=d2['y'], label=t2, y_axis_index=1, transformer=Lead(offset=DateOffset(months=6)))
     chart.add_series(x=d1.index, y=d1['y'], label=t1, y_axis_index=0)
 
     chart.add_last_value_badge()
 
-    chart.legend()
+    chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

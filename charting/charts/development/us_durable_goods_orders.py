@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "US Durable Goods Orders 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_durable_goods_orders_mom_6.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_durable_goods_orders_mom_6", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -37,7 +37,7 @@ def main(**kwargs):
     title = "US Durable Goods 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_durable_goods_orders_mom_12.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_durable_goods_orders_mom_12", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -53,7 +53,7 @@ def main(**kwargs):
     title = "US Durable Goods Orders YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
 
-    chart = Chart(title=title, filename="us_durable_goods_orders_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_durable_goods_orders_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -69,4 +69,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

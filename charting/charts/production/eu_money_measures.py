@@ -26,20 +26,21 @@ def main(**kwargs):
     title = "EU Money Supply Measures YoY"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_money_measures_yoy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_money_measures_yoy", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(m1_df.index, m1_df['y'], label=m1_title)
     chart.add_series(m2_df.index, m2_df['y'], label=m2_title)
     chart.add_series(m3_df.index, m3_df['y'], label=m3_title)
 
     chart.add_horizontal_line()
-    chart.legend(ncol=1)
+    chart.legend(ncol=3)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

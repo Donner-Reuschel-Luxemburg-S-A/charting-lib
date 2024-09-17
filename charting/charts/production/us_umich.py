@@ -35,9 +35,9 @@ def main(**kwargs):
     title = "US University Michigan Surveys"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_umich_surveys.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_umich_surveys", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Index")
+    chart.configure_y_axis(label="INDEX")
 
     chart.add_series(sentiment_df.index, sentiment_df['y'], label=sentiment_title)
     chart.add_series(expectations_df.index, expectations_df['y'], label=expectations_title)
@@ -52,4 +52,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

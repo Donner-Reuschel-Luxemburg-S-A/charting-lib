@@ -15,22 +15,32 @@ def main(**kwargs):
     observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
 
     blp = BloombergSource()
-    d1, t1 = blp.get_series(series_id='XAG Curncy', observation_start=observation_start.strftime("%Y%m%d"),
+    d1, t1 = blp.get_series(series_id='XAU Curncy', observation_start=observation_start.strftime('%Y%m%d'),
+                            observation_end=observation_end.strftime('%Y%m%d'))
+    d2, t2 = blp.get_series(series_id='XAG Curncy', observation_start=observation_start.strftime("%Y%m%d"),
                             observation_end=observation_end.strftime("%Y%m%d"))
 
-    title = "Silver"
-    metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
-    chart = Chart(title="Silver", metadata=metadata, filename='global_silver.jpeg')
+    title = "Gold & Silver"
+    t1 = "Gold USD"
+    t2 = "Silver USD"
 
-    chart.configure_y_axis(y_axis_index=0, label="USD")
+    metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.COMMODITY)
+    chart = Chart(title="Gold", metadata=metadata, num_y_axis=2, filename='global_gold_silver', language=kwargs.get('language', 'en'))
+
+    chart.configure_y_axis(label="USD $", y_axis_index=0)
+    chart.configure_y_axis(label="USD $", y_axis_index=1)
+
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
-    chart.add_series(x=d1.index, y=d1['y'], label=t1)
-    chart.legend()
+    chart.add_series(x=d1.index, y=d1['y'], label=t1, y_axis_index=0)
+    chart.add_series(x=d2.index, y=d2['y'], label=t2, y_axis_index=1)
+
+    chart.legend(ncol=2)
     chart.add_last_value_badge(decimals=2)
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

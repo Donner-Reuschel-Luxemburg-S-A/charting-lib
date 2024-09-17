@@ -21,9 +21,9 @@ def main(**kwargs):
 
     title = "Taiwan - Total Export Trade (YoY)"
     metadata = Metadata(title=title, region=Region.TW, category=Category.ECONOMY)
-    chart = Chart(title=title, metadata=metadata, filename="tw_export_yoy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="tw_export_yoy", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1['y'], label=title)
@@ -35,4 +35,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

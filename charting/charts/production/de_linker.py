@@ -26,9 +26,9 @@ def main(**kwargs):
 
     title = "Germany Real Rates"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="de_real_rates.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_real_rates", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="BPS")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label="Germany Real Rate 2033")
@@ -36,9 +36,10 @@ def main(**kwargs):
     chart.add_series(x=df5.index, y=df5['y'], label="Germany Real Rate 2026")
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend()
+    chart.legend(ncol=3)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

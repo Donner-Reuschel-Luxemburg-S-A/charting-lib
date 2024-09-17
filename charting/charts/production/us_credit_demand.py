@@ -36,9 +36,9 @@ def main(**kwargs):
     title = "US Credit Demand"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_credit_demand.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_credit_demand", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(credit_demand_small_df.index, credit_demand_small_df['y'], label=credit_demand_small_title)
     chart.add_series(credit_demand_large_df.index, credit_demand_large_df['y'], label=credit_demand_large_title)
@@ -54,4 +54,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

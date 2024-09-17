@@ -26,9 +26,9 @@ def main(**kwargs):
     title = "MSCI Emerging Markets Profit Margin"
 
     metadata = Metadata(title=title, region=Region.EM, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_mxef_profit_margin.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_mxef_profit_margin", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df1.index, y=df1['y'], label=t1, transformer=Avg(offset=DateOffset(months=1)))
@@ -39,4 +39,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -26,9 +26,9 @@ def main(**kwargs):
     title = "Euro IG Corporates Refinancing Costs"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_corporate_yield_coupon.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_corporate_yield_coupon", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(corp_ytw_df.index, corp_ytw_df['y'] - corp_cpn_df['y'],
                      label="Euro IG Corporates: Yield to Worst minus Coupon")
@@ -41,4 +41,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

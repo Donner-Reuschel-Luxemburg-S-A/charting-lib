@@ -39,7 +39,7 @@ def main(**kwargs):
     title = "EURCAD vs. Oil"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="fx_cad_oil.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_cad_oil", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.01), label="")
 
@@ -56,7 +56,7 @@ def main(**kwargs):
     title = "EURCAD vs. Rates Delta (10y)"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="fx_cad_10y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_cad_10y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -72,7 +72,7 @@ def main(**kwargs):
     df = gdbr2y_df.copy()
     df['y'] = df['y'] - gcan2y_df['y']
 
-    chart = Chart(title=title, filename="fx_cad_2y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_cad_2y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -88,7 +88,7 @@ def main(**kwargs):
     df = gdbr10y_df.copy()
     df['y'] = df['y'] - uk10y_df['y']
 
-    chart = Chart(title=title, filename="fx_uk_10y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_uk_10y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -104,7 +104,7 @@ def main(**kwargs):
     df = gdbr2y_df.copy()
     df['y'] = df['y'] - uk2y_df['y']
 
-    chart = Chart(title=title, filename="fx_uk_2y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_uk_2y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -120,7 +120,7 @@ def main(**kwargs):
     df = gdbr10y_df.copy()
     df['y'] = df['y'] - uk10y_df['y']
 
-    chart = Chart(title=title, filename="fx_uk_10y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_uk_10y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -136,7 +136,7 @@ def main(**kwargs):
     df = gdbr2y_df.copy()
     df['y'] = df['y'] - ch2y_df['y']
 
-    chart = Chart(title=title, filename="fx_ch_2y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_ch_2y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -152,7 +152,7 @@ def main(**kwargs):
     df = gdbr10y_df.copy()
     df['y'] = df['y'] - ch10y_df['y']
 
-    chart = Chart(title=title, filename="fx_ch_10y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_ch_10y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -168,7 +168,7 @@ def main(**kwargs):
     df = gdbr2y_df.copy()
     df['y'] = df['y'] - us2y_df['y']
 
-    chart = Chart(title=title, filename="fx_us_2y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_us_2y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -184,7 +184,7 @@ def main(**kwargs):
     df = gdbr10y_df.copy()
     df['y'] = df['y'] - us10y_df['y']
 
-    chart = Chart(title=title, filename="fx_us_10y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_us_10y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.01), major_locator=MultipleLocator(.02), label="")
 
@@ -200,7 +200,7 @@ def main(**kwargs):
     df = gdbr2y_df.copy()
     df['y'] = df['y'] - jp2y_df['y']
 
-    chart = Chart(title=title, filename="fx_jp_2y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_jp_2y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(10), label="")
 
@@ -216,7 +216,7 @@ def main(**kwargs):
     df = gdbr10y_df.copy()
     df['y'] = df['y'] - jp10y_df['y']
 
-    chart = Chart(title=title, filename="fx_jp_10y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_jp_10y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(10), label="")
 
@@ -232,7 +232,7 @@ def main(**kwargs):
     df = gdbr2y_df.copy()
     df['y'] = df['y'] - au2y_df['y']
 
-    chart = Chart(title=title, filename="fx_au_2y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_au_2y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.1), major_locator=MultipleLocator(.1), label="")
 
@@ -248,7 +248,7 @@ def main(**kwargs):
     df = gdbr10y_df.copy()
     df['y'] = df['y'] - au10y_df['y']
 
-    chart = Chart(title=title, filename="fx_au_10y.jpeg", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="fx_au_10y", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(.1), major_locator=MultipleLocator(.1), label="")
 
@@ -260,4 +260,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

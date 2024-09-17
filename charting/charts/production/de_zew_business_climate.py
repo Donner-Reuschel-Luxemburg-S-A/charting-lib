@@ -13,12 +13,15 @@ def main(**kwargs):
     df4, t4 = blp.get_series(series_id='GRZECURR Index', observation_start=start_date)
     df5, t5 = blp.get_series(series_id='GRZEWI Index', observation_start=start_date)
 
+    t4 = "ZEW Germany Assessment of Current Situation"
+    t5 = "ZEW Germany Expectation of Economic Growth"
+
     title = "ZEW Germany Surveys"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
 
-    chart = Chart(title=title, metadata=metadata, filename="de_zew_business_climate.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="de_zew_business_climate", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="Index")
+    chart.configure_y_axis(y_axis_index=0, label="INDEX")
 
     major_formatter = mdates.DateFormatter("%b %y")
 
@@ -26,10 +29,12 @@ def main(**kwargs):
 
     chart.add_series(x=df4.index, y=df4['y'], label=t4)
     chart.add_series(x=df5.index, y=df5['y'], label=t5)
+    chart.add_last_value_badge(decimals=2)
 
     chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

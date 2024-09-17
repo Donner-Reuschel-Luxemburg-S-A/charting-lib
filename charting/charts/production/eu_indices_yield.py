@@ -27,9 +27,9 @@ def main(**kwargs):
     title = "European Indices Performance"
 
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.EU)
-    chart = Chart(title=title, filename="eu_indices_yield.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="eu_indices_yield", metadata=metadata, language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Percentage Points")
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -40,9 +40,10 @@ def main(**kwargs):
     chart.add_horizontal_line()
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend(ncol=2)
+    chart.legend(ncol=3)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

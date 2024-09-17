@@ -44,7 +44,7 @@ def append_excel_results(file, results, countries):
     output_results_to_excel(results, countries, file, startcol=col + 2, mode='a')
 
 
-def main():
+def main(**kwargs):
     path = os.path.join(base_path, 'model_output')
     os.makedirs(path, exist_ok=True)
     output_sheet = f'{datetime.today().strftime("%Y%m%d%H%M%S")} stars_output.xlsx'
@@ -206,9 +206,9 @@ def main():
     output_results_to_excel({'SPREADS': pd.DataFrame(spreads)}, countries, path, mode='a')
 
     # Charting
-    title = '10-jähriger Spread vs. Fundamental Score'
+    title = '10Y Spread vs. Fundamental Score'
     metadata = Metadata(title=title, region=Region.EU, category=[Category.RATES, Category.CREDIT, Category.FI])
-    chart = Chart(filename='stars_model.jpeg', title=title, metadata=metadata)
+    chart = Chart(filename='stars_model', title=title, metadata=metadata, language=kwargs.get('language', 'en'))
 
     fig = chart.fig
     ax = chart.axis[0]
@@ -220,7 +220,7 @@ def main():
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
     ax.set_xlabel('Score')
-    ax.set_ylabel('Spread vs. Bund', loc='top', labelpad=-50)
+    ax.set_ylabel('BPS', loc='top', labelpad=-50)
     ax.set_ylim(top=spreads['IT'][10] * 1.2)
     xs = total_score.loc['Score']
     ys = [spreads[country][10] for country in total_score.columns]
@@ -245,4 +245,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

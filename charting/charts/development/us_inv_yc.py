@@ -19,7 +19,7 @@ def main(**kwargs):
     title = "USA: Zinsstrukturkurve (2 Jahre vs. 10 Jahre) und Rezessionen"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_inv_yc.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_inv_yc", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(10), major_locator=MultipleLocator(50), label="Basispunkte")
 
@@ -32,4 +32,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

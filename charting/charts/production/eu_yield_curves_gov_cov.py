@@ -1,8 +1,10 @@
+import numpy as np
 import pandas as pd
 import xbbg.blp
-
 from charting.model.chart import Chart
+from charting.model.curve_helper import build_curve, nss_curve, minimize_curve
 from charting.model.metadata import Metadata, Region, Category
+
 
 DEFAULT_START_TENOR = 0
 DEFAULT_END_TENOR = 15
@@ -19,34 +21,48 @@ def main(**kwargs):
     observation_start = kwargs.get('observation_start', DEFAULT_START_TENOR)
     observation_end = kwargs.get('observation_end', DEFAULT_END_TENOR)
 
-    df1 = xbbg.blp.bds("BVIS0554 Index", "CURVE_TENOR_RATES")
-    t1 = xbbg.blp.bdp("BVIS0554 Index", 'LONG_COMP_NAME')
+    t1 = 'German Government Bonds'
+    df1 = xbbg.blp.bds("YCGT0016 Index", "CURVE_TENOR_RATES")
     df1 = fix_bds_output(df1, yld='bid_yield')
+    result = minimize_curve(dict(zip(df1.index, df1['y'])))
+    y = [nss_curve(result.x.tolist(), x) for x in df1.index]
+    df1_smooth = pd.DataFrame(y, index=df1.index, columns=['y'])
+    df1_smooth = df1_smooth.loc[df1_smooth.index>=.5]
 
-    df2 = xbbg.blp.bds("BVIS0575 Index", "CURVE_TENOR_RATES")
-    t2 = xbbg.blp.bdp("BVIS0575 Index", 'LONG_COMP_NAME')
+    df2 = xbbg.blp.bds("YCGT0040 Index", "CURVE_TENOR_RATES")
+    t2 = 'Italy Government Bonds'
     df2 = fix_bds_output(df2, yld='bid_yield')
-    df3 = xbbg.blp.bds("BVSC0171 Index", "CURVE_TENOR_RATES")
-    t3 = xbbg.blp.bdp("BVSC0171 Index", 'LONG_COMP_NAME')
-    df3 = fix_bds_output(df3)
+    result = minimize_curve(dict(zip(df2.index, df2['y'])))
+    y = [nss_curve(result.x.tolist(), x) for x in df2.index]
+    df2_smooth = pd.DataFrame(y, index=df2.index, columns=['y'])
+    df2_smooth = df2_smooth.loc[df2_smooth.index >= .5]
+
+    # Covereds
+    covered_curve = build_curve()
+    par_curve = covered_curve.par_curve()
+    x_ = [x>=.5 for x in par_curve[0]]
+
+    df3 = pd.DataFrame({'y': [x / 100 for x in np.array(par_curve[1])[x_]]}, index=np.array(par_curve[0])[x_])
+    t3 = 'German Covered Bonds'
 
     title = "EU Yield Curves"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_yield_curves_gov_cov", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="%")
-    chart.configure_x_axis(label='Tenor', label_loc='right')
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
+    chart.configure_x_axis(label='TENOR')
 
-    chart.add_series(chart_type='curve', x=df1.index, y=df1['y'], label=t1.iloc[0, 0], t_min=observation_start,
+    chart.add_series(chart_type='curve', x=df1_smooth.index, y=df1_smooth['y'], label=t1, t_min=observation_start,
                      t_max=observation_end)
-    chart.add_series(chart_type='curve', x=df2.index, y=df2['y'], label=t2.iloc[0, 0], t_min=observation_start,
+    chart.add_series(chart_type='curve', x=df2_smooth.index, y=df2_smooth['y'], label=t2, t_min=observation_start,
                      t_max=observation_end)
-    chart.add_series(chart_type='curve', x=df3.index, y=df3['y'], label=t3.iloc[0, 0], t_min=observation_start,
+    chart.add_series(chart_type='curve', x=df3.index, y=df3['y'], label=t3, t_min=observation_start,
                      t_max=observation_end)
 
-    chart.legend(2)
+    chart.legend(3)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

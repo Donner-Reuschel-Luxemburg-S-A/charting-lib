@@ -31,7 +31,7 @@ def main(**kwargs):
     title = "G7 Rates: Overview"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="g7_rates10y.jpeg", num_rows=1)
+    chart = Chart(title=title, filename="g7_rates10y", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1))
 
@@ -57,7 +57,7 @@ def main(**kwargs):
     chart.legend(ncol=1)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
-    chart = Chart(title=title, filename="g7_rates2y.jpeg", num_rows=1)
+    chart = Chart(title=title, filename="g7_rates2y", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1))
 
@@ -77,4 +77,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

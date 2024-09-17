@@ -22,9 +22,9 @@ def main(**kwargs):
 
     title = "Average Weekly Hours of All Employees, Total Private"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
-    chart = Chart(title=title, metadata=metadata, filename="us_avg_weekly_hours_private.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_avg_weekly_hours_private", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Hours")
+    chart.configure_y_axis(label="HOURS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -38,4 +38,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

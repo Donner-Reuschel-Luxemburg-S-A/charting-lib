@@ -24,7 +24,7 @@ def main(**kwargs):
     title = "Canada Employment Change 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
-    chart = Chart(title=title, filename="ca_payrolls_mom_6.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="ca_payrolls_mom_6", metadata=metadata, language=kwargs.get('language', 'en'))
 
     df = nfp_df.iloc[6:, ]
     chart.add_series(df.index, df['y'] * 12, label=nfp_title, transformer=[Avg(offset=DateOffset(months=6))])
@@ -37,4 +37,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

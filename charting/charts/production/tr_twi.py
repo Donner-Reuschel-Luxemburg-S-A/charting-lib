@@ -23,9 +23,9 @@ def main(**kwargs):
 
     metadata = Metadata(title=title, region=[Region.EU, Region.TR], category=Category.FX)
 
-    chart = Chart(title=title, metadata=metadata, filename="tr_twi.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="tr_twi", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="Index")
+    chart.configure_y_axis(label="INDEX")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=df.index, y=df['y'], label=t)
@@ -37,4 +37,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')
