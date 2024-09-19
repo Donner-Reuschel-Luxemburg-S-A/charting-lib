@@ -30,7 +30,9 @@ def main(**kwargs):
                   language=kwargs.get('language', 'en'))
     chart.add_series(df[x_col], df[y_col],
                      label=y_col.replace('_',' ').title() + ' / '+ x_col.replace('_',' ').title(),
-                     chart_type='scatter')
+                     chart_type='scatter',
+                     t_min=DEFAULT_START_DATE,
+                     t_max=DEFAULT_END_DATE)
     ##
     fig = chart.fig
     ax = chart.axis[0]
@@ -42,10 +44,13 @@ def main(**kwargs):
 
     ##
     x = np.arange(df[x_col].min()*.9,df[x_col].max()*1.1,.1)
-    chart.add_series(x,x, label="Indifferent between Call / No Call")
+    chart.add_series(x,x, label="Indifferent between Call / No Call",
+                     t_min=DEFAULT_START_DATE,
+                     t_max=DEFAULT_END_DATE)
     chart.configure_x_axis(label=x_col.replace('_',' ').title()+' in BPS')
     chart.configure_y_axis(label=y_col.replace('_',' ').title()+' in BPS')
-
+    chart.x_min_label = [datetime.today()]
+    chart.x_max_label = [datetime.today()]
     chart.legend(ncol=2)
     adjust_text(texts)
     return chart.plot(upload_chart='observation_start' not in kwargs)
