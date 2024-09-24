@@ -33,7 +33,8 @@ def main(**kwargs):
     cmdty_data = sorted(zip(cmdty_names, cmdty_yields), key=lambda x: x[1])
     cmdty_data = list(zip(*cmdty_data))
 
-    fi_indices = ["ER00 Index", "LEATTREU Index", "IBXXDECT Index", "IBOXXMJA Index", "JPEIHDEU Index", "REXP Index", "IS3C Index"]
+    fi_indices = ["ER00 Index", "LEATTREU Index", "IBXXDECT Index", "IBOXXMJA Index", "JPEIHDEU Index", "REXP Index",
+                  "IS3C GY Equity"]
     fi_dfs = [blp.get_series(series_id=idx, observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d")) for idx in
               fi_indices]
