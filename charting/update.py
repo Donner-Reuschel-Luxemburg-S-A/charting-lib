@@ -43,6 +43,7 @@ def update_charts(module_names: Union[List[str], List]) -> List[str]:
 
 
 if __name__ == '__main__':
+    """
     errors = update_charts(module_names=[
     "global_asset_class_yield",
     "de_gov_ecb_yields",
@@ -87,6 +88,9 @@ if __name__ == '__main__':
     "global_mxef_mxwo_per",
     "eu_us_sxxp_spx_profit_margin",
     "global_profit_minus_ten_year_profit"
-])
+    ])
+    """
+    errors = update_charts(module_names=None)
+
     for err in errors:
         print(err)

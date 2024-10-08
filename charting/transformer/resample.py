@@ -50,7 +50,7 @@ class Resample(Transformer):
 
         resampler = {
             "sum": "Summe",
-            "mean": "Durschnitt"
+            "mean": "Durchschnitt"
         }
 
         self.resampler = resampler.get(self.resampler) if self.language == 'de' else self.resampler
