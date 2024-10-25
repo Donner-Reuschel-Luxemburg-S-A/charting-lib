@@ -45,14 +45,6 @@ def main():
     eg1_df = eg1_df.resample("ME").last()
 
 
-    # ISM Manufacturing Prices Paid
-    #manu_df, manu_title = blp.get_series(series_id="NAPMPRIC INDEX",field="PX_LAST", observation_start=start_date)
-    # ISM Services Prices Paid
-    #serv_df, serv_title = blp.get_series(series_id="NAPMNPRC INDEX", field="PX_LAST", observation_start=start_date)
-
-    #ism_prices_df = serv_df
-    #ism_prices_df['y']=0.8*ism_prices_df['y']+0.2*manu_df['y']
-
     # Indeed Wage Tracker
     wages_df, wages_title = blp.get_series(series_id="LNTWEMUY Index", field="PX_LAST", observation_start=start_date)
     # US GDP YOY
@@ -61,23 +53,18 @@ def main():
     m1_df, m1_title = blp.get_series(series_id="ECMAM1YY Index", field="PX_LAST", observation_start=start_date)
     m3_df, m3_title = blp.get_series(series_id="ECMAM3YY Index", field="PX_LAST", observation_start=start_date)
 
-    # Dollar Index
-    #dxy_df, dxy_title = blp.get_series(series_id="DXY CURNCY", field="PX_LAST", observation_start=start_date)
-
     # Fiscal
 
     budget_df, budget_title = blp.get_series(series_id="EUBDEURO Index", field="PX_LAST", observation_start=start_date)
 
-
     # Currencies
-    #mxn_df, mxn_title = blp.get_series(series_id="USDMXN CURNCY", field="PX_LAST", observation_start=start_date)
-    #mxn_df = mxn_df.resample("ME").last()
+
     usd_df, usd_title = blp.get_series(series_id="EURUSD CURNCY", field="PX_LAST", observation_start=start_date)
     usd_df = usd_df.resample("ME").last()
-    #jpy_df, jpy_title = blp.get_series(series_id="USDJPY CURNCY", field="PX_LAST", observation_start=start_date)
+
     chf_df, chf_title = blp.get_series(series_id="EURCHF CURNCY", field="PX_LAST", observation_start=start_date)
     chf_df = chf_df.resample("ME").last()
-    #cad_df, cad_title = blp.get_series(series_id="USDCAD CURNCY", field="PX_LAST", observation_start=start_date)
+
 
     # Y variable
 
@@ -85,7 +72,7 @@ def main():
     inf_df, inf_title = blp.get_series(series_id="ECCPEMUY Index", field="PX_LAST", observation_start=start_date)
 
     # ------------------------ MERGE ---------------------------------
-    #xb1_df.resample("ME")
+
 
     merge=inf_df
     merge = pd.merge(merge, m1_df, how='inner', left_index=True, right_index=True)

@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 import statsmodels.formula.api as smf
 from statsmodels.api import OLS
+from scipy.stats import norm
 import math
 from matplotlib.ticker import MultipleLocator
 from pandas import DateOffset
@@ -17,96 +18,48 @@ from charting.transformer.lag import Lag
 from charting.transformer.avg import Avg
 
 
-def poisson(l, k): # poisson prob
+def alpha_par(mu, var): # Alpha in the Beta distribution
 
-    return math.pow(l,k) * math.exp(-l) / math.factorial(k)
+    return mu*((mu*(1-mu)/var)-1)
 
-def p_win(l1,l2,cut): # prob win 1st
-    pwin = 0
-    for i in range(0, cut):
-        for j in range(i + 1, cut):
-            pwin = pwin + poisson(l2, i)*poisson(l1, j)
-    return pwin
+def beta_par(mu, var): # Beta in the Beta distribution
 
-def p_draw(l1,l2,cut): # prob draw
-    pwin = 0
-    for i in range(0, cut):
-        pwin = pwin + poisson(l2, i) * poisson(l1, i)
-    return pwin
+    return (1-mu)*((mu*(1-mu)/var)-1)
 
-def target_function(p1,p2,p3, l1,l2,cut): # squared diff
-    return( (p1-p_win(l1,l2,cut))**2+(p2-p_draw(l1,l2,cut))**2+(p3-p_win(l2,l1,cut))**2)
-
-def payoff(t1,t2,r1,r2):  # bet payoffs
-    if(t1==r1 and t2 == r2):
-        return 4
-    elif (t1-t2 == r1-r2):
-        return 3
-    elif (np.sign(t1-t2) == np.sign(r1-r2)):
-        return 2
-    else:
-        return 0
-
-def expectedpayoff(t1,t2,l1,l2):
-    e = 0
-    for i in range(0,10):
-        for j in range(0,10):
-            e = e + payoff(t1,t2,i,j)*poisson(l1,i)*poisson(l2,j)
-    return e
+def kelly_bet_size(p,theta):
+    return ((p*theta-1)/(theta-1))
 
 
+def kelly_unknown_p(delta,sigma):
+    return 2*(delta**2-sigma**2)*norm.cdf(delta/sigma)+2*sigma*delta*norm.pdf(delta/sigma)
 
-
-
-def optim(p1,p2,p3,cut): # grid optimizer, lambda 1 & 2
-    x = 9999
-    amin = 0
-    bmin = 0
-    for i in range(0,1000):
-        for j in range(0,1000):
-            t = target_function(p1,p2,p3,i/100,j/100,cut)
-            if(t < x):
-                x = t
-                amin = i
-                bmin = j
-    return x, amin/100, bmin/100
+def kelly_bayes(x,n,a,b,theta):
+    phat = (x+a)/(n+a+b)
+    return ((phat*theta-1))/(theta-1)
 
 
 def main():
 
-    q1 = 2.2
-    q2 = 3.1
-    q3 = 3.5
+    #mu1 etc der Prior (unconditional)
 
-    cut = 10
+    #a = alpha_par(mu1,sigma1)
+    #b = beta_par(mu2,sigma2)
 
-    p1 = (1 / q1) / (1 / q1 + 1 / q2 + 1 / q3)
-    p2 = (1 / q2) / (1 / q1 + 1 / q2 + 1 / q3)
-    p3 = (1 / q3) / (1 / q1 + 1 / q2 + 1 / q3)
+    #print(a/(a+b))
 
-    d = optim(p1,p2,p2,cut)
+    #x = 650
+    #n = 1000
 
-    l1 = d[1]
-    l2 = d[2]
+    #print(kelly_bet_size(0.55,2))
 
+    #print(kelly_bayes(x,n,a,b,abs(mu2/mu1)+1))
 
-    Ausgabe = np.zeros((5,5))
+    delta = 0.05
+    sigma = 0.05
 
-    for i in range(0,5):
-        for j in range(0,5):
-            Ausgabe[i,j] = expectedpayoff(i,j,l1,l2)
+    #print(kelly_bet_size(0.65,2.25))
 
-    print(Ausgabe)
-
-    print(Ausgabe.max())
-    print(np.argmax(Ausgabe))
-
-
-
-
-
-
-
+    print(kelly_unknown_p(delta,sigma))
 
 
 if __name__ == '__main__':

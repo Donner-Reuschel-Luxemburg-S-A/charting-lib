@@ -15,161 +15,87 @@ import matplotlib.dates as mdates
 from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
 from charting.transformer.avg import Avg
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def transform_data(t,k):
-    return (t-t.shift(k))/t.shift(k)
+def calculate_drawdowns(series: pd.Series, drawdown_threshold: float, recovery_threshold: float) -> pd.Series:
+    """
+    Calculate drawdown and recovery events in a time series. After a drawdown of the specified threshold occurs,
+    the drawdown state is triggered. Recovery occurs when the price reaches the pre-drawdown price or makes a new high.
+    Args:
+    - series (pd.Series): Time series of price data.
+    - drawdown_threshold (float): The percentage decline required to trigger a drawdown.
+    - recovery_threshold (float): The percentage required for a price to recover.
+    Returns:
+    - pd.Series: A series marking points where drawdowns or recoveries occurred (event types: "drawdown", "recovery").
+    """
+    in_drawdown = False
+    peak_price = series.iloc[0]  # Track the highest price
+    initial_drawdown_price = None  # Price before the first drawdown
+    trough_price = None  # Track the lowest point during a drawdown
+    event_types = pd.Series([None] * len(series), index=series.index)  # Initialize the event types series
+    for i in range(0, len(series)):
+        current_price = series.iloc[i]
+        # If not in a drawdown state, check if the current price sets a new peak
+        if not in_drawdown:
+            if current_price > peak_price:
+                peak_price = current_price
+                logging.info(f"New peak at {series.index[i]} with price {current_price}")
+            else:
+                # Calculate the drawdown from the peak
+                price_change_from_peak = (current_price - peak_price) / peak_price * 100
+                logging.info(f"current drawdown {series.index[i]} with {price_change_from_peak}%")
+                if price_change_from_peak <= -drawdown_threshold:
+                    logging.info(f"Drawdown triggered at {series.index[i]} with price {current_price}")
+                    in_drawdown = True
+                    initial_drawdown_price = current_price * (1 + recovery_threshold / 100)  # Set recovery target
+                    trough_price = current_price  # Set the initial trough price
+                    event_types.iloc[i] = "drawdown"
+        else:
+            # If in drawdown, track further drawdowns based on the drawdown threshold from the trough price
+            price_change_from_trough = (current_price - trough_price) / trough_price * 100
+            if price_change_from_trough <= -drawdown_threshold:
+                logging.info(f"Further drawdown detected at {series.index[i]} with price {current_price}")
+                initial_drawdown_price = current_price * (1 + recovery_threshold / 100)
+                trough_price = current_price
+                event_types.iloc[i] = "drawdown"
+            # Check if recovery occurs
+            # Recovery Scenario 1: Price exceeds previous peak (new high)
+            if current_price > peak_price:
+                logging.info(f"Recovery by new peak triggered at {series.index[i]} with price {current_price}")
+                in_drawdown = False
+                peak_price = current_price  # New peak is set
+                initial_drawdown_price = None
+                trough_price = None
+                event_types.iloc[i] = "recovery"
+            # Recovery Scenario 2: Price reaches or exceeds the initial drawdown price
+            elif initial_drawdown_price is not None and current_price >= initial_drawdown_price:
+                logging.info(
+                    f"Recovery by returning to initial drawdown price at {series.index[i]} with price {current_price}")
+                in_drawdown = False
+                # TODO: Need to be checked
+                peak_price = max(current_price, peak_price)  # Reset peak price if necessary
+                initial_drawdown_price = None
+                trough_price = None
+                event_types.iloc[i] = "recovery"
+    return event_types
 
 
-def main():
-
-    start_date = "20040101"
-
-    blp = BloombergSource()
-
-# ------------------------ DOWNLOAD DATA ---------------------------------
-
-    # X variables
-
-    # Natural Gas
-    ng1_df, ng1_title = blp.get_series(series_id="TTFG1MON OECM Index",field="PX_LAST", observation_start=start_date)
-    ng1_df=ng1_df.resample("ME").last()
-    # Oil
-    co1_df, co1_title = blp.get_series(series_id="CO1 Comdty",field="PX_LAST", observation_start=start_date)
-    co1_df = co1_df.resample("ME").last()
-    # Gasoline
-    ve1_df, ve1_title = blp.get_series(series_id="VE1 Comdty", field="PX_LAST", observation_start=start_date)
-    ve1_df = ve1_df.resample("ME").last()
-    # Electricity
-    eg1_df, eg1_title = blp.get_series(series_id="ELGAYR1 Index", field="PX_LAST", observation_start=start_date)
-    eg1_df = eg1_df.resample("ME").last()
+def compute_quantiles(df):
 
 
-    # ISM Manufacturing Prices Paid
-    #manu_df, manu_title = blp.get_series(series_id="NAPMPRIC INDEX",field="PX_LAST", observation_start=start_date)
-    # ISM Services Prices Paid
-    #serv_df, serv_title = blp.get_series(series_id="NAPMNPRC INDEX", field="PX_LAST", observation_start=start_date)
-
-    #ism_prices_df = serv_df
-    #ism_prices_df['y']=0.8*ism_prices_df['y']+0.2*manu_df['y']
-
-    # Indeed Wage Tracker
-    wages_df, wages_title = blp.get_series(series_id="LNTWEMUY Index", field="PX_LAST", observation_start=start_date)
-    # US GDP YOY
-    #gdp_df, gdp_title = blp.get_series(series_id="EHGDUSY INDEX", field="PX_LAST", observation_start=start_date)
-    # ECB M3 YOY
-    m1_df, m1_title = blp.get_series(series_id="ECMAM1YY Index", field="PX_LAST", observation_start=start_date)
-    m3_df, m3_title = blp.get_series(series_id="ECMAM3YY Index", field="PX_LAST", observation_start=start_date)
-
-    # Dollar Index
-    #dxy_df, dxy_title = blp.get_series(series_id="DXY CURNCY", field="PX_LAST", observation_start=start_date)
-
-    # Fiscal
-
-    budget_df, budget_title = blp.get_series(series_id="EUBDEURO Index", field="PX_LAST", observation_start=start_date)
-
-
-    # Currencies
-    #mxn_df, mxn_title = blp.get_series(series_id="USDMXN CURNCY", field="PX_LAST", observation_start=start_date)
-    #mxn_df = mxn_df.resample("ME").last()
-    usd_df, usd_title = blp.get_series(series_id="EURUSD CURNCY", field="PX_LAST", observation_start=start_date)
-    usd_df = usd_df.resample("ME").last()
-    #jpy_df, jpy_title = blp.get_series(series_id="USDJPY CURNCY", field="PX_LAST", observation_start=start_date)
-    chf_df, chf_title = blp.get_series(series_id="EURCHF CURNCY", field="PX_LAST", observation_start=start_date)
-    chf_df = chf_df.resample("ME").last()
-    #cad_df, cad_title = blp.get_series(series_id="USDCAD CURNCY", field="PX_LAST", observation_start=start_date)
-
-    # Y variable
-
-    # Inflation
-    inf_df, inf_title = blp.get_series(series_id="ECCPEMUY Index", field="PX_LAST", observation_start=start_date)
-
-    # ------------------------ MERGE ---------------------------------
-    #xb1_df.resample("ME")
-
-    merge=inf_df
-    merge = pd.merge(merge, m1_df, how='inner', left_index=True, right_index=True)
-    merge.columns = ['CPI', 'm1']
-    merge = pd.merge(merge, wages_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1','Wages']
-    merge = pd.merge(merge, ng1_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages','NatGas']
-    merge = pd.merge(merge, co1_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages', 'NatGas','Oil']
-    merge = pd.merge(merge, ve1_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages', 'NatGas', 'Oil','Gasoline']
-    merge = pd.merge(merge, chf_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages', 'NatGas', 'Oil', 'Gasoline','CHF']
-    merge = pd.merge(merge, eg1_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages', 'NatGas', 'Oil', 'Gasoline', 'CHF','Electricity']
-    merge = pd.merge(merge, usd_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages', 'NatGas', 'Oil', 'Gasoline', 'CHF', 'Electricity','USD']
-    merge = pd.merge(merge, budget_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages', 'NatGas', 'Oil', 'Gasoline', 'CHF', 'Electricity', 'USD','Deficit']
-    merge = pd.merge(merge, m3_df, how='left', left_index=True, right_index=True).ffill()
-    merge.columns = ['CPI', 'm1', 'Wages', 'NatGas', 'Oil', 'Gasoline', 'CHF', 'Electricity', 'USD', 'Deficit','M3']
-
-    monate = 12
-    merge['Wages']=merge['Wages'].shift(1)
-    merge['Deficit'] = merge['Deficit'].shift(1)
-    merge['m1'] = merge['m1'].shift(18)
-    merge['M3'] = merge['M3'].shift(18)
-    merge['NatGas'] = transform_data(merge['NatGas'], monate)
-    merge['Oil'] = transform_data(merge['Oil'], monate)
-    merge['Gasoline'] = transform_data(merge['Gasoline'], monate)
-    merge['CHF'] = transform_data(merge['CHF'], monate)
-    merge['Electricity'] = transform_data(merge['Electricity'], monate)
-
-
-    merge = merge.dropna()
-
-    # ------------------------ TRANSFORM ---------------------------------
-
-
-
-    est = smf.ols(formula='CPI ~ 0+m1+Wages+USD+Deficit+M3+Electricity',data=merge).fit()
-    print(est.summary())
-    model = est.predict()
-
-    versatz = 12
-
-    lastm1 = [m1_df['y'].iloc[-18]]
-    lastm3 = [m3_df['y'].iloc[-18]]
-    lastwages = [wages_df['y'].iloc[-1]]
-    lastdeficit = [budget_df['y'].iloc[-1]]
-    lasteg= [(eg1_df['y'].iloc[-1]-eg1_df['y'].iloc[-versatz])/eg1_df['y'].iloc[-versatz]]
-    lastusd = [(usd_df['y'].iloc[-1] - usd_df['y'].iloc[-versatz]) / usd_df['y'].iloc[-versatz]]
-    lastoil = [(co1_df['y'].iloc[-1] - co1_df['y'].iloc[-versatz]) / co1_df['y'].iloc[-versatz]]
-    lastchf = [(chf_df['y'].iloc[-1] - chf_df['y'].iloc[-versatz]) / chf_df['y'].iloc[-versatz]]
-    #lastgasoline = [(xb1_df['y'].tail(2)[0]-xb1_df['y'].tail(versatz)[0])/xb1_df['y'].tail(versatz)[0]]
-
-
-    Xnew = pd.DataFrame({'Wages':lastwages,'USD':lastusd,'Deficit':lastdeficit,'M3':lastm3,'Electricity':lasteg,'m1':lastm1})
-    print(est.predict(Xnew))
-
-
-
-    title = "EU Inflation Model"
-    #title = "Euro Unternehmensanleihen: Refinanzierungskosten"
-    #metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
-
-    chart = Chart(title=title, filename="eu_inflation_model_fit.png",num_y_axis=1)
-
-    minor_locator = mdates.MonthLocator(interval=12)
-    major_locator = mdates.MonthLocator(interval=24)
-    major_formatter = mdates.DateFormatter("%b %y")
-
-    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
-
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
-
-    chart.add_series(merge.index, merge['CPI'], label="Inflation")
-    chart.add_series(merge.index, model, label="Model")
-
-    chart.legend(ncol=1)
-    chart.plot()
-
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+
+    prices = pd.read_excel("C:\\Users\\tregele\\OneDrive - Donner Reuschel\\Test_RoIC.xlsx", sheet_name="SPX", header=0, index_col=0, parse_dates=True)
+
+    returns = prices.pct_change()
+
+    roic = pd.read_excel("C:\\Users\\tregele\\OneDrive - Donner Reuschel\\Test_RoIC.xlsx", sheet_name="RoIC", header=0, index_col=0, parse_dates=True)
+
+
+

@@ -16,11 +16,12 @@ from charting.transformer.avg import Avg
 def main():
     blp = BloombergSource()
 
-    corp_ytw_df, corp_ytw_title = blp.get_series(series_id="LECPSTAT Index",field="YIELD_TO_WORST", observation_start="19900101")
-    corp_cpn_df, corp_cpn_title = blp.get_series(series_id="LECPSTAT Index",field="CPN", observation_start="19900101")
+    start_date = "20220201"
 
-    hy_ytw_df, hy_ytw_title = blp.get_series(series_id="LP01TREU Index", field="YIELD_TO_WORST", observation_start="19900101")
-    hy_cpn_df, hy_cpn_title = blp.get_series(series_id="LP01TREU Index", field="CPN", observation_start="19900101")
+    it_gdp_df, it_gdp_title = blp.get_series(series_id="ITGLALEV Index",field="PX_LAST", observation_start=start_date)
+    de_gdp_df, de_gdp_title = blp.get_series(series_id="GRGDEGDP Index", field="PX_LAST", observation_start=start_date)
+
+
 
     title = "Euro IG Corporates Refinancing Costs"
     #title = "Euro Unternehmensanleihen: Refinanzierungskosten"

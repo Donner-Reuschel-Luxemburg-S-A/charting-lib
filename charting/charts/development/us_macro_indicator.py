@@ -57,7 +57,8 @@ def main():
 
     chart = Chart(title=title, filename="macro_index_ff_rate.png", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),label="")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),y_axis_index=0,label="Score")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),y_axis_index=1, label="Fed Fund Rate (%)")
 
     chart.add_series(ff_df.index, ff_df['y'], label=ff_title,y_axis_index=1)
     chart.add_series(df_macro_ind_long.index, df_macro_ind_long['y'].interpolate(),label="D&R Recession Indicator")
