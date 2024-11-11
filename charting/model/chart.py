@@ -354,9 +354,9 @@ class Chart:
                 latest_value = category_data[-1]
                 y_pos = index + 1
                 ax.scatter(latest_value, y_pos, color=color, zorder=3, s=15)
-                ax.text(latest_value, y_pos + 0.05, f'{round(latest_value, 2)}', verticalalignment='bottom',
+                ax.text(latest_value, y_pos + 0.27, '{:.0f}'.format(round(latest_value, 0)), verticalalignment='bottom',
                         horizontalalignment="center",
-                        color=color, fontdict={"fontsize": 6})
+                        color=color, fontdict={"fontsize": 8})
 
             self.max_label_length = max([len(ele) for ele in x])
 

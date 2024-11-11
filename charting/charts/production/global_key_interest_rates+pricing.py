@@ -186,6 +186,17 @@ def main(**kwargs):
         correction = (curves[cb]['HISTORY'].iloc[-1, 0]-data['PRICED_FILLED']['Rates'].iloc[0]*100)
         chart.add_series(x=data['PRICED_FILLED'].index, y=data['PRICED_FILLED']['Rates']*100+correction,
                          label=f'{cb} OIS Implied', color=style.get_color(counter), alpha=.5)
+        data['1Y'] = correction + 100*data['PRICED_FILLED'].loc[data['PRICED_FILLED'].index<=pd.Timestamp(today + datetime.timedelta(days=365))].iloc[-1,0]
+        data['10Y_FWD'] =[ data['CURVE'].rate_at_time(10.0).rate * 10000 - (data['CURVE'].rate_at_time(11.0).rate * 11 - data['CURVE'].rate_at_time(1.0).rate)/10*10000]
+
+        dates = [(pd.Timestamp.today() +pd.offsets.BMonthEnd(i)).to_pydatetime() for i in range(-12, 0)]
+        # dates.extend([datetime.datetime.today()])
+
+        for d in dates:
+            hist_curve = SwapCurve(ticker=data['CURVE'].ticker, date=d.strftime("%Y%m%d"))
+            r = hist_curve.rate_at_time(10.0).rate * 10000 - (
+                        hist_curve.rate_at_time(11.0).rate * 11 - hist_curve.rate_at_time(1.0).rate) / 10 * 10000
+            data['10Y_FWD'].append(r)
         counter += 1
 
     return chart.plot(upload_chart='observation_start' not in kwargs)
