@@ -23,7 +23,7 @@ def main(**kwargs):
                              observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
 
     df4, t4 = blp.get_series(series_id='LEGVTREU Index', observation_start=observation_start.strftime("%Y%m%d"),
-                             observation_end=observation_end.strftime("%Y%m%d"), field='BX219')
+                             observation_end=observation_end.strftime("%Y%m%d"), field='BX218')
 
     title = "Securitized & Government Related Spreads"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
