@@ -198,7 +198,8 @@ def main(**kwargs):
                         hist_curve.rate_at_time(11.0).rate * 11 - hist_curve.rate_at_time(1.0).rate) / 10 * 10000
             data['10Y_FWD'].append(r)
         counter += 1
-
+    for cb, data in curves.items():
+        print(f'{cb}: {data["1Y"]}')
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
