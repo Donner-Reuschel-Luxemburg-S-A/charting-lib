@@ -34,6 +34,7 @@ def get_data(equity_ticker, fields, start_date):
     df = blp.bdh(equity_ticker, fields, start_date, Per='M')
     return df
 
+
 def downloadandsave():
     tickers = ['SPX Index']
     fields = ['INDX_MEMBERS']
@@ -66,8 +67,3 @@ def downloadandsave():
             df_final = pd.concat([df_final, df2], axis=1).ffill().bfill()
 
     df_final.to_excel('Daten-All.xlsx')
-
-
-if __name__ == '__main__':
-
-
