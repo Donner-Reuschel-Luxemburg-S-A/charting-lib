@@ -22,7 +22,7 @@ class Lead(Transformer):
         super().__init__()
         self.offset = offset
 
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Performs a forward shift of the time series by the specified offset.
 
@@ -33,6 +33,7 @@ class Lead(Transformer):
         Returns:
             (Series, Series): The shifted x-values and the original y-values of the time series.
         """
+        self.language = language
         shifted_x = x + self.offset
         return shifted_x, y
 
@@ -43,4 +44,5 @@ class Lead(Transformer):
         Returns:
             str: The label describing the Lead transformer.
         """
-        return _generate_label(offset=self.offset, action='lead')
+        action = 'lead' if self.language == 'en' else 'führend'
+        return _generate_label(offset=self.offset, action=action, language=self.language)

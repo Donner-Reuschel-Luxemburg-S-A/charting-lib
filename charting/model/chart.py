@@ -1,27 +1,48 @@
+import ast
 import base64
 import getpass
 import hashlib
 import inspect
 import io
+import json
+import locale
 import os
 from datetime import datetime, timedelta
 from functools import reduce
 from typing import Tuple, Union, List, Dict
 
 import numpy as np
-from PIL import Image
 from matplotlib import pyplot as plt
 
 plt.switch_backend('agg')
+plt.rcParams["font.family"] = "Arial"
+
 from matplotlib.axes import Axes
-from matplotlib.ticker import Formatter, Locator
+from matplotlib.ticker import Formatter
 from source_engine.chart_source import ChartSource, ChartModel
 
 from charting import chart_base_path
 from charting.exception import InvalidAxisConfigurationException, YAxisIndexException
 from charting.model.metadata import Metadata
 from charting.model.style import title_style, source_text_style, get_color, get_stacked_color, legend_style, colors
+import charting.model.style as style
 from charting.model.transformer import Transformer
+
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+
+
+def set_locale(language):
+    if language == 'de':
+        locale.setlocale(locale.LC_TIME, 'de_DE')
+    else:
+        locale.setlocale(locale.LC_TIME, 'en_US')
+
+
+def load_translations():
+    translation_path = os.path.join(base_dir, 'charting', 'charts', 'translation', 'translation.json')
+
+    with open(translation_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
 
 
 class Chart:
@@ -32,6 +53,7 @@ class Chart:
                  num_y_axis: Union[int, List[int]] = 1,
                  figsize: Tuple[float, float] = (8.06, 5.05),
                  metadata: Union[Metadata, None] = None,
+                 language: str = 'en'
                  ):
         """
         Initializes a Chart object.
@@ -45,20 +67,26 @@ class Chart:
             figsize (tuple): The figure size of the chart (default: (12, 8)).
             metadata (Metadata, None): the metadata to add to the image (default: None).
         """
-        self.filename_original = filename
-        self.filename = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
-        self.title = title
+        self.language = language
+        self.translations = load_translations()
+        set_locale(language)
+
+        self.filename = f'{filename}_{language}.jpeg'
+        self.title = self._(title, part='title')
         self.num_rows = num_rows
         self.num_y_axis = num_y_axis
         self.figsize = figsize
         self.module = self._caller()
         self.metadata = metadata
         self.max_label_length = 0
+        self.x_ticks = []
+        self.grouped_bar_width = 0
+        self.bar_gap = 0
 
         if metadata is None:
             self.rel_path = os.path.join("development", getpass.getuser())
         else:
-            self.rel_path = os.path.join("production")
+            self.rel_path = os.path.join("production", self.language)
 
         self.path = os.path.join(chart_base_path, self.rel_path)
 
@@ -79,8 +107,41 @@ class Chart:
         self.x_min_label = []
         self.x_max_label = []
 
+    def _(self, key: str, part: str = "title"):
+        if self.language == 'de':
+            return self.translations.get(part, 'title').get(key, key)
+        return key
+
     def id(self) -> str:
-        return hashlib.sha1(self.filename_original.encode('utf-8')).hexdigest()
+        return hashlib.sha1(self.filename.encode('utf-8')).hexdigest()
+
+    def get_custom_imports(self, module, custom_source_prefixes):
+        module_path = os.path.join(base_dir, 'charting', 'charts', module)
+        with open(module_path, 'r') as file:
+            node = ast.parse(file.read(), filename=module)
+
+        matching_imports = []
+
+        for n in ast.walk(node):
+            if isinstance(n, (ast.Import, ast.ImportFrom)):
+                for alias in n.names:
+                    module_name = n.module if isinstance(n, ast.ImportFrom) else alias.name
+                    if any(module_name.startswith(prefix) for prefix in custom_source_prefixes):
+                        matching_imports.append(alias.name)
+
+        mapping = {
+            'FredSource': 'Federal Reserve Economic Data (FRED)',
+            'BloombergSource': 'Bloomberg',
+            'Bbk': 'German Federal Bank',
+            'Ecb': 'European Central Bank (ECB)',
+            'IndeedSource': 'Indeed',
+            'xbbg.blp': 'Bloomberg',
+            'blp': 'Bloomberg',
+            'EstatStatisticsSource': 'EuroStat',
+            'ImfSource': 'IMF'
+        }
+
+        return list(set([self._(mapping.get(key), part='source') for key in matching_imports]))
 
     def _caller(self):
         _, filename, line, function, _, _ = inspect.stack()[2]
@@ -130,46 +191,31 @@ class Chart:
         return axis_dict
 
     def configure_x_axis(self, label: str = None,
-                         minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
-                         minor_locator: Locator = None,
-                         major_locator: Locator = None,
-                         rotation: int = None):
+                         rotation: int = None,
+                         label_loc='center'):
         """
         Configures the x-axis with label, formatter and locator.
 
         Args:
             label (str): The label for the x-axis (default: None).
-            minor_formatter (Formatter): The minor formatter for the x-axis (default: None)
             major_formatter (Formatter): The major formatter for the x-axis (default: None)
-            minor_locator (Locator): The minor locator for the x-axis (default: None)
-            major_locator (Locator): The major locator for the x-axis (default: None)
+            label_loc (str): Locate the label on the 'left', 'center' (default) or 'right'
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
+        label = self._(label, part='x_axis')
 
-        ax.set_xlabel(label)
+        ax.set_xlabel(label, loc=label_loc, fontsize=8)
 
         if rotation is not None:
             ax.tick_params(axis='x', labelrotation=rotation)
 
-        if minor_formatter is not None:
-            ax.xaxis.set_minor_formatter(minor_formatter)
-
         if major_formatter is not None:
             ax.xaxis.set_major_formatter(major_formatter)
 
-        if minor_locator is not None:
-            ax.xaxis.set_minor_locator(minor_locator)
-
-        if major_locator is not None:
-            ax.xaxis.set_major_locator(major_locator)
-
     def configure_y_axis(self, label: str, row_index: int = 0, y_axis_index: int = 0,
                          y_lim: Tuple[float, float] = None,
-                         minor_formatter: Formatter = None,
                          major_formatter: Formatter = None,
-                         minor_locator: Locator = None,
-                         major_locator: Locator = None,
                          reverse_axis: bool = False):
         """
         Configures a y-axis with a label and color.
@@ -179,37 +225,28 @@ class Chart:
             y_axis_index (int): The index of the y-axis to configure (default: 0).
             label (str): The label for the y-axis.
             y_lim (tuple): The limits for the axis.
-            minor_formatter (Formatter): The minor formatter for the y-axis (default: None)
             major_formatter (Formatter): The major formatter for the y-axis (default: None)
-            minor_locator (Locator): The minor locator for the y-axis (default: AutoLocator)
-            major_locator (Locator): The major locator for the y-axis (default: AutoLocator)
             reverse_axis (bool): Indicates whether the axis should be reversed (default: False).
         Raises:
             YAxisIndexException: If the provided row or y-axis index is invalid.
         """
 
         try:
+            label = self._(label, part='y_axis')
+
             ax = self.axis_dict[row_index][y_axis_index]
-            ax.set_ylabel(label, loc="top", rotation=90)
+            ax.set_ylabel(label, fontsize=8)
 
             if y_lim is not None:
                 ax.set_ylim(*y_lim)
 
             if reverse_axis:
                 ax.invert_yaxis()
-                ax.set_ylabel(f'{label} (reversed axis)', loc="top", rotation=90)
-
-            if minor_formatter is not None:
-                ax.yaxis.set_minor_formatter(minor_formatter)
+                reversed_label = self._("REVERSED AXIS", part='y-axis')
+                ax.set_ylabel(f'{label} ({reversed_label})', fontsize=8)
 
             if major_formatter is not None:
                 ax.yaxis.set_major_formatter(major_formatter)
-
-            if minor_locator is not None:
-                ax.yaxis.set_minor_locator(minor_locator)
-
-            if major_locator is not None:
-                ax.yaxis.set_major_locator(major_locator)
 
         except IndexError:
             raise YAxisIndexException(row_index=row_index, y_axis_index=y_axis_index)
@@ -217,8 +254,8 @@ class Chart:
     def add_series(self, x, y, label: str, row_index: int = 0, y_axis_index: int = 0, chart_type: str = 'line',
                    linestyle: str = '-', linewidth: float = 1.5, fill: bool = False, fill_threshold: float = None,
                    bar_bottom: float = 0, stacked: bool = False, alpha: float = 1, invert: bool = False,
-                   transformer: Union[Transformer, List[Transformer]] = None, t_min: datetime = None,
-                   t_max: datetime = None):
+                   transformer: Union[Transformer, List[Transformer]] = None, t_min: [datetime, float] = None,
+                   t_max: Union[datetime, float] = None, **kwargs):
         """
         Adds a series to the chart.
 
@@ -244,11 +281,14 @@ class Chart:
                 Each transformer should implement the `transform` method to modify the series.
                 The label of the series will be updated to reflect the applied transformers.
             t_min (datetime): Optional time series minimum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_min is the minimum tenor.
             t_max (datetime): Optional time series maximum for boxplot and bar charts with categorical x axis.
+            For chart_type 'curve' t_max is the maximum tenor.
         """
-        color = get_color(y_axis=len(self.handles))
+        color, suggested_alpha = kwargs.get('color', get_color(y_axis=len(self.handles)))
         axis_label = 'L1' if y_axis_index == 0 else f'R{y_axis_index}'
-
+        self.grouped_bar_width = kwargs.get('grouped_bar_width', .08)
+        self.bar_gap = kwargs.get('bar_gap', .05)
         try:
             ax = self.axis_dict[row_index][y_axis_index]
         except IndexError:
@@ -256,14 +296,17 @@ class Chart:
 
         if invert:
             y = -y
-            ax.set_ylabel(f'{ax.get_ylabel()} (inverted axis)', loc="top")
+            inverted_label = self._("INVERTED AXIS", part='y_axis')
+            ax.set_ylabel(f'{ax.get_ylabel()} ({inverted_label})')
+
+        label = self._(label, part='labels')
 
         if transformer is not None:
             if isinstance(transformer, list):
-                x, y = reduce(lambda xy, trans: trans.transform(*xy), transformer, (x, y))
+                x, y = reduce(lambda xy, trans: trans.transform(*xy, self.language), transformer, (x, y))
                 label = f"{label}, {axis_label} ({', '.join(trans.label() for trans in transformer)})"
             elif isinstance(transformer, Transformer):
-                x, y = transformer.transform(x, y)
+                x, y = transformer.transform(x, y, self.language)
                 label = f"{label}, {axis_label} ({transformer.label()})"
         else:
             label = f"{label}, {axis_label}"
@@ -284,24 +327,36 @@ class Chart:
 
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
+        elif chart_type == 'scatter':
+            handle = ax.scatter(x, y, color=color, marker=kwargs.get('marker', 'o'), label=label)
+
+            x_min = min(x)
+            x_max = max(x)
+
+            self.x_min_label.append(x_min)
+            self.x_max_label.append(x_max)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
 
         elif chart_type == 'boxplot':
-            median_props = dict(color=colors[1], linewidth=1)
-            mean_props = dict(color=colors[1], linewidth=1, linestyle='--')
+            median_props = dict(color=color, linewidth=1)
+            mean_props = dict(color=color, linewidth=1, linestyle='--')
+            x = [self._(ele, 'labels') for ele in x]
 
             handle = ax.boxplot(y, showfliers=False, labels=x, vert=False, patch_artist=True, meanline=True,
                                 showmeans=False, meanprops=mean_props, medianprops=median_props)
 
             for patch in handle['boxes']:
-                patch.set_facecolor(color)
+                patch.set_facecolor(colors[4])
 
             for index, category_data in enumerate(y):
                 latest_value = category_data[-1]
                 y_pos = index + 1
-                ax.scatter(latest_value, y_pos, color=colors[1], zorder=3, s=15)
-                ax.text(latest_value, y_pos + 0.05, f'{round(latest_value, 2)}', verticalalignment='bottom',
+                ax.scatter(latest_value, y_pos, color=color, zorder=3, s=15)
+                ax.text(latest_value, y_pos + 0.27, '{:.0f}'.format(round(latest_value, 0)), verticalalignment='bottom',
                         horizontalalignment="center",
-                        color=colors[1], fontdict={"fontsize": 6})
+                        color=color, fontdict={"fontsize": 8})
 
             self.max_label_length = max([len(ele) for ele in x])
 
@@ -311,6 +366,8 @@ class Chart:
             self.x_min_label.append(t_min)
             self.x_max_label.append(t_max)
         elif chart_type == 'bar' and all(isinstance(p, str) for p in x):
+            x = [self._(ele, 'labels') for ele in x]
+
             handle = ax.barh(x, y, align='center', label=label, color=color, left=bar_bottom, alpha=alpha)
 
             self.max_label_length = max([len(ele) for ele in x])
@@ -320,6 +377,48 @@ class Chart:
 
             self.x_min_label.append(t_min)
             self.x_max_label.append(t_max)
+        elif chart_type == 'bar_grouped':
+
+            style.color_counter = 1
+            multiplier = 0
+            group = list(y.keys())[0]
+
+            for label, values in y[group].items():
+                self.handles = []
+                offset = (self.grouped_bar_width + self.bar_gap) * multiplier
+                bottom = 0
+                self.x_ticks.append((x[0] + offset+self.grouped_bar_width, label))
+                for idx, (key, value) in enumerate(values.items()):
+                    color, suggested_alpha = get_color(y_axis=idx)
+                    if value < 0:
+                        bottom = 0
+                    key = self._(key, part='labels')
+                    handle = ax.bar(x[0] + offset + self.grouped_bar_width, value, self.grouped_bar_width, label=key, color=color, alpha=1,
+                                    bottom=bottom)
+                    self.handles.append(handle)
+                    bottom += value
+                color, suggested_alpha = get_color(y_axis=idx+1)
+                l = self._('Expected Return', part='labels')
+                handle = ax.scatter(x[0] + offset + self.grouped_bar_width, sum(values.values()), marker="D", c=color, label=l)
+                ax.annotate('{:.2f}'.format(sum(values.values())), (x[0] + offset+self.grouped_bar_width-self.grouped_bar_width/2, max(*values.values(), sum(values.values()))+.15),
+                            fontsize=7)
+                self.handles.append(handle)
+                multiplier += 1
+            bars_per_plot = len(y[group].values())
+            half = int(bars_per_plot / 2)
+            mid_point = self.x_ticks[-bars_per_plot:][half-1][0]
+            if bars_per_plot % 2 == 0:
+                mid_point += (self.grouped_bar_width + self.bar_gap)/2
+            else:
+                mid_point += self.grouped_bar_width + self.bar_gap
+
+            ax.annotate(self._(group, 'labels'), (mid_point, 6),
+                        fontsize=10, weight='bold', ha='center')
+            self.handles.pop(-1)
+            self.x_min_axes.append(x[0])
+            self.x_max_axes.append(x[0] + multiplier*(self.grouped_bar_width + self.bar_gap)+self.grouped_bar_width)
+            self.x_min_label.append(datetime.today())
+            self.x_max_label.append(datetime.today())
         elif chart_type == 'bar':
             get_bar_width = lambda idx: (x[idx + 1] - x[idx]).days * 0.8 if idx < len(x) - 1 else None
             bar_widths = [get_bar_width(i) for i in range(len(x) - 1)]
@@ -333,7 +432,7 @@ class Chart:
                 elif len(ax.patches) > len(x):
                     bar_bottom = []
                     n = len(ax.patches) // len(x)
-                    color = get_stacked_color(n+1)
+                    color = get_stacked_color(n + 1)
                     all_patches = []
                     for i in range(n):
                         start = i * len(x)
@@ -368,7 +467,22 @@ class Chart:
 
             self.x_min_axes.append(x_min)
             self.x_max_axes.append(x_max)
+        elif chart_type == 'curve':
+            handle, = ax.plot(x, y, color=color, linestyle=linestyle, linewidth=linewidth, label=label, alpha=alpha)
 
+            if fill:
+                if fill_threshold is None:
+                    fill_threshold = ax.get_ylim()[0]
+                ax.fill_between(x, y, fill_threshold, color=color, alpha=0.1)
+            date = datetime.today()
+            x_min = min(x) if t_min is None else t_min
+            x_max = max(x) if t_max is None else t_max
+
+            self.x_min_label.append(date)
+            self.x_max_label.append(date)
+
+            self.x_min_axes.append(x_min)
+            self.x_max_axes.append(x_max)
         else:
             raise NotImplemented(f"Chart type '{chart_type} is not implemented yet!")
 
@@ -419,28 +533,20 @@ class Chart:
             handle = plt.Rectangle((0, 0), 1, 1, fc='grey', alpha=0.3, label=label)
             self.handles.append(handle)
 
-    def __add_bottom_label(self, bloomberg_source_override: str = None):
+    def __add_bottom_label(self, override: str = None):
         """
         Adds a centered label at the bottom of the chart.
 
         Args:
-            bloomberg_source_override (str): An override for bloomberg source (default: None).
+            override (str): An override for source (default: None).
         """
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
-
-        label_x_position = -0.05
 
         if len(self.x_min_axes) != 0 and len(self.x_max_axes) != 0:
             ax.set_xlim(min(self.x_min_axes), max(self.x_max_axes))
 
-        bloomberg_label = 'Bloomberg' if bloomberg_source_override is None else f'Bloomberg ({bloomberg_source_override})'
-
-        if self.max_label_length != 0:
-            label_x_position = self.max_label_length * -0.012
-
-        label = f'Source: {bloomberg_label} & Federal Reserve Economic Data (FRED) as of ' \
-                f'{datetime.today().strftime("%d.%m.%Y")}, Time Series from ' \
-                f'{min(self.x_min_label).strftime("%m/%Y")} - {max(self.x_max_label).strftime("%m/%Y")}.'
+        label_x_position = .5
+        label = override if override else self.get_source_label()
 
         label_y_position = -0.125
         if self.num_rows > 1:
@@ -450,10 +556,34 @@ class Chart:
             box = ax.get_legend()._legend_box
             extent = box.get_window_extent(self.fig.canvas.get_renderer())
             extent = ax.transAxes.inverted().transform(extent)
-            label_y_position = extent[0][1] - 0.05
+            label_y_position = extent[0][1] - 0.035
 
-        ax.text(label_x_position, label_y_position, label, transform=ax.transAxes, va='top', ha='left',
+        ax.text(label_x_position, label_y_position, label, transform=ax.transAxes, va='top', ha='center',
                 **source_text_style)
+
+    def get_source_label(self):
+        min_time_series = None
+        max_time_series = None
+
+        if all([isinstance(x, datetime) for x in self.x_min_label]):
+            if min(self.x_min_label) != min(self.x_max_label):
+                min_time_series = min(self.x_min_label).strftime("%B %Y")
+                max_time_series = max(self.x_max_label).strftime("%B %Y")
+
+        modules = self.get_custom_imports(self.module, ['source_engine', 'xbbg'])
+        module_label = ' & '.join(modules)
+        if self.language == 'de':
+            label = f'Quelle: {module_label} vom {datetime.today().strftime("%d. %B %Y")}.'
+
+            if min_time_series and max_time_series:
+                 label = label + f' Zeitreihe von {min_time_series} bis {max_time_series}.'
+        else:
+            label = f'Source: {module_label} as of {datetime.today().strftime("%B %d, %Y")}.'
+
+            if min_time_series and max_time_series:
+                 label = label + f' Time Series from {min_time_series} to {max_time_series}.'
+
+        return label
 
     def legend(self, ncol: int = 1):
         """
@@ -465,7 +595,7 @@ class Chart:
         ax = self.axis_dict[next(reversed(self.axis_dict))][0]
         ax.legend(
             loc="upper center",
-            bbox_to_anchor=(0.5, 0),
+            bbox_to_anchor=(0.5, -0.05),
             borderaxespad=3,
             handles=self.handles,
             frameon=False,
@@ -473,22 +603,13 @@ class Chart:
             prop=legend_style
         )
 
-    def add_sup_y_label(self, label: str):
-        """
-        Adds a super ylabel to the figure.
-
-        Args:
-            label (str): The label text to be added as the super ylabel.
-        """
-        self.fig.supylabel(label, fontsize=8)
-
     def add_last_value_badge(self, decimals: int = 1):
         for axis in self.axis_dict.values():
             for i, ax in enumerate(axis):
                 for line in ax.lines:
                     if len(set(line.get_ydata())) > 1:
                         y = line.get_ydata()[-1]
-                        x_marker = ax.get_xlim()[1]
+                        x_marker = ax.get_xlim()[1] + (len(axis)-1) * 140
 
                         ax.annotate(round(y, decimals), xy=(x_marker, y), xytext=(x_marker, y), color='white',
                                     xycoords=ax.get_yaxis_transform(), textcoords="data",
@@ -496,27 +617,33 @@ class Chart:
                                                                    facecolor=line.get_color(),
                                                                    edgecolor=line.get_color()))
 
-    def plot(self, bloomberg_source_override: str = None) -> str:
+    def plot(self, bloomberg_source_override: str = None, upload_chart: bool = True) -> str:
         """
         Plots the chart and saves it as png.
 
         Args:
             bloomberg_source_override (str): An override for bloomberg source (default: None).
+            upload_chart (bool): True if chart should be uploaded to database, False else (default: True).
 
         Return:
             str, the image as base64
         """
+
         plt.suptitle(self.title, fontdict=title_style)
+
+        if len(self.x_ticks) > 0:
+            xs = [self.x_ticks[i][0] for i in range(len(self.x_ticks))]
+            self.axis[-1].set_xticks(xs, [y[1] for y in self.x_ticks], rotation=25, fontsize=6, ha='right')
+
         self.__add_bottom_label(bloomberg_source_override)
 
-        plt.savefig(self.filepath, dpi=500)
-
+        plt.savefig(self.filepath, dpi=200, format="jpeg")
         b = io.BytesIO()
-        plt.savefig(b, format='png')
+        plt.savefig(b, dpi=200, format='jpeg')
         b.seek(0)
         img_data = base64.b64encode(b.read()).decode("utf-8")
 
-        if self.module.startswith('production') and self.metadata is not None:
+        if self.module.startswith('production') and self.metadata is not None and upload_chart:
             upload(chart=self)
 
         plt.close()
@@ -536,6 +663,7 @@ def upload(chart: Chart) -> None:
         end=max(chart.x_max_label).date(),
         region=','.join(country.value for country in chart.metadata.region),
         category=','.join(category.value for category in chart.metadata.category),
-        image=open(chart.filepath, 'rb').read()
+        image=open(chart.filepath, 'rb').read(),
+        language=chart.language
     )
     db.upload(chart=chart_model)

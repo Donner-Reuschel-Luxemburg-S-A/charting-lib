@@ -1,4 +1,3 @@
-import pandas as pd
 from pandas import Series, DataFrame
 
 from charting.model.transformer import Transformer
@@ -15,7 +14,7 @@ class Ytd(Transformer):
         """
         super().__init__()
 
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Applies the yield to date transformation to the input data.
 
@@ -26,6 +25,7 @@ class Ytd(Transformer):
         Returns:
             Tuple[Series, Series]: The transformed x-values and y-values.
         """
+        self.language = language
         df = DataFrame({'y': y}, index=x)
         start_value = df.iloc[0]['y']
         ytd = (df['y'] - start_value) / start_value * 100
@@ -40,4 +40,4 @@ class Ytd(Transformer):
         Returns:
             str: The label for the transformation.
         """
-        return f"ytd"
+        return f"YTD"

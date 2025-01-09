@@ -1,35 +1,45 @@
+import datetime
+
 import matplotlib.dates as mdates
-from matplotlib.ticker import MultipleLocator
 from source_engine.bloomberg_source import BloombergSource
 
 from charting.model.chart import Chart
 from charting.model.metadata import Metadata, Category, Region
 
+DEFAULT_START_DATE = datetime.date(1999, 1, 1)
+DEFAULT_END_DATE = datetime.datetime.today()
 
-def main():
+
+def main(**kwargs):
+    observation_start = kwargs.get('observation_start', DEFAULT_START_DATE)
+    observation_end = kwargs.get('observation_end', DEFAULT_END_DATE)
+
     blp = BloombergSource()
 
-    d1, t1 = blp.get_series(series_id='UKBRBASE Index', observation_start="19990101")
-    d2, t2 = blp.get_series(series_id='RBATCTR Index', observation_start="19990101")
-    d3, t3 = blp.get_series(series_id='NOBRDEPA Index', observation_start="19990101")
-    d4, t4 = blp.get_series(series_id='SWRRATEI Index', observation_start="19990101")
-    d5, t5 = blp.get_series(series_id='FDTR Index', observation_start="19990101")
-    d6, t6 = blp.get_series(series_id='EUORDEPO Index', observation_start="19990101")
-    d7, t7 = blp.get_series(series_id='CABROVER Index', observation_start="19990101")
+    d1, t1 = blp.get_series(series_id='UKBRBASE Index', observation_start=observation_start.strftime("%Y%m%d"),
+                            observation_end=observation_end.strftime("%Y%m%d"))
+    d2, t2 = blp.get_series(series_id='RBATCTR Index', observation_start=observation_start.strftime("%Y%m%d"),
+                            observation_end=observation_end.strftime("%Y%m%d"))
+    d3, t3 = blp.get_series(series_id='NOBRDEPA Index', observation_start=observation_start.strftime("%Y%m%d"),
+                            observation_end=observation_end.strftime("%Y%m%d"))
+    d4, t4 = blp.get_series(series_id='SWRRATEI Index', observation_start=observation_start.strftime("%Y%m%d"),
+                            observation_end=observation_end.strftime("%Y%m%d"))
+    d5, t5 = blp.get_series(series_id='FDTR Index', observation_start=observation_start.strftime("%Y%m%d"),
+                            observation_end=observation_end.strftime("%Y%m%d"))
+    d6, t6 = blp.get_series(series_id='EUORDEPO Index', observation_start=observation_start.strftime("%Y%m%d"),
+                            observation_end=observation_end.strftime("%Y%m%d"))
+    d7, t7 = blp.get_series(series_id='CABROVER Index', observation_start=observation_start.strftime("%Y%m%d"),
+                            observation_end=observation_end.strftime("%Y%m%d"))
 
     title = "Central Banks - Key Interest Rates"
 
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.RATES)
 
-    chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates.png")
+    chart = Chart(title=title, metadata=metadata, filename="global_key_interest_rates", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(y_axis_index=0, label="Percentage Points", minor_locator=MultipleLocator(0.25),
-                           major_locator=MultipleLocator(1))
+    chart.configure_y_axis(label="PERCENTAGE POINTS")
 
-    minor_locator = mdates.YearLocator(base=1)
-    major_locator = mdates.YearLocator(base=2)
-    major_formatter = mdates.DateFormatter("%b %y")
-    chart.configure_x_axis(major_formatter=major_formatter, minor_locator=minor_locator, major_locator=major_locator)
+    chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(x=d1.index, y=d1["y"], label="United Kingdom")
     chart.add_series(x=d2.index, y=d2["y"], label="Australia")
@@ -40,9 +50,12 @@ def main():
     chart.add_series(x=d7.index, y=d7["y"], label="Canada", linestyle='--')
     chart.add_horizontal_line()
 
-    chart.legend(ncol=3)
-    chart.plot()
+    chart.add_last_value_badge(decimals=2)
+    chart.legend(ncol=4)
+
+    return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')
