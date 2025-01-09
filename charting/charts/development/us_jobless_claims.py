@@ -22,8 +22,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
     chart = Chart(title=title, filename="us_initial_claims.jpeg", metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(100), major_locator=MultipleLocator(500), label="")
+
 
     chart.add_series(ic_df.index, ic_df['y'], label=ic_title)
 
@@ -36,8 +35,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
 
     chart = Chart(title=title, filename="us_continuing_claims.jpeg", metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1000), major_locator=MultipleLocator(5000), label="")
+
 
     chart.add_series(cc_df.index, cc_df['y'], label=cc_title)
 

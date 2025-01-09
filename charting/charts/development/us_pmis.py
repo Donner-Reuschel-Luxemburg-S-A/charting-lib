@@ -44,8 +44,7 @@ def main(**kwargs):
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_ism.jpeg", num_rows=1, num_y_axis=1, metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+    chart.configure_y_axis(label="")
 
     chart.add_series(ism_manu_df.index, ism_manu_df['y'], label=ism_manu_title)
     chart.add_series(ism_serv_df.index, ism_serv_df['y'], label=ism_serv_title)
@@ -53,13 +52,12 @@ def main(**kwargs):
 
     chart.add_horizontal_line(y=50)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US PMIs"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
     chart = Chart(title=title, filename="us_pmis.jpeg", num_rows=1, metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+
 
     chart.add_series(pmi_manu_df.index, pmi_manu_df['y'], label=ism_manu_title)
     chart.add_series(pmi_serv_df.index, pmi_serv_df['y'], label=pmi_serv_title)
@@ -69,42 +67,39 @@ def main(**kwargs):
 
     chart.add_horizontal_line(y=50)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Small Business Optimism"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_small_business_optimism.jpeg", num_rows=1, num_y_axis=1, metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+
 
     chart.add_series(smallbusiness_opt_df.index, smallbusiness_opt_df['y'], label=smallbusiness_opt_title)
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
 
     chart.add_horizontal_line(y=100)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "Chicago PMI"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_pmi_chicago.jpeg", num_rows=1, num_y_axis=1, metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+
 
     chart.add_series(pmi_chicago_df.index, pmi_chicago_df['y'], label=pmi_chicago_title)
     chart.add_vertical_line(x=us_nber_df.index, y=us_nber_df["y"], label=us_nber_title)
 
     chart.add_horizontal_line(y=50)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "Conference Board Leading Indicator"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_leading_indicator.jpeg", num_rows=1, metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+
 
     chart.add_series(lei_df.index, lei_df['y'], label=lei_title)
     chart.add_series(lei6m_df.index, lei6m_df['y'], label=lei6m_title)
@@ -113,14 +108,13 @@ def main(**kwargs):
 
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
     title = "US Consumer Confidence"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
     chart = Chart(title=title, filename="us_consumer_confidence.jpeg", num_rows=1, metadata=metadata)
-    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(5), label="")
+
 
     chart.add_series(confidence_df.index, confidence_df['y'], label=confidence_title)
 
@@ -128,7 +122,7 @@ def main(**kwargs):
 
     chart.add_horizontal_line(y=100)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
