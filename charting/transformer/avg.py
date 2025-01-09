@@ -23,7 +23,7 @@ class Avg(Transformer):
         super().__init__()
         self.offset = offset
 
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Applies the rolling mean calculation to the time series.
 
@@ -34,6 +34,7 @@ class Avg(Transformer):
         Returns:
             (Series, Series): The transformed x-values and y-values.
         """
+        self.language = language
         start_date = datetime.datetime.today()
         end_date = start_date + self.offset
         days = (end_date - start_date).days
@@ -46,4 +47,6 @@ class Avg(Transformer):
         Returns:
             str: The label for the transformation.
         """
-        return _generate_label(offset=self.offset, action='avg')
+
+        action = 'Average' if self.language == 'en' else 'Durchschnitt'
+        return _generate_label(offset=self.offset, action=action, language=self.language)

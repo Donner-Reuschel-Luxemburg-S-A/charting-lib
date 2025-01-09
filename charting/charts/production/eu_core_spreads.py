@@ -27,17 +27,20 @@ def main(**kwargs):
         set(df2.index).intersection(set(df3.index)).intersection(set(df1.index))).sort_values()
     title = "EU Core Spreads"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="eu_core_spreads.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_core_spreads", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="BPS")
+    chart.configure_y_axis(label="BASISPOINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     chart.add_series(row_index=0, x=common_index, y=df1.loc[common_index, 'y'], label="Netherlands")
     chart.add_series(row_index=0, x=common_index, y=(df2.loc[common_index, 'y'] - df3.loc[common_index, 'y']) * 100,
-                     label="KFW")
-    chart.legend(4)
+                     label="German Reconstruction Roan Corporation (KfW)")
+    chart.legend(2)
+    chart.add_last_value_badge(decimals=2)
+
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

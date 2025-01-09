@@ -18,9 +18,10 @@ def main(**kwargs):
     d1, t1 = blp.get_series(series_id='BCOMEUTR Index', observation_start=observation_start.strftime("%Y%m%d"),
                             observation_end=observation_end.strftime("%Y%m%d"))
 
+    t1 = "Bloomberg Commodity Index Total Return"
     title = "Commodity Index"
     metadata = Metadata(title=title, region=Region.EU, category=Category.COMMODITY)
-    chart = Chart(title=title, metadata=metadata, filename='global_cmdty_index.jpeg')
+    chart = Chart(title=title, metadata=metadata, filename='global_cmdty_index', language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="EUR €")
 
@@ -35,4 +36,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

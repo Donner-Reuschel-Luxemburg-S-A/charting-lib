@@ -17,10 +17,10 @@ def main(**kwargs):
 
     blp = BloombergSource()
 
-    df1, t1 = blp.get_series(series_id='SX5E Index', field="px_close_1d",
+    df1, t1 = blp.get_series(series_id='SXXP Index', field="px_close_1d",
                              observation_start=observation_start.strftime('%Y%m%d'),
                              observation_end=observation_end.strftime('%Y%m%d'))
-    df2, t2 = blp.get_series(series_id='SXXP Index', field="px_close_1d",
+    df2, t2 = blp.get_series(series_id='SX5E Index', field="px_close_1d",
                              observation_start=observation_start.strftime('%Y%m%d'),
                              observation_end=observation_end.strftime('%Y%m%d'))
     df3, t3 = blp.get_series(series_id='DAX Index', field="px_close_1d",
@@ -29,14 +29,24 @@ def main(**kwargs):
     df4, t4 = blp.get_series(series_id='SPX Index', field="px_close_1d",
                              observation_start=observation_start.strftime('%Y%m%d'),
                              observation_end=observation_end.strftime('%Y%m%d'))
-    df5, t5 = blp.get_series(series_id='MXEF Index', field="px_close_1d",
+    df5, t5 = blp.get_series(series_id='NDX Index', field="px_close_1d",
+                             observation_start=observation_start.strftime('%Y%m%d'),
+                             observation_end=observation_end.strftime('%Y%m%d'))
+    df6, t6 = blp.get_series(series_id='MXEF Index', field="px_close_1d",
                              observation_start=observation_start.strftime('%Y%m%d'),
                              observation_end=observation_end.strftime('%Y%m%d'))
 
-    title = "Euro Stoxx 50, Stoxx Euro 600, DAX, S&P 500, Emerging Markets Performance"
+    title = "Stoxx Euro 600, Euro Stoxx 50, DAX, S&P 500, Nasdaq 100, Emerging Markets Performance"
+
+    t1 = "Stoxx Europe 600"
+    t2 = "Euro Stoxx 50"
+    t3 = "DAX 40"
+    t4 = "S&P 500"
+    t5 = "NASDAQ 100"
+    t6 = "Emerging Markets"
 
     metadata = Metadata(title=title, category=Category.EQUITY, region=Region.GLOBAL)
-    chart = Chart(title=title, metadata=metadata, filename="global_indices_performance.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="global_indices_performance", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -47,6 +57,7 @@ def main(**kwargs):
     chart.add_series(x=df3.index, y=df3['y'], label=t3, transformer=Ytd())
     chart.add_series(x=df4.index, y=df4['y'], label=t4, transformer=Ytd())
     chart.add_series(x=df5.index, y=df5['y'], label=t5, transformer=Ytd())
+    chart.add_series(x=df6.index, y=df6['y'], label=t6, transformer=Ytd())
 
     chart.add_horizontal_line()
     chart.add_last_value_badge(2)
@@ -57,4 +68,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

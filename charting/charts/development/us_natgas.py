@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "USA: Gaspreisentwicklung"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_ng.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_ng", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="$/MMBtu")
 
@@ -36,7 +36,7 @@ def main(**kwargs):
     title = "Preisentwicklung von Gold"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_gold.jpeg", num_rows=1, num_y_axis=1)
+    chart = Chart(title=title, filename="us_gold", num_rows=1, num_y_axis=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(50), major_locator=MultipleLocator(200), label="")
 
@@ -49,4 +49,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

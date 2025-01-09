@@ -13,6 +13,8 @@ from charting.model.metadata import Region, Category
 
 
 def main(**kwargs):
+    language = kwargs.get('language', 'en')
+
     n = datetime.now()
     destination = os.path.join(base_path, 'model_output')
     files = [f for f in os.listdir(destination) if os.path.isfile(os.path.join(destination, f))]
@@ -32,9 +34,8 @@ def main(**kwargs):
     index = sector_table.index.to_list()
     index.append('Score')
     sl = pd.IndexSlice[index]
-    filename = f'stars_sector_data.jpeg'
-    filename_date = f'{datetime.today().strftime("%d_%m_%Y")}_{filename}'
-    filepath = os.path.join(chart_base_path, "production", filename_date)
+    filename = f'stars_sector_data_{language}.jpeg'
+    filepath = os.path.join(chart_base_path, "production", language, filename)
     styled = total_df.style \
         .format(precision=2, decimal=',') \
         .apply(lambda x: ["font-weight: bold;" for v in x], axis=0, subset=(sl,)) \
@@ -45,20 +46,23 @@ def main(**kwargs):
         .background_gradient(axis=0, cmap="bwr", vmin=-1, vmax=1)
     dfi.export(styled, filepath, table_conversion='playwright', dpi=200)
     db: ChartSource = ChartSource()
+
     chart_model = ChartModel(
         id=hashlib.sha1(filename.encode('utf-8')).hexdigest(),
         title="Stars Model Short",
         last_update=n,
-        path=os.path.join("production", filename_date),
+        path=os.path.join("production", language, filename),
         module=Chart(filename)._caller(),
         start=n.date(),
         end=n.date(),
         region=','.join([Region.EU.value]),
         category=','.join([Category.FI.value, Category.RATES.value]),
-        image=open(filepath, 'rb').read()
+        image=open(filepath, 'rb').read(),
+        language=language
     )
     db.upload(chart=chart_model)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -24,9 +24,9 @@ def main(**kwargs):
 
     title = "U.S. Treasury Spread 2-5-Year"
     metadata = Metadata(title=title, region=Region.US, category=Category.RATES)
-    chart = Chart(title=title, metadata=metadata, filename="us_treasury_spread_5y_2y.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_treasury_spread_5y_2y", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(label="BPS")
+    chart.configure_y_axis(label="BASISPOINTS")
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -39,4 +39,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -26,10 +26,15 @@ def main(**kwargs):
     df4, t4 = blp.get_series(series_id='I02003EU Index', observation_start=observation_start.strftime("%Y%m%d"),
                              observation_end=observation_end.strftime("%Y%m%d"))
 
+    t1 = "Treasury"
+    t2 = "Government-Related"
+    t3 = "Corporates"
+    t4 = "Securitized"
+
     title = "European Interest Rate Markets Sectors"
     metadata = Metadata(title=title, region=Region.EU, category=Category.RATES)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_rates_sector_performance.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_rates_sector_performance", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -48,4 +53,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

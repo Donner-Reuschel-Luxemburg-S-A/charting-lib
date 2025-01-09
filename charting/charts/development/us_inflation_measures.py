@@ -40,7 +40,7 @@ def main(**kwargs):
     title = "US Inflation Measures YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_inflation_measures_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_inflation_measures_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -56,7 +56,7 @@ def main(**kwargs):
     title = "US Inflation Measures 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_inflation_measures_mom_6.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_inflation_measures_mom_6", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -73,7 +73,7 @@ def main(**kwargs):
     title = "US Inflation Measures 3M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_inflation_measures_mom_3.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_inflation_measures_mom_3", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -90,7 +90,7 @@ def main(**kwargs):
     title = "US PPI vs. CPI YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_ppi_cpi_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_ppi_cpi_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -112,7 +112,7 @@ def main(**kwargs):
     title = "US CPI ex Shelter YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_ex_shelter_cpi_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_ex_shelter_cpi_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -126,7 +126,7 @@ def main(**kwargs):
     title = "US CPI Shelter YoY vs. Zillow Rent Index"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_shelter_cpi_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_shelter_cpi_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -145,7 +145,7 @@ def main(**kwargs):
     title = "US Import and Export Prices YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_import_export_prices_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_import_export_prices_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -160,7 +160,7 @@ def main(**kwargs):
     title = "US Import and Export Prices 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_import_export_prices_mom_6.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_import_export_prices_mom_6", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -177,7 +177,7 @@ def main(**kwargs):
     title = "US Import and Export Prices 3M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_import_export_prices_mom_3.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_import_export_prices_mom_3", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -194,7 +194,7 @@ def main(**kwargs):
     title = "US Inflation Expectations"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_inflation_expectations.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_inflation_expectations", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=2))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2),
                            label="Percentage Points")
@@ -208,4 +208,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

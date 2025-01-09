@@ -26,7 +26,7 @@ def main(**kwargs):
     title = "S&P 500 Price-Earnings Ratio"
 
     metadata = Metadata(title=title, region=Region.US, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="us_spx_per.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_spx_per", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="P/E")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -39,4 +39,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -35,7 +35,7 @@ def main(**kwargs):
     title = "US % of Bank Tightening Credit Standards"
     metadata = Metadata(title=title, region=Region.US, category=Category.CREDIT)
 
-    chart = Chart(title=title, metadata=metadata, filename="us_credit_standards.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_credit_standards", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="PERCENTAGE POINTS")
@@ -54,4 +54,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

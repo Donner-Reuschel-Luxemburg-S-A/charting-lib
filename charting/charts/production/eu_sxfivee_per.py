@@ -26,7 +26,7 @@ def main(**kwargs):
     title = "Euro Stoxx 50 Price-Earnings Ratio"
 
     metadata = Metadata(title=title, region=Region.EU, category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_sx5e_per.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_sx5e_per", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="P/E")
 
@@ -41,4 +41,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

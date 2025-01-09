@@ -24,7 +24,7 @@ def main(**kwargs):
                              observation_end=observation_end.strftime("%Y-%m-%d"))
 
     metadata = Metadata(title=title, region=Region.US, category=Category.CONSUMER)
-    chart = Chart(title=title, metadata=metadata, filename="us_retail_sales_yoy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="us_retail_sales_yoy", language=kwargs.get('language', 'en'))
 
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
@@ -39,4 +39,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

@@ -22,7 +22,7 @@ def main(**kwargs):
 
     title = "IFO vs. ZEW Expectations"
     metadata = Metadata(title=title, region=Region.DE, category=Category.SURVEY)
-    chart = Chart(title=title, metadata=metadata, filename="ifo_zew_expectations.jpeg", num_y_axis=2)
+    chart = Chart(title=title, metadata=metadata, filename="ifo_zew_expectations", num_y_axis=2, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="Points", y_lim=(70, 120))
     chart.configure_y_axis(y_axis_index=1, label="Points", y_lim=(-80, 90))
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

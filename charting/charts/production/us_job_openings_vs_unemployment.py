@@ -24,7 +24,7 @@ def main(**kwargs):
 
     title = "Job Openings (Total Nonfarm) vs. Unemployment Rate"
     metadata = Metadata(title=title, region=Region.US, category=Category.EMPLOYMENT)
-    chart = Chart(title=title, metadata=metadata, filename="us_job_openings_vs_unemployment.jpeg", num_y_axis=2)
+    chart = Chart(title=title, metadata=metadata, filename="us_job_openings_vs_unemployment", num_y_axis=2, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="THOUSANDS")
     chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
@@ -42,4 +42,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

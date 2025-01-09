@@ -28,8 +28,11 @@ def main(**kwargs):
 
     title = "Stoxx Euro 600 & S&P 500 Profit Margin"
 
+    t1 = "Stoxx Europe 600 12M Profit Margin"
+    t2 = "S&P 500 12M Profit Margin"
+
     metadata = Metadata(title=title, region=[Region.EU, Region.US], category=Category.EQUITY)
-    chart = Chart(title=title, metadata=metadata, filename="eu_us_sxxp_spx_profit_margin.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_us_sxxp_spx_profit_margin", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
@@ -39,9 +42,10 @@ def main(**kwargs):
 
     chart.add_last_value_badge(decimals=2)
 
-    chart.legend(ncol=2)
+    chart.legend(ncol=1)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

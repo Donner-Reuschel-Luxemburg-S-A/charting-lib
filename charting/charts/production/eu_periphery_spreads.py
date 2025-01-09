@@ -24,15 +24,15 @@ def main(**kwargs):
 
     title = "EU Peripheral Spreads"
     metadata = Metadata(title=title, region=Region.DE, category=Category.RATES)
-    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eu_periphery_spreads.jpeg")
+    chart = Chart(title=title, num_rows=2, metadata=metadata, filename="eu_periphery_spreads", language=kwargs.get('language', 'en'))
 
-    chart.configure_y_axis(row_index=0, label="BPS")
-    chart.configure_y_axis(row_index=1, label="BPS")
+    chart.configure_y_axis(row_index=0, label="BASISPOINTS")
+    chart.configure_y_axis(row_index=1, label="BASISPOINTS")
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
 
     mean_val = [df1['y'].mean() * 100] * len(df1.index)
     chart.add_series(row_index=0, x=df1.index, y=df1['y'] * 100, label="Italy")
-    chart.add_series(row_index=0, x=df1.index, y=mean_val, label="Italy -10Y Avg", linestyle="--", color=style.get_color(0))
+    chart.add_series(row_index=0, x=df1.index, y=mean_val, label="Italy - 10Y Avg", linestyle="--", color=style.get_color(0))
 
     mean_val = [df2['y'].mean() * 100] * len(df2.index)
     chart.add_series(row_index=1, x=df2.index, y=df2['y'] * 100, label="Spain", color=style.get_color(1))
@@ -45,4 +45,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

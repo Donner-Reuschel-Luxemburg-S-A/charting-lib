@@ -26,7 +26,7 @@ def main(**kwargs):
 
     title = "Manheim US Vehicle Inflation"
     metadata = Metadata(title=title, region=Region.US, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="us_vehicle_inflation.jpeg", num_y_axis=2)
+    chart = Chart(title=title, metadata=metadata, filename="us_vehicle_inflation", num_y_axis=2, language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="PERCENTAGE POINTS", y_lim=(-55, 55))
     chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS", y_lim=(-15, 15))
@@ -46,4 +46,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

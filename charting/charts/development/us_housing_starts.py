@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "US Housing Starts 6M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_housing_starts_mom_6.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_housing_starts_mom_6", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -37,7 +37,7 @@ def main(**kwargs):
     title = "US Housing Starts 12M Ann."
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_housing_starts_12.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_housing_starts_12", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -52,7 +52,7 @@ def main(**kwargs):
     title = "US Housing Starts YoY"
     metadata = Metadata(title=title, region=Region.US, category=Category.ECONOMY)
 
-    chart = Chart(title=title, filename="us_housing_starts_yoy.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_housing_starts_yoy", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(2), major_locator=MultipleLocator(10),
                            label="Percentage Points")
@@ -68,4 +68,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

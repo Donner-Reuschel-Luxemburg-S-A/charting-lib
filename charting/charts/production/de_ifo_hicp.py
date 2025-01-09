@@ -28,7 +28,7 @@ def main(**kwargs):
     title = "IFO Price Expectations & Inflation"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="de_ifo_hicp.jpeg")
+    chart = Chart(title=title, num_y_axis=2, metadata=metadata, filename="de_ifo_hicp", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(y_axis_index=0, label="INDEX")
     chart.configure_y_axis(y_axis_index=1, label="PERCENTAGE POINTS")
@@ -38,9 +38,11 @@ def main(**kwargs):
     chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0)
     chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1, transformer=Lag(offset=DateOffset(months=6)))
 
+    chart.add_horizontal_line(y=2,y_axis_index=1)
     chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

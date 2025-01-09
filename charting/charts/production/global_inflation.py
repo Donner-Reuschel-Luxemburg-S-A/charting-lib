@@ -36,7 +36,7 @@ def main(**kwargs):
 
     title = "Inflation Trend"
     metadata = Metadata(title=title, region=Region.GLOBAL, category=Category.INFLATION)
-    chart = Chart(title=title, metadata=metadata, filename="global_inflation.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="global_inflation", language=kwargs.get('language', 'en'))
 
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
@@ -57,4 +57,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

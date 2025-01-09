@@ -15,7 +15,7 @@ def main(**kwargs):
     title = "EU Credit Measures YoY"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_credit_measures_yoy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_credit_measures_yoy", language=kwargs.get('language', 'en'))
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(credit_corp_df.index, credit_corp_df['y'], label=credit_corp_title)
@@ -27,4 +27,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

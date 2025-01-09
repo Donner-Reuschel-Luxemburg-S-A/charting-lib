@@ -22,7 +22,7 @@ def main(**kwargs):
     title = "EU Inflation Measures YoY"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_yoy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_yoy", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -36,7 +36,7 @@ def main(**kwargs):
     title = "EU Inflation and Money Supply (M3) YoY"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_m3_yoy.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_m3_yoy", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -51,7 +51,7 @@ def main(**kwargs):
     title = "EU Inflation Measures 6M Ann."
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_mom_6.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_mom_6", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -66,7 +66,7 @@ def main(**kwargs):
     title = "EU Inflation Measures 3M Ann."
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_mom_3.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_mom_3", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -78,10 +78,27 @@ def main(**kwargs):
     chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
+    title = "EU Inflation Measures 3M/3M Delta"
+    metadata = Metadata(title=title, region=Region.EU, category=Category.INFLATION)
+
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_3m3m.png")
+    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
+
+    cpim_df['y'] = cpim_df['y']-cpim_df['y'].shift(3)
+    cpixm_df['y'] = cpixm_df['y'] - cpixm_df['y'].shift(3)
+
+    chart.add_series(cpim_df.index, cpim_df['y'] * 12, label=cpim_title, transformer=[Avg(offset=DateOffset(months=3))])
+    chart.add_series(cpixm_df.index, cpixm_df['y'] * 12, label=cpixm_title, transformer=[Avg(offset=DateOffset(months=3))])
+
+    chart.add_horizontal_line()
+    chart.legend(ncol=2)
+    chart.plot()
+
     title = "EU Inflation Measures YoY: Change"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_yoy_delta.jpeg")
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_measures_yoy_delta", language=kwargs.get('language', 'en'))
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
 
@@ -97,4 +114,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

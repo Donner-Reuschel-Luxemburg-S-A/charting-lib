@@ -20,7 +20,7 @@ class Resample(Transformer):
         self.rule = rule
         self.resampler = resampler
 
-    def transform(self, x: Series, y: Series) -> (Series, Series):
+    def transform(self, x: Series, y: Series, language: str) -> (Series, Series):
         """
         Transforms the time series data by resampling it according to the specified rule.
 
@@ -31,6 +31,7 @@ class Resample(Transformer):
         Returns:
             (Series, Series): The resampled x-values and y-values as separate Series.
         """
+        self.language = language
         df = DataFrame({'y': y}, index=x)
         resampled_df = getattr(df.resample(self.rule), self.resampler)()
         resampled_df.index = resampled_df.index.to_period(self.rule).to_timestamp(how='start')
@@ -46,13 +47,34 @@ class Resample(Transformer):
         Returns:
             str: The label for the transformation.
         """
-        if self.rule == 'W':
-            return f'weekly {self.resampler}'
-        if self.rule == 'M':
-            return f'monthly {self.resampler}'
-        if self.rule == 'Y':
-            return f'yearly {self.resampler}'
-        if self.rule == 'Q':
-            return f'quarterly {self.resampler}'
 
-        return 'unknown'
+        resampler = {
+            "sum": "Summe",
+            "mean": "Durchschnitt"
+        }
+
+        self.resampler = resampler.get(self.resampler) if self.language == 'de' else self.resampler
+
+        if self.language == 'en':
+            if self.rule == 'W':
+                return f'weekly {self.resampler}'
+            if self.rule == 'M':
+                return f'monthly {self.resampler}'
+            if self.rule == 'Y':
+                return f'yearly {self.resampler}'
+            if self.rule == 'Q':
+                return f'quarterly {self.resampler}'
+            return 'unknown'
+
+        if self.language == 'de':
+            if self.rule == 'W':
+                return f'wöchentlich {self.resampler}'
+            if self.rule == 'M':
+                return f'monatlich {self.resampler}'
+            if self.rule == 'Y':
+                return f'jährlich {self.resampler}'
+            if self.rule == 'Q':
+                return f'quartalsweise {self.resampler}'
+            return 'unbekannt'
+
+        return 'unbekannt'

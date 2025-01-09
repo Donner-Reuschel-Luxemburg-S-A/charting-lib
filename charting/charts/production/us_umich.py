@@ -35,7 +35,7 @@ def main(**kwargs):
     title = "US University Michigan Surveys"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="us_umich_surveys.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="us_umich_surveys", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_x_axis(major_formatter=mdates.DateFormatter("%b %y"))
     chart.configure_y_axis(label="INDEX")
 
@@ -52,4 +52,5 @@ def main(**kwargs):
 
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')

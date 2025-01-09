@@ -18,7 +18,7 @@ def main(**kwargs):
     # Industrial Production
     title = "Germany Industrial Production: 3M Ann."
     metadata = Metadata(title=title, region=Region.DE, category=Category.ECONOMY)
-    chart = Chart(title=title, filename="de_industrial_production_mom_3.jpeg", metadata=metadata)
+    chart = Chart(title=title, filename="de_industrial_production_mom_3", metadata=metadata, language=kwargs.get('language', 'en'))
     chart.configure_y_axis(label="PERCENTAGE POINTS")
 
     chart.add_series(de_ind_prod_df.index, de_ind_prod_df['y'] * 12, label=de_ind_prod_title,
@@ -29,4 +29,5 @@ def main(**kwargs):
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
 if __name__ == '__main__':
-    main()
+    main(language='en')
+    main(language='de')
