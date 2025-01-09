@@ -33,7 +33,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, filename="g7_rates10y", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),label="%")
 
     # chart.add_series(us2y_df.index, us2y_df['y'], label=us2y_title)
     chart.add_series(us10y_df.index, us10y_df['y'], label=us10y_title)
@@ -59,7 +59,7 @@ def main(**kwargs):
 
     chart = Chart(title=title, filename="g7_rates2y", num_rows=1)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),label="%")
 
     chart.add_series(us2y_df.index, us2y_df['y'], label=us2y_title)
 

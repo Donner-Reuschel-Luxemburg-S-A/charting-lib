@@ -1,58 +1,83 @@
 import matplotlib.dates as mdates
+import pandas as pd
 from matplotlib.ticker import MultipleLocator
-from pandas import DateOffset
 from source_engine.bloomberg_source import BloombergSource
 from source_engine.fred_source import FredSource
+from pandas import DateOffset
 
 from charting.model.chart import Chart
+from charting.model.metadata import Metadata, Category, Region
 from charting.transformer.lag import Lag
+from charting.transformer.avg import Avg
+from charting.transformer.pct import Pct
+from charting.transformer.invert import Invert
 
-
-def main(**kwargs):
+def main():
     blp = BloombergSource()
     fred = FredSource()
 
     start_time = "20120101"
 
+
+
     ism_manu_df, ism_manu_title = blp.get_series(series_id="NAPMPRIC Index", observation_start=start_time)
     ism_serv_df, ism_serv_title = blp.get_series(series_id="NAPMNPRC Index", observation_start=start_time)
+
 
     cpi_df, cpi_title = blp.get_series(series_id="CPI YOY Index", observation_start=start_time)
 
     cpi_serv_df, cpi_serv_title = blp.get_series(series_id="CPUPSXEN Index", observation_start=start_time)
 
+    ddf = ism_manu_df
+    ism_serv_df.loc[ism_manu_df.index[-1]] = ism_manu_df.iloc[-1]
+
+    ddf['y'] = 0.2*ism_manu_df['y']+0.8*ism_serv_df['y']
+
     title = "US ISM Man. Prices Paid vs. CPI"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="cpi_ism_manu", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="cpi_ism_manu.png", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
-    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),label="%")
 
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
-    chart.add_series(ism_manu_df.index, ism_manu_df['y'], label=ism_manu_title, y_axis_index=1,
-                     transformer=[Lag(DateOffset(months=-2))])
+    chart.add_series(ism_manu_df.index,ism_manu_df['y'], label=ism_manu_title,y_axis_index=1,transformer=[Lag(DateOffset(months=-6))])
+
 
     chart.add_horizontal_line(y=0)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
+    chart.plot()
 
-    title = "US ISM Serv./Man. Prices Paid vs. CPI"
+    title = "US ISM Serv. Prices Paid vs. CPI"
     # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
-    chart = Chart(title=title, filename="cpi_ism_serv", num_rows=1, num_y_axis=2)
+    chart = Chart(title=title, filename="cpi_ism_serv.png", num_rows=1, num_y_axis=2)
+    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1),label="%")
+
+       #chart.add_series(cpi_serv_df.index, cpi_serv_df['y'], label=cpi_serv_title,transformer=[Pct(periods=12)])
+    chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
+    chart.add_series(ism_serv_df.index,ism_serv_df['y'], label=ism_serv_title,y_axis_index=1,transformer=[Lag(DateOffset(months=-6))])
+
+
+    chart.add_horizontal_line(y=2)
+    chart.legend(ncol=2)
+    chart.plot()
+
+    title = "US ISM Prices Paid vs. CPI"
+    # metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
+
+    chart = Chart(title=title, filename="cpi_ism.png", num_rows=1, num_y_axis=2)
     chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=1))
     chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(1), label="%")
 
     # chart.add_series(cpi_serv_df.index, cpi_serv_df['y'], label=cpi_serv_title,transformer=[Pct(periods=12)])
     chart.add_series(cpi_df.index, cpi_df['y'], label=cpi_title)
-    chart.add_series(ism_serv_df.index, ism_serv_df['y'], label=ism_serv_title, y_axis_index=1,
-                     transformer=[Lag(DateOffset(months=-2))])
+    chart.add_series(ism_serv_df.index, ddf['y'], label="ISM Prices Paid", y_axis_index=1, transformer=[Lag(DateOffset(months=-6))])
 
-    # chart.add_horizontal_line(y=0)
+    chart.add_horizontal_line(y=2)
     chart.legend(ncol=2)
-    return chart.plot(upload_chart='observation_start' not in kwargs)
-
+    chart.plot()
 
 if __name__ == '__main__':
-    main(language='en')
-    main(language='de')
+    main()

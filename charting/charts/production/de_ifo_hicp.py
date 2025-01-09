@@ -38,6 +38,7 @@ def main(**kwargs):
     chart.add_series(x=df1.index, y=df1['y'], label=t1, y_axis_index=0)
     chart.add_series(x=df2.index, y=df2['y'], label=t2, y_axis_index=1, transformer=Lag(offset=DateOffset(months=6)))
 
+    chart.add_horizontal_line(y=2,y_axis_index=1)
     chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 

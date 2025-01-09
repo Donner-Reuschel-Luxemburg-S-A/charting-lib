@@ -78,6 +78,23 @@ def main(**kwargs):
     chart.legend(ncol=2)
     return chart.plot(upload_chart='observation_start' not in kwargs)
 
+    title = "EU Inflation Measures 3M/3M Delta"
+    metadata = Metadata(title=title, region=Region.EU, category=Category.INFLATION)
+
+    chart = Chart(title=title, metadata=metadata, filename="eu_inflation_3m3m.png")
+    chart.configure_x_axis(minor_locator=mdates.YearLocator(base=1), major_locator=mdates.YearLocator(base=5))
+    chart.configure_y_axis(minor_locator=MultipleLocator(1), major_locator=MultipleLocator(2), label="%")
+
+    cpim_df['y'] = cpim_df['y']-cpim_df['y'].shift(3)
+    cpixm_df['y'] = cpixm_df['y'] - cpixm_df['y'].shift(3)
+
+    chart.add_series(cpim_df.index, cpim_df['y'] * 12, label=cpim_title, transformer=[Avg(offset=DateOffset(months=3))])
+    chart.add_series(cpixm_df.index, cpixm_df['y'] * 12, label=cpixm_title, transformer=[Avg(offset=DateOffset(months=3))])
+
+    chart.add_horizontal_line()
+    chart.legend(ncol=2)
+    chart.plot()
+
     title = "EU Inflation Measures YoY: Change"
     metadata = Metadata(title=title, region=Region.DE, category=Category.INFLATION)
 
